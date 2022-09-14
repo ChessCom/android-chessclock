@@ -21,6 +21,8 @@ public class ClockMenu extends ConstraintLayout {
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.view_clock_menu, this, true);
+        view.setBackgroundResource(R.color.toolbar_gray);
+
         settingsButton = view.findViewById(R.id.settingsBtn);
         playPauseButton = view.findViewById(R.id.playPauseBtn);
         resetButton = view.findViewById(R.id.resetBtn);

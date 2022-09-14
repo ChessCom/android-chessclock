@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -20,7 +19,6 @@ import com.chess.clock.R;
 
 public class ClockButton extends FrameLayout {
 
-    private final Button button;
     private final TextView timeTv;
     private final TextView movesTv;
     private final View stageOne;
@@ -31,7 +29,6 @@ public class ClockButton extends FrameLayout {
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.view_clock_button, this, true);
-        button = view.findViewById(R.id.clockButton);
         timeTv = view.findViewById(R.id.clockTimeTv);
         movesTv = view.findViewById(R.id.movesTv);
         stageOne = view.findViewById(R.id.stageOne);
@@ -58,16 +55,15 @@ public class ClockButton extends FrameLayout {
     }
 
     public void setClockButtonClickListener(OnClickListener listener) {
-        button.setOnClickListener(listener);
+        setOnClickListener(listener);
     }
 
     public void updateUi(
             @DrawableRes int btnBgRes,
             @ColorRes int textColorRes
     ) {
-        button.setBackgroundDrawable(getResources().getDrawable(btnBgRes));
+        setBackgroundDrawable(getResources().getDrawable(btnBgRes));
         timeTv.setTextColor(getResources().getColor(textColorRes));
-
     }
 
     private void setStageBg(View stage, Boolean active) {

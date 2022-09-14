@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="TimersTheme" parent="ImmersiveStickyTheme"/>
+    <style name="TimersTheme" parent="ImmersiveStickyTheme" />
 
-    <style name="ImmersiveTheme" parent="android:style/Theme.Holo.NoActionBar">
-        <item name="android:windowBackground">@color/clock_timers_activity_background</item>
+    <style name="ImmersiveTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowActionBarOverlay">true</item>
     </style>

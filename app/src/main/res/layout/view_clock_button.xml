@@ -2,21 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/shape_btn_clock_idle_gradient"
     tools:parentTag="android.widget.FrameLayout">
-
-    <Button
-        android:id="@+id/clockButton"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/shape_btn_clock_idle_gradient" />
-
-    <TextView
-        android:id="@+id/clockTimeTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:textColor="@color/black"
-        android:textSize="@dimen/clock_timer_textSize_small" />
 
     <LinearLayout
         android:id="@+id/stagesContainer"
@@ -81,4 +68,13 @@
             android:textSize="@dimen/text_size_default"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/clockTimeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:textColor="@color/black"
+        android:text="test"
+        android:textSize="@dimen/clock_timer_textSize_small" />
 </merge>

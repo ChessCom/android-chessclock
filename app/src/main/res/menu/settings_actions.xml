@@ -1,23 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Edit Time Control settings, should appear as action button -->
     <item
         android:id="@+id/action_edit"
-        android:icon="@drawable/ic_action_multi_select"
+        android:icon="@drawable/ic_edit"
         android:title="@string/action_edit"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom" />
 
     <!-- Add new Time Control setting,  should appear as action button -->
     <item
-        android:id="@+id/action_new"
-        android:icon="@drawable/ic_action_new_time_control"
-        android:title="@string/action_add_new"
-        app:showAsAction="withText|always"/>
-
-    <item
-        android:id="@+id/action_full_screen"
-        android:title="@string/action_full_screen"
-        android:checkable="true"/>
-
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings"
+        app:showAsAction="ifRoom" />
 </menu>

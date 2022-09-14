@@ -17,22 +17,21 @@
             android:launchMode="singleTask"
             android:theme="@style/TimersTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <!-- Setup Activity to CRUD Time Controls -->
         <activity
-            android:name="com.chess.clock.activities.SettingsActivity"
+            android:name="com.chess.clock.activities.TimerSettingsActivity"
             android:exported="false"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/settings"
+            android:theme="@style/AppTheme" />
 
         <!-- Chess clock engine service -->
         <service
             android:name="com.chess.clock.service.ChessClockLocalService"
-            android:exported="false"
-            />
+            android:exported="false" />
     </application>
 </manifest>

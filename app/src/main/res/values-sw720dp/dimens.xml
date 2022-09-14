@@ -9,10 +9,7 @@
     <dimen name="clock_button_corner_radius">5dp</dimen>
     <dimen name="clock_timer_textSize_small">130sp</dimen>
     <dimen name="clock_timer_textSize_normal">195sp</dimen>
-    <dimen name="clock_btn_height">450dp</dimen>
     <dimen name="clock_timer_moves_text">40sp</dimen>
-    <dimen name="clock_menu_btns_size">130sp</dimen>
     <dimen name="clock_timer_stage_marker_size">45dp</dimen>
-    <dimen name="clock_timer_btns_margin">32dp</dimen>
 
 </resources>

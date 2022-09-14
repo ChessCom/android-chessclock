@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:fontFamily="@font/montserrat_black"
+    android:gravity="center"
+    android:minHeight="56dp"
+    android:paddingHorizontal="@dimen/margin_standard"
+    android:paddingVertical="14dp"
+    android:shadowColor="@color/black_65"
+    android:shadowDy="1"
+    android:shadowRadius="1"
+    android:textColor="@color/white"
+    android:textSize="@dimen/button_text_size"
+    tools:text="@string/start" />

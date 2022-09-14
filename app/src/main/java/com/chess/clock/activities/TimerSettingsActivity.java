@@ -6,44 +6,39 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.chess.clock.R;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlManager;
 import com.chess.clock.engine.TimeControlWrapper;
-import com.chess.clock.fragments.SettingsFragment;
 import com.chess.clock.fragments.TimeControlFragment;
+import com.chess.clock.fragments.TimeSettingsFragment;
 import com.chess.clock.service.ChessClockLocalService;
-import com.chess.clock.statics.AppData;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 
 import java.util.ArrayList;
 
 /**
  * Activity that manages TimeControl list in the Settings and also TimeControl form.
  */
-public class SettingsActivity extends AppCompatActivity implements SettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback, TimeControlFragment.BottomNavigationActionListener {
+public class TimerSettingsActivity extends BaseActivity implements TimeSettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback, TimeControlFragment.BottomNavigationActionListener {
 
-    private static final String TAG = SettingsActivity.class.getName();
+    private static final String TAG = TimerSettingsActivity.class.getName();
 
     /**
      * Fragments TAG
      */
     private final String TAG_SETTINGS_FRAGMENT = "settings";
     private final String TAG_TIME_CONTROL_FRAGMENT = "time_control";
-
-    /**
-     * Shared preferences wrapper
-     */
-    private AppData appData;
 
     /**
      * Chess clock local service (clock engine).
@@ -58,7 +53,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
     /**
      * Defines callbacks for service binding, passed to bindService()
      */
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private final ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -91,8 +86,6 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        appData = new AppData(getApplicationContext());
-
         // This must be called before super.onCreate which performs initialization of all fragments
         // and loaders. TimeControl objects initialization is required before that.
         mTimeControlManager = new TimeControlManager(getApplicationContext(), savedInstanceState);
@@ -108,15 +101,21 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
             hideFullScreen();
         }
 
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_timer_settings);
+
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new SettingsFragment(), TAG_SETTINGS_FRAGMENT)
+                    .add(R.id.container, new TimeSettingsFragment(), TAG_SETTINGS_FRAGMENT)
                     .commit();
         }
 
         mBottomNavigationView = findViewById(R.id.player_selection_bottom_navigation);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -157,10 +156,17 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
 
     @Override
     public void onBackPressed() {
+        showPopupOrFinish(null);
+    }
+
+    private void showPopupOrFinish(Integer resultToSet) {
         Fragment frag = getSupportFragmentManager().findFragmentByTag(TAG_TIME_CONTROL_FRAGMENT);
         if (frag != null && frag.isVisible()) {
             ((TimeControlFragment) frag).showConfirmGoBackDialog();
         } else {
+            if (resultToSet != null) {
+                setResult(resultToSet);
+            }
             finish();
             overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
         }
@@ -174,12 +180,10 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                setResult(RESULT_CANCELED);
-                finish();
-                return true;
+        // Respond to the action bar's Up/Home button
+        if (item.getItemId() == android.R.id.home) {
+            showPopupOrFinish(RESULT_CANCELED);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -212,7 +216,6 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
                     + index + " array size: " + mTimeControlManager.getTimeControls().size());
             return false;
         }
-
     }
 
     /**
@@ -311,7 +314,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
     @Override
     public void saveTimeControl() {
         mTimeControlManager.saveTimeControl(getApplicationContext());
-        SettingsFragment f = (SettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
+        TimeSettingsFragment f = (TimeSettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (f != null) {
             f.refreshTimeControlList();
         }
