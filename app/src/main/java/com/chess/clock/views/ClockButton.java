@@ -109,6 +109,6 @@ public class ClockButton extends FrameLayout {
     }
 
     public enum State {
-        IDLE, LOCKED, RUNNING, FINISHED;
+        IDLE, LOCKED, RUNNING, FINISHED
     }
 }

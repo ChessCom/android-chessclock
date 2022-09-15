@@ -2,11 +2,15 @@ package com.chess.clock.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.TimeControl;
@@ -20,10 +24,10 @@ import java.util.ArrayList;
  */
 public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
 
-    private Context context;
-    private int layoutResourceId;
-    private ArrayList<TimeControlWrapper> data;
-    private Fragment mTargetFragment;
+    private final Context context;
+    private final int layoutResourceId;
+    private final ArrayList<TimeControlWrapper> data;
+    private final Fragment mTargetFragment;
 
     public TimeControlCABAdapter(Context context, ArrayList<TimeControlWrapper> objects, Fragment targetFragment) {
         super(context, R.layout.list_time_control_item_multi_choice, objects);
