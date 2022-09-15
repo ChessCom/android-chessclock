@@ -1,6 +1,5 @@
 package com.chess.clock.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
@@ -27,11 +26,10 @@ import java.util.ArrayList;
  */
 public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
 
-    private final Context context;
     private final int layoutResourceId;
     private final ArrayList<TimeControlWrapper> data;
     private final Fragment mTargetFragment;
-    private final ColorStateList checkBoxColors;
+    private ColorStateList checkBoxColors;
 
     public TimeControlCABAdapter(
             Context context,
@@ -41,11 +39,11 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
     ) {
         super(context, R.layout.list_time_control_item_multi_choice, objects);
         this.layoutResourceId = R.layout.list_time_control_item_multi_choice;
-        this.context = context;
         this.data = objects;
         this.mTargetFragment = targetFragment;
-        // todo NPE on screen rotation
-        checkBoxColors = theme.colorStateListChecked(context);
+        if (theme != null) {
+            checkBoxColors = theme.colorStateListChecked(context);
+        }
     }
 
     @Override
@@ -70,7 +68,7 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
         final TimeControlHolder holder;
 
         if (row == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            LayoutInflater inflater = LayoutInflater.from(getContext());
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new TimeControlHolder();
@@ -95,9 +93,16 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
         TimeControl tc = data.get(position).getTimeControlPlayerOne();
         holder.textView.setText(tc.getName());
 
-        CompoundButtonCompat.setButtonTintList(holder.checkBox, checkBoxColors);
+        if (checkBoxColors != null) {
+            CompoundButtonCompat.setButtonTintList(holder.checkBox, checkBoxColors);
+        }
 
         return row;
+    }
+
+    public void updateTheme(AppTheme theme) {
+        checkBoxColors = theme.colorStateListChecked(getContext());
+        notifyDataSetChanged();
     }
 
     static class TimeControlHolder {

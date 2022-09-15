@@ -127,6 +127,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         initListViewAndInflateHeaders(inflater, view);
+        startBtn = view.findViewById(R.id.startBtn);
         setupListViewAdapter(savedInstanceState);
         return view;
     }
@@ -141,7 +142,6 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
             }
         };
         timesListView.setOnItemClickListener(itemClickListener);
-        startBtn = view.findViewById(R.id.startBtn);
         startBtn.setOnClickListener(v -> {
             TimerSettingsActivity activity = (TimerSettingsActivity) requireActivity();
 
@@ -170,6 +170,9 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
         startBtn.setCardBackgroundColor(ContextCompat.getColor(requireContext(), theme.primaryColorRes));
         if (adapter != null) {
             adapter.updateTheme(theme);
+        }
+        if (adapterCAB != null) {
+            adapterCAB.updateTheme(theme);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             plusImg.setImageTintList(theme.primaryColorAsStateList(getContext()));
