@@ -23,6 +23,7 @@ import java.util.List;
 public class TimeControlParser {
 
     private static final String TAG = TimeControlParser.class.getName();
+    private static final int DEFAULT_TIME_INDEX = 7;
 
     private static final String TIME_CONTROLS_PREF_NAME = "timeControls";
     private static final String TIME_CONTROL_SELECTED_PREF_IDX = "timeControlIdx";
@@ -165,7 +166,7 @@ public class TimeControlParser {
      */
     public static int getLastTimeControlCheckIndex(Context context) {
         SharedPreferences sp = getSharedPreferences(context);
-        int idx = sp.getInt(TIME_CONTROL_SELECTED_PREF_IDX, 0);
+        int idx = sp.getInt(TIME_CONTROL_SELECTED_PREF_IDX, DEFAULT_TIME_INDEX);
         return Math.max(idx, 0);
     }
 
