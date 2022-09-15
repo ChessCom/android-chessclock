@@ -76,7 +76,7 @@ public class ClockButton extends FrameLayout {
                 timeTv.setTextColor(getResources().getColor(R.color.clock_timer_idle_textColor));
                 break;
             case RUNNING:
-                setBackgroundColor(ContextCompat.getColor(getContext(), theme.colorRes));
+                setBackgroundColor(ContextCompat.getColor(getContext(), theme.primaryColorRes));
                 timeTv.setTextColor(getResources().getColor(R.color.white));
                 break;
             case FINISHED:

@@ -57,7 +57,7 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ThemeViewH
         }
 
         public void bind(AppTheme appTheme, boolean selected) {
-            int color = ContextCompat.getColor(itemView.getContext(), appTheme.colorRes);
+            int color = ContextCompat.getColor(itemView.getContext(), appTheme.primaryColorRes);
             themeCard.setCardBackgroundColor(color);
             ViewUtils.showView(checkmarkImg, selected);
         }

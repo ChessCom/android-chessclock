@@ -14,7 +14,8 @@ public class BaseActivity extends AppCompatActivity {
      * Shared preferences wrapper
      */
     protected AppData appData;
-    protected AppTheme selectedTheme;
+
+    public AppTheme selectedTheme;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

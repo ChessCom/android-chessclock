@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -19,14 +20,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.chess.clock.R;
@@ -36,13 +38,15 @@ import com.chess.clock.adapters.TimeControlAdapter;
 import com.chess.clock.adapters.TimeControlCABAdapter;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
+import com.chess.clock.entities.AppTheme;
 import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.util.MultiSelectionUtil;
+import com.chess.clock.views.StyledButton;
 
 import java.util.ArrayList;
 
 
-public class TimeSettingsFragment extends Fragment implements MultiSelectionUtil.MultiChoiceModeListener {
+public class TimeSettingsFragment extends BaseFragment implements MultiSelectionUtil.MultiChoiceModeListener {
 
     private static final String TAG = TimeSettingsFragment.class.getName();
 
@@ -99,7 +103,8 @@ public class TimeSettingsFragment extends Fragment implements MultiSelectionUtil
      * UI
      */
     private ListView timesListView;
-    private View mStartBtn;
+    private StyledButton startBtn;
+    private ImageView plusImg;
 
     public TimeSettingsFragment() {
     }
@@ -135,8 +140,8 @@ public class TimeSettingsFragment extends Fragment implements MultiSelectionUtil
             }
         };
         timesListView.setOnItemClickListener(itemClickListener);
-        mStartBtn = view.findViewById(R.id.startBtn);
-        mStartBtn.setOnClickListener(v -> {
+        startBtn = view.findViewById(R.id.startBtn);
+        startBtn.setOnClickListener(v -> {
             TimerSettingsActivity activity = (TimerSettingsActivity) requireActivity();
 
             // Check if current time control selected is the same as the the list selected
@@ -157,6 +162,15 @@ public class TimeSettingsFragment extends Fragment implements MultiSelectionUtil
         requireActivity().setTitle(getString(R.string.time_controls));
         if (timesListView != null && !isMultiSelectionActive) {
             setListViewItemChecked();
+        }
+    }
+
+    @Override
+    void loadTheme(AppTheme theme) {
+        startBtn.setCardBackgroundColor(ContextCompat.getColor(requireContext(), theme.primaryColorRes));
+        adapter.updateTheme(theme);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            plusImg.setImageTintList(theme.primaryColorAsStateList(getContext()));
         }
     }
 
@@ -186,7 +200,7 @@ public class TimeSettingsFragment extends Fragment implements MultiSelectionUtil
                 return true;
             case R.id.action_edit:
                 startSettingsActionMode();
-                mStartBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
+                startBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
                         HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
                 return true;
             default:
@@ -220,11 +234,12 @@ public class TimeSettingsFragment extends Fragment implements MultiSelectionUtil
             }
         });
         View headerTimeBtn = inflater.inflate(R.layout.header_time_button, null);
+        plusImg = headerTimeBtn.findViewById(R.id.plusImg);
         headerTimeBtn
                 .findViewById(R.id.timeBtn)
                 .setOnClickListener(v -> {
                     mListener.addTimeControl();
-                    mStartBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
+                    startBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
                             HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
                 });
 
@@ -259,7 +274,7 @@ public class TimeSettingsFragment extends Fragment implements MultiSelectionUtil
             mMultiSelectionController.tryRestoreInstanceState(savedInstanceState);
 
             // Hide Start Button
-            mStartBtn.setVisibility(View.GONE);
+            startBtn.setVisibility(View.GONE);
 
         } else {
             adapter = new TimeControlAdapter(getActivity(), mListener.getCurrentTimeControls());
@@ -280,7 +295,7 @@ public class TimeSettingsFragment extends Fragment implements MultiSelectionUtil
         mMultiSelectionController.startActionMode();
 
         // Hide Start Button
-        mStartBtn.setVisibility(View.GONE);
+        startBtn.setVisibility(View.GONE);
 
         // Reset number of selected time controls to delete.
         mTotalItemChecked = 0;
@@ -325,7 +340,7 @@ public class TimeSettingsFragment extends Fragment implements MultiSelectionUtil
     @Override
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.action_delete) {
-            mStartBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
+            startBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
                     HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
             deleteTimeControls();
             actionMode.finish(); // Action picked, so close the CAB
@@ -365,7 +380,7 @@ public class TimeSettingsFragment extends Fragment implements MultiSelectionUtil
             setListViewItemChecked();
 
             mListener.setCheckedTimeControlIndex(mItemChecked);
-            mStartBtn.setVisibility(View.VISIBLE);
+            startBtn.setVisibility(View.VISIBLE);
         }
     }
 
