@@ -2,19 +2,22 @@ package com.chess.clock.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
+import com.chess.clock.entities.AppTheme;
 import com.chess.clock.fragments.TimeSettingsFragment;
 
 import java.util.ArrayList;
@@ -28,13 +31,21 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
     private final int layoutResourceId;
     private final ArrayList<TimeControlWrapper> data;
     private final Fragment mTargetFragment;
+    private final ColorStateList checkBoxColors;
 
-    public TimeControlCABAdapter(Context context, ArrayList<TimeControlWrapper> objects, Fragment targetFragment) {
+    public TimeControlCABAdapter(
+            Context context,
+            ArrayList<TimeControlWrapper> objects,
+            Fragment targetFragment,
+            AppTheme theme
+    ) {
         super(context, R.layout.list_time_control_item_multi_choice, objects);
         this.layoutResourceId = R.layout.list_time_control_item_multi_choice;
         this.context = context;
         this.data = objects;
         this.mTargetFragment = targetFragment;
+        // todo NPE on screen rotation
+        checkBoxColors = theme.colorStateListChecked(context);
     }
 
     @Override
@@ -84,11 +95,13 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
         TimeControl tc = data.get(position).getTimeControlPlayerOne();
         holder.textView.setText(tc.getName());
 
+        CompoundButtonCompat.setButtonTintList(holder.checkBox, checkBoxColors);
+
         return row;
     }
 
     static class TimeControlHolder {
-        CheckBox checkBox;
+        AppCompatCheckBox checkBox;
         TextView textView;
         ImageButton editImgBtn;
     }

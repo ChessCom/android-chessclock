@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <com.chess.clock.viewgroup.CheckableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="52dp"
-                                                 android:gravity="center_vertical"
-                                                 android:orientation="horizontal"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/button_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/margin_standard">
 
     <!-- Note: CheckBox must have the following attributes set
         to false to parent behave correctly: focusable,
         focusableInTouchMode, clickable -->
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/time_control_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="false"
         android:focusable="false"
-        android:focusableInTouchMode="false"
-        />
+        android:focusableInTouchMode="false" />
 
     <TextView
         android:id="@+id/time_control_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_standard"
         android:layout_weight="1"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="Sample"
-        android:textSize="@dimen/list_item_text_size"
-        />
+        android:textColor="@color/white"
+        android:textSize="@dimen/item_text_size"
+        tools:text="@string/x_min_y_sec" />
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        >
+        android:layout_height="wrap_content">
 
         <!-- Note: ImageButton must have the following attributes set
         to false to parent behave correctly: focusable,
@@ -43,9 +42,9 @@
             android:id="@+id/time_control_edit_image_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@drawable/ic_action_edit"
-            />
+            android:contentDescription="@string/action_edit"
+            android:background="@drawable/ic_edit"
+            android:padding="@dimen/margin_small" />
 
     </FrameLayout>
 

@@ -9,7 +9,7 @@ import com.chess.clock.entities.AppTheme;
  * BaseFragment requires BaseActivity as a parent to load theme.
  */
 public abstract class BaseFragment extends Fragment {
-    private AppTheme loadedTheme;
+    AppTheme loadedTheme;
 
     @Override
     public void onResume() {

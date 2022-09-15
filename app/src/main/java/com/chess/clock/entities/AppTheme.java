@@ -38,7 +38,7 @@ public enum AppTheme {
         };
 
         int[] colors = new int[]{
-                ContextCompat.getColor(context, primaryColorRes),
+                color(context),
                 ContextCompat.getColor(context, R.color.white_20)
         };
 
@@ -46,7 +46,10 @@ public enum AppTheme {
     }
 
     public ColorStateList primaryColorAsStateList(Context context) {
-        int color = ContextCompat.getColor(context, primaryColorRes);
-        return ColorStateList.valueOf(color);
+        return ColorStateList.valueOf(color(context));
+    }
+
+    public int color(Context context) {
+        return ContextCompat.getColor(context, primaryColorRes);
     }
 }

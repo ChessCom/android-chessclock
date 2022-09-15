@@ -127,6 +127,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         initListViewAndInflateHeaders(inflater, view);
+        setupListViewAdapter(savedInstanceState);
         return view;
     }
 
@@ -153,7 +154,6 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
                 startNewClock();
             }
         });
-        setupListViewAdapter(savedInstanceState);
     }
 
     @Override
@@ -168,7 +168,9 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     @Override
     void loadTheme(AppTheme theme) {
         startBtn.setCardBackgroundColor(ContextCompat.getColor(requireContext(), theme.primaryColorRes));
-        adapter.updateTheme(theme);
+        if (adapter != null) {
+            adapter.updateTheme(theme);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             plusImg.setImageTintList(theme.primaryColorAsStateList(getContext()));
         }
@@ -268,7 +270,12 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
                 timesListView, (AppCompatActivity) getActivity(), this);
 
         if (isMultiSelectionActive) {
-            adapterCAB = new TimeControlCABAdapter(getActivity(), mListener.getCurrentTimeControls(), this);
+            adapterCAB = new TimeControlCABAdapter(
+                    getActivity(),
+                    mListener.getCurrentTimeControls(),
+                    this,
+                    loadedTheme
+            );
             timesListView.setAdapter(adapterCAB);
             timesListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
             mMultiSelectionController.tryRestoreInstanceState(savedInstanceState);
@@ -289,7 +296,12 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
      */
     private void startSettingsActionMode() {
 
-        adapterCAB = new TimeControlCABAdapter(getActivity(), mListener.getCurrentTimeControls(), this);
+        adapterCAB = new TimeControlCABAdapter(
+                getActivity(),
+                mListener.getCurrentTimeControls(),
+                this,
+                loadedTheme
+        );
         timesListView.setAdapter(adapterCAB);
         timesListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         mMultiSelectionController.startActionMode();

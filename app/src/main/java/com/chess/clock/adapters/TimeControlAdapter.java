@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class TimeControlAdapter extends ArrayAdapter<TimeControlWrapper> {
 
-    ArrayList<TimeControlWrapper> mTimeControls;
+    private final ArrayList<TimeControlWrapper> mTimeControls;
     private ColorStateList radioButtonColors;
 
     public TimeControlAdapter(Context context, ArrayList<TimeControlWrapper> timeControls) {
