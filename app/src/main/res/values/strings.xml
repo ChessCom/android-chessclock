@@ -25,8 +25,7 @@
     <!-- Time Control Fragment -->
     <string name="action_add_new_stage">Add Stage</string>
     <string name="action_save_time_control">Save</string>
-    <string name="title_activity_time_control_new">New Time Control</string>
-    <string name="title_activity_time_control">Time Control</string>
+    <string name="time_control">Time Control</string>
     <string name="toast_requesting_time_control_name">Please add a name to save.</string>
     <string name="exit_dialog_title">Do you want to save before exiting?</string>
     <string name="exit_dialog_message">There are unsaved changes in this Time Control.</string>
@@ -82,6 +81,7 @@
     <string name="app_settings">App Settings</string>
     <string name="theme_color">Theme color</string>
     <string name="sound">Sound</string>
+    <string name="custom_time">Custom time</string>
 
     <string name="x_min">%d min</string>
     <string name="x_min_y_sec">%d min | %2d sec</string>

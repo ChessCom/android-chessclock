@@ -58,7 +58,7 @@ public class TimeControlAdapter extends ArrayAdapter<TimeControlWrapper> {
         if (tc != null && tc.getTimeControlPlayerOne() != null) {
             row.setText(tc.getTimeControlPlayerOne().getName());
         } else {
-            row.setText(R.string.title_activity_time_control);
+            row.setText(R.string.time_control);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             row.setCheckMarkTintList(radioButtonColors);

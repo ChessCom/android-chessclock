@@ -23,8 +23,7 @@
     <!-- Time Control Fragment -->
     <string name="action_add_new_stage">إضافة مرحلة</string>
     <string name="action_save_time_control">حفظ</string>
-    <string name="title_activity_time_control_new">وقت جديد</string>
-    <string name="title_activity_time_control">ضبط الوقت</string>
+    <string name="time_control">ضبط الوقت</string>
     <string name="toast_requesting_time_control_name">.يرجى إضافة اسم للحفظ</string>
     <string name="exit_dialog_title">هل تريد الحفظ قبل الخروج؟</string>
     <string name="exit_dialog_message">.هناك تغييرات غير محفوظة في ضبط الوقت المحدد</string>

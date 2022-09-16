@@ -1,14 +1,13 @@
 package com.chess.clock.fragments;
 
-import android.app.Activity;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Service;
+import android.content.Context;
 import android.os.Bundle;
-import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -25,6 +24,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+
 import com.chess.clock.R;
 import com.chess.clock.adapters.StageAdapter;
 import com.chess.clock.dialog.StageEditorDialog;
@@ -33,14 +37,13 @@ import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.engine.TimeIncrement;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
+import com.chess.clock.entities.AppTheme;
+import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 
 /**
  * UI fragment to create and edit a TimeControl.
  */
-public class TimeControlFragment extends Fragment implements StageEditorDialog.OnStageEditListener,
+public class TimeControlFragment extends BaseFragment implements StageEditorDialog.OnStageEditListener,
         TimeIncrementEditorDialog.OnTimeIncrementEditListener {
 
     /**
@@ -99,7 +102,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         @Override
         public void afterTextChanged(Editable s) {
             String text = s.toString();
-            if (mTimeControlWrapper != null && text.length() != 0 && !text.equals("")) {
+            if (mTimeControlWrapper != null && !text.isEmpty()) {
                 mTimeControlWrapper.getTimeControlPlayerOne().setName(s.toString());
                 mTimeControlWrapper.getTimeControlPlayerTwo().setName(s.toString());
             }
@@ -136,27 +139,21 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public TimeControlFragment() {}
+    public TimeControlFragment() {
+    }
 
-    /**
-     * Called when a fragment is first attached to its activity.
-     * onCreate(Bundle) will be called after this.
-     *
-     * @param activity Parent Activity.
-     */
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         try {
-            mListener = (OnTimeControlListener) activity;
-            mBottomNavigationActionListener = (BottomNavigationActionListener) activity;
+            mListener = (OnTimeControlListener) requireActivity();
+            mBottomNavigationActionListener = (BottomNavigationActionListener) requireActivity();
 
             // Fetch current TimeControl object
             mTimeControlWrapper = mListener.getEditableTimeControl();
 
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnTimeControlListener");
+            throw new ClassCastException(requireActivity() + " must implement OnTimeControlListener");
         }
     }
 
@@ -166,19 +163,12 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
 
         // Register the Fragment as a contributor to the options Menu
         setHasOptionsMenu(true);
+        requireActivity().setTitle(R.string.custom_time);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        // Update Activity title if it is new time control.
-        TimeControl playerOne = mTimeControlWrapper.getTimeControlPlayerOne();
-        if (playerOne != null && (playerOne.getName() == null || playerOne.getName().equals(""))) {
-            getActivity().setTitle(getString(R.string.title_activity_time_control_new));
-        } else {
-            getActivity().setTitle(getString(R.string.title_activity_time_control));
-        }
+    void loadTheme(AppTheme theme) {
+        // todo
     }
 
     @Override
@@ -231,7 +221,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                     mTimeControlSnapshot = null;
                     try {
                         mTimeControlSnapshot = (TimeControlWrapper) mTimeControlWrapper.clone();
-                    } catch(CloneNotSupportedException e) {
+                    } catch (CloneNotSupportedException e) {
                         e.printStackTrace();
                         throw new IllegalStateException("Could not build time control snapshot");
                     }
@@ -332,7 +322,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                     TimeControl playerOneClone = null;
                     try {
                         playerOneClone = (TimeControl) mTimeControlWrapper.getTimeControlPlayerOne().clone();
-                    } catch(CloneNotSupportedException e) {
+                    } catch (CloneNotSupportedException e) {
                         e.printStackTrace();
                     }
                     mTimeControlWrapper.setTimeControlPlayerTwo(playerOneClone);
@@ -405,7 +395,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         TimeControl playerOneClone;
         try {
             playerOneClone = (TimeControl) mTimeControlWrapper.getTimeControlPlayerOne().clone();
-        } catch(CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not clone player one time control");
         }
