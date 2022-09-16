@@ -75,7 +75,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     /**
      * State
      */
-    private TimeControlManager mTimeControlManager;
+    private TimeControlManager timeControlManager;
 
     /**
      * BottomNavigationTab
@@ -87,8 +87,8 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
 
         // This must be called before super.onCreate which performs initialization of all fragments
         // and loaders. TimeControl objects initialization is required before that.
-        mTimeControlManager = new TimeControlManager(getApplicationContext(), savedInstanceState);
-        mTimeControlManager.setTimeControlManagerListener(this);
+        timeControlManager = new TimeControlManager(getApplicationContext(), savedInstanceState);
+        timeControlManager.setTimeControlManagerListener(this);
 
         // Perform initialization of all fragments and loaders.
         super.onCreate(savedInstanceState);
@@ -149,7 +149,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     protected void onDestroy() {
         super.onDestroy();
         // store last settings time control list check position on shared preferences.
-        mTimeControlManager.saveTimeControlIndex(getApplicationContext());
+        timeControlManager.saveTimeControlIndex(getApplicationContext());
     }
 
     @Override
@@ -172,7 +172,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        mTimeControlManager.onSaveInstanceState(outState);
+        timeControlManager.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
     }
 
@@ -190,14 +190,14 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      * @return True if Time Control set up in Clock Timers Activity is the same
      */
     public boolean isSameTimeControlLoaded() {
-        int index = mTimeControlManager.getEditableTimeControlCheckIndex();
-        if (index > 0 && index < mTimeControlManager.getTimeControls().size()) {
-            TimeControl tc = mTimeControlManager.getTimeControls().get(index).getTimeControlPlayerOne();
+        int index = timeControlManager.getEditableTimeControlCheckIndex();
+        if (index > 0 && index < timeControlManager.getTimeControls().size()) {
+            TimeControl tc = timeControlManager.getTimeControls().get(index).getTimeControlPlayerOne();
             String title = tc.getName();
             return mBound && mService.getNameOfTimeControlRunning().equals(title);
         } else {
             Log.e(TAG, "isSameTimeControlLoaded got index out of bounds. index: "
-                    + index + " array size: " + mTimeControlManager.getTimeControls().size());
+                    + index + " array size: " + timeControlManager.getTimeControls().size());
             return false;
         }
     }
@@ -228,7 +228,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      */
     @Override
     public ArrayList<TimeControlWrapper> getCurrentTimeControls() {
-        return mTimeControlManager.getTimeControls();
+        return timeControlManager.getTimeControls();
     }
 
     /**
@@ -238,7 +238,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      */
     @Override
     public int getCheckedTimeControlIndex() {
-        return mTimeControlManager.getEditableTimeControlCheckIndex();
+        return timeControlManager.getEditableTimeControlCheckIndex();
     }
 
     /**
@@ -248,7 +248,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      */
     @Override
     public void setCheckedTimeControlIndex(int idx) {
-        mTimeControlManager.setEditableTimeControlCheckIndex(idx);
+        timeControlManager.setEditableTimeControlCheckIndex(idx);
     }
 
     /**
@@ -257,7 +257,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     @Override
     public void addTimeControl() {
 
-        mTimeControlManager.prepareNewEditableTimeControl();
+        timeControlManager.prepareNewEditableTimeControl();
 
         // Load UI
         loadTimeControlFragment();
@@ -270,7 +270,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      */
     @Override
     public void loadTimeControl(int position) {
-        mTimeControlManager.prepareEditableTimeControl(position);
+        timeControlManager.prepareEditableTimeControl(position);
         loadTimeControlFragment();
     }
 
@@ -279,7 +279,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      */
     @Override
     public void removeTimeControl(int[] positions) {
-        mTimeControlManager.removeTimeControls(getApplicationContext(), positions);
+        timeControlManager.removeTimeControls(getApplicationContext(), positions);
     }
 
     /**
@@ -289,7 +289,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      */
     @Override
     public TimeControlWrapper getEditableTimeControl() {
-        return mTimeControlManager.getEditableTimeControl();
+        return timeControlManager.getEditableTimeControl();
     }
 
     /**
@@ -297,7 +297,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      */
     @Override
     public void saveTimeControl() {
-        mTimeControlManager.saveTimeControl(getApplicationContext());
+        timeControlManager.saveTimeControl(getApplicationContext());
         TimeSettingsFragment f = (TimeSettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (f != null) {
             f.refreshTimeControlList();
