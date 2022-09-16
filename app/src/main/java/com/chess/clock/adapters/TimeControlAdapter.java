@@ -18,23 +18,30 @@ import java.util.ArrayList;
 
 public class TimeControlAdapter extends ArrayAdapter<TimeControlWrapper> {
 
-    private final ArrayList<TimeControlWrapper> mTimeControls;
+    private ArrayList<TimeControlWrapper> data;
     private ColorStateList radioButtonColors;
 
-    public TimeControlAdapter(Context context, ArrayList<TimeControlWrapper> timeControls) {
+    public TimeControlAdapter(
+            Context context,
+            ArrayList<TimeControlWrapper> timeControls,
+            AppTheme theme
+    ) {
         super(context, R.layout.list_time_control_item_single_choice, R.id.time_control_text,
                 timeControls);
-        mTimeControls = timeControls;
+        data = timeControls;
+        if(theme!= null){
+            radioButtonColors = theme.colorStateListChecked(getContext());
+        }
     }
 
     @Override
     public int getCount() {
-        return mTimeControls.size();
+        return data.size();
     }
 
     @Override
     public TimeControlWrapper getItem(int position) {
-        return mTimeControls.get(position);
+        return data.get(position);
     }
 
     @Override
@@ -61,6 +68,11 @@ public class TimeControlAdapter extends ArrayAdapter<TimeControlWrapper> {
 
     public void updateTheme(AppTheme theme) {
         radioButtonColors = theme.colorStateListChecked(getContext());
+        notifyDataSetChanged();
+    }
+
+    public void updateTimeControls(ArrayList<TimeControlWrapper> currentTimeControls) {
+        data = currentTimeControls;
         notifyDataSetChanged();
     }
 }
