@@ -43,20 +43,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavig
 /**
  * UI fragment to create and edit a TimeControl.
  */
+//todo max stages 3(update controls visibility)
 public class TimeControlFragment extends BaseFragment implements StageEditorDialog.OnStageEditListener,
         TimeIncrementEditorDialog.OnTimeIncrementEditListener {
 
-    /**
-     * This interface must be implemented by activities that contain this fragment to allow interaction.
-     */
-    public interface BottomNavigationActionListener {
-
-        void setVisibility(int visibility);
-
-        void setSelected(int id);
-
-        void setBottomNavigationListener(OnNavigationItemSelectedListener listener);
-    }
 
     /**
      * Save Instance state keys
@@ -78,13 +68,14 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
      * Activity attached.
      */
     private OnTimeControlListener mListener;
-    private BottomNavigationActionListener mBottomNavigationActionListener;
     /**
      * State.
      */
     private TimeControlWrapper mTimeControlWrapper;
     private TimeControl mSelectedTimeControl;
     private boolean mPlayerOneSelected = false;
+    private boolean advancedMode = false;
+
     /**
      * Time Control Name Text WATCHER
      */
@@ -147,8 +138,6 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         super.onAttach(context);
         try {
             mListener = (OnTimeControlListener) requireActivity();
-            mBottomNavigationActionListener = (BottomNavigationActionListener) requireActivity();
-
             // Fetch current TimeControl object
             mTimeControlWrapper = mListener.getEditableTimeControl();
 
@@ -158,22 +147,13 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Register the Fragment as a contributor to the options Menu
-        setHasOptionsMenu(true);
-        requireActivity().setTitle(R.string.custom_time);
-    }
-
-    @Override
     void loadTheme(AppTheme theme) {
         // todo
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        requireActivity().setTitle(R.string.custom_time);
         View v = inflater.inflate(R.layout.fragment_time_control, container, false);
         mStageListView = v.findViewById(R.id.list_stages);
         mSameAsPlayerOneSwitchContainer = v.findViewById(R.id.switch_same_as_player_one_container);
@@ -185,29 +165,28 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             }
         });
         mSameAsPlayerOneSwitchContainer.setVisibility(GONE);
-        mBottomNavigationActionListener.setVisibility(VISIBLE);
-        mBottomNavigationActionListener.setBottomNavigationListener(
-                item -> {
-                    switch (item.getItemId()) {
-                        case R.id.nav_player1:
-                            mSameAsPlayerOneSwitchContainer.setVisibility(GONE);
-                            break;
-                        case R.id.nav_player2:
-                            mSameAsPlayerOneSwitchContainer.setVisibility(VISIBLE);
-                            break;
-                    }
-                    mPlayerOneSelected = !mPlayerOneSelected;
-                    mSelectedTimeControl = mPlayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
-                    if (!mPlayerOneSelected && mTimeControlWrapper.isSameAsPlayerOne()) {
-                        showPlayerOneViews();
-                    } else {
-                        StageAdapter stageAdapter = new StageAdapter(getActivity(), mSelectedTimeControl.getStageManager(), TimeControlFragment.this);
-                        mStageListView.setAdapter(stageAdapter);
-                        mTimeIncrementDescription.setText(mSelectedTimeControl.getTimeIncrement().toString());
-                        updateDisplay();
-                    }
-                    return true;
-                });
+        // todo tab actions in advanced mode
+//        mBottomNavigationActionListener.setBottomNavigationListener(item -> {
+//                    switch (item.getItemId()) {
+//                        case R.id.nav_player1:
+//                            mSameAsPlayerOneSwitchContainer.setVisibility(GONE);
+//                            break;
+//                        case R.id.nav_player2:
+//                            mSameAsPlayerOneSwitchContainer.setVisibility(VISIBLE);
+//                            break;
+//                    }
+//                    mPlayerOneSelected = !mPlayerOneSelected;
+//                    mSelectedTimeControl = mPlayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
+//                    if (!mPlayerOneSelected && mTimeControlWrapper.isSameAsPlayerOne()) {
+//                        showPlayerOneViews();
+//                    } else {
+//                        StageAdapter stageAdapter = new StageAdapter(getActivity(), mSelectedTimeControl.getStageManager(), TimeControlFragment.this);
+//                        mStageListView.setAdapter(stageAdapter);
+//                        mTimeIncrementDescription.setText(mSelectedTimeControl.getTimeIncrement().toString());
+//                        updateDisplay();
+//                    }
+//                    return true;
+//                });
 
         if (mStageListView != null) {
 
@@ -252,7 +231,8 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             }
         }
 
-        mBottomNavigationActionListener.setSelected(R.id.nav_player1);
+        // todo tab lay selection
+//        mBottomNavigationActionListener.setSelected(R.id.nav_player1);
         mSelectedTimeControl = mTimeControlWrapper.getTimeControlPlayerOne();
 
         return v;
@@ -268,41 +248,9 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        mBottomNavigationActionListener.setVisibility(GONE);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.time_control_actions, menu);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        if (mSelectedTimeControl.getStageManager().getTotalStages() == 3) {
-            menu.findItem(R.id.action_new_stage).setVisible(false);
-        } else {
-            menu.findItem(R.id.action_new_stage).setVisible(true);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_new_stage:
-                addNewStage();
-                return true;
-            case R.id.action_save_time_control:
-                saveTimeControl();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
+// todo on save
     private void saveTimeControl() {
         if (mTimeControlWrapper != null) {
 
@@ -352,7 +300,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             getActivity().getSupportFragmentManager().popBackStack();
         }
     }
-
+// todo on add stage
     private void addNewStage() {
 
         // Hide soft keyboard

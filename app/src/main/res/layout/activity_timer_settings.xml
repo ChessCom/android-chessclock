@@ -11,13 +11,4 @@
         android:layout_weight="1"
         />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/player_selection_bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/bg_clock_setting_button_normal"
-        app:menu="@menu/time_control_players"
-        android:visibility="gone"
-        />
-
 </LinearLayout>
