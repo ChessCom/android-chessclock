@@ -2,6 +2,7 @@
 <resources>
     <!-- Non translatable-->
     <string name="default_moves_value" translatable="false">0</string>
+    <string name="default_minutes_value" translatable="false">0</string>
     <string name="colon" translatable="false">:</string>
 
 

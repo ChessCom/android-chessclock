@@ -1,23 +1,24 @@
 package com.chess.clock.fragments;
 
 import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -25,7 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -38,7 +41,6 @@ import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.entities.AppTheme;
-import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 
 /**
  * UI fragment to create and edit a TimeControl.
@@ -52,6 +54,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
      * Save Instance state keys
      */
     private static final String STATE_TIME_CONTROL_SNAPSHOT_KEY = "time_control_snapshot_key";
+    private static final String STATE_ADVANCED_MODE_KEY = "advanced_mode_key";
     /**
      * Dialog Fragment TAGS
      */
@@ -71,7 +74,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     /**
      * State.
      */
-    private TimeControlWrapper mTimeControlWrapper;
+    private TimeControlWrapper timeControlWrapper;
     private TimeControl mSelectedTimeControl;
     private boolean mPlayerOneSelected = false;
     private boolean advancedMode = false;
@@ -79,26 +82,6 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     /**
      * Time Control Name Text WATCHER
      */
-    TextWatcher mTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            String text = s.toString();
-            if (mTimeControlWrapper != null && !text.isEmpty()) {
-                mTimeControlWrapper.getTimeControlPlayerOne().setName(s.toString());
-                mTimeControlWrapper.getTimeControlPlayerTwo().setName(s.toString());
-            }
-        }
-    };
     private int mEditableStageIndex;
     /**
      * Listeners
@@ -120,11 +103,17 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
      * UI
      */
     private ListView mStageListView;
-    private EditText mTimeControlNameEditText;
+    private EditText nameEt;
+    private EditText minutesEt;
+    private EditText secondsEt;
+    private EditText incrementMinutesEt;
+    private EditText incrementSecondsEt;
     private ViewGroup mTimeIncrementBtn;
     private TextView mTimeIncrementDescription;
     private FrameLayout mSameAsPlayerOneSwitchContainer;
     private SwitchCompat mSameAsPlayerOneSwtich;
+    private SwitchCompat advancedModeSwitch;
+    private Button saveBtn;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -139,7 +128,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         try {
             mListener = (OnTimeControlListener) requireActivity();
             // Fetch current TimeControl object
-            mTimeControlWrapper = mListener.getEditableTimeControl();
+            timeControlWrapper = mListener.getEditableTimeControl();
 
         } catch (ClassCastException e) {
             throw new ClassCastException(requireActivity() + " must implement OnTimeControlListener");
@@ -148,7 +137,14 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
 
     @Override
     void loadTheme(AppTheme theme) {
-        // todo
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ColorStateList tintList = theme.colorStateListFocused(requireContext());
+            minutesEt.setBackgroundTintList(tintList);
+            secondsEt.setBackgroundTintList(tintList);
+            incrementMinutesEt.setBackgroundTintList(tintList);
+            incrementSecondsEt.setBackgroundTintList(tintList);
+        }
+        DrawableCompat.setTintList(advancedModeSwitch.getThumbDrawable(), theme.colorStateListChecked(requireContext()));
     }
 
     @Override
@@ -156,10 +152,12 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         requireActivity().setTitle(R.string.custom_time);
         View v = inflater.inflate(R.layout.fragment_time_control, container, false);
         mStageListView = v.findViewById(R.id.list_stages);
+        advancedModeSwitch = v.findViewById(R.id.advancedModeSwitch);
+        saveBtn = v.findViewById(R.id.saveBtn);
         mSameAsPlayerOneSwitchContainer = v.findViewById(R.id.switch_same_as_player_one_container);
         mSameAsPlayerOneSwtich = v.findViewById(R.id.switch_same_as_player_one);
         mSameAsPlayerOneSwtich.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mTimeControlWrapper.setSameAsPlayerOne(isChecked);
+            timeControlWrapper.setSameAsPlayerOne(isChecked);
             if (isChecked && !mPlayerOneSelected) {
                 showPlayerOneViews();
             }
@@ -191,30 +189,33 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         if (mStageListView != null) {
 
             mStageListView.setOnItemClickListener(mItemClickListener);
-            if (mTimeControlWrapper != null) {
+            if (timeControlWrapper != null) {
 
                 if (savedInstanceState != null) {
                     mTimeControlSnapshot = savedInstanceState.getParcelable(STATE_TIME_CONTROL_SNAPSHOT_KEY);
+                    advancedMode = savedInstanceState.getBoolean(STATE_ADVANCED_MODE_KEY);
                 } else {
                     // Save copy to check modifications before exit.
                     mTimeControlSnapshot = null;
                     try {
-                        mTimeControlSnapshot = (TimeControlWrapper) mTimeControlWrapper.clone();
+                        mTimeControlSnapshot = (TimeControlWrapper) timeControlWrapper.clone();
                     } catch (CloneNotSupportedException e) {
                         e.printStackTrace();
                         throw new IllegalStateException("Could not build time control snapshot");
                     }
                 }
 
-                mSameAsPlayerOneSwtich.setChecked(mTimeControlWrapper.isSameAsPlayerOne());
+                mSameAsPlayerOneSwtich.setChecked(timeControlWrapper.isSameAsPlayerOne());
 
-                // Setup Time Control Name Edit Text
-                mTimeControlNameEditText = v.findViewById(R.id.time_control_name);
-                mTimeControlNameEditText.addTextChangedListener(mTextWatcher);
+                nameEt = v.findViewById(R.id.time_control_name);
+                minutesEt = v.findViewById(R.id.baseMinEt);
+                secondsEt = v.findViewById(R.id.baseSecEt);
+                incrementMinutesEt = v.findViewById(R.id.baseIncrementMinEt);
+                incrementSecondsEt = v.findViewById(R.id.baseIncrementSecEt);
 
-                TimeControl tc = mTimeControlWrapper.getTimeControlPlayerOne();
+                TimeControl tc = timeControlWrapper.getTimeControlPlayerOne();
                 if (tc.getName() != null && !tc.getName().equals("")) {
-                    mTimeControlNameEditText.setText(tc.getName());
+                    nameEt.setText(tc.getName());
                 }
 
                 // Setup Stages list
@@ -233,14 +234,89 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
 
         // todo tab lay selection
 //        mBottomNavigationActionListener.setSelected(R.id.nav_player1);
-        mSelectedTimeControl = mTimeControlWrapper.getTimeControlPlayerOne();
+        mSelectedTimeControl = timeControlWrapper.getTimeControlPlayerOne();
 
         return v;
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        saveBtn.setOnClickListener(v -> saveTimeControl());
+        nameEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = s.toString();
+                if (timeControlWrapper != null && !text.isEmpty()) {
+                    timeControlWrapper.getTimeControlPlayerOne().setName(s.toString());
+                    timeControlWrapper.getTimeControlPlayerTwo().setName(s.toString());
+                }
+            }
+        });
+        setMinutesTextWatcher(secondsEt, savedInstanceState == null);
+        setMinutesTextWatcher(incrementSecondsEt, savedInstanceState == null);
+        if (savedInstanceState == null) {
+            minutesEt.setText(R.string.default_minutes_value);
+            incrementMinutesEt.setText(R.string.default_minutes_value);
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void setMinutesTextWatcher(EditText editText, Boolean setDefaultValues) {
+        if (setDefaultValues) {
+            editText.setText(twoDecimalPlacesFormat(0));
+        }
+        TextWatcher minutesTextWatcher = new TextWatcher() {
+            final int MAX = 59;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                editText.removeTextChangedListener(this);
+                String minutesAsString = s.toString();
+                int minutes = minutesAsString.isEmpty() ? 0 : Integer.parseInt(minutesAsString);
+                if (minutes > MAX) {
+                    s.clear();
+                    s.append(twoDecimalPlacesFormat(MAX));
+                }
+                editText.addTextChangedListener(this);
+            }
+        };
+        editText.addTextChangedListener(minutesTextWatcher);
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
+                String minutesAsString = v.getText().toString();
+                int minutes = minutesAsString.isEmpty() ? 0 : Integer.parseInt(minutesAsString);
+                v.setText(twoDecimalPlacesFormat(minutes));
+            }
+            return false;
+        });
+    }
+
+    @SuppressLint("DefaultLocale")
+    private String twoDecimalPlacesFormat(int value) {
+        return String.format("%02d", value);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(STATE_TIME_CONTROL_SNAPSHOT_KEY, mTimeControlSnapshot);
+        outState.putBoolean(STATE_ADVANCED_MODE_KEY, advancedMode);
         super.onSaveInstanceState(outState);
     }
 
@@ -250,34 +326,42 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         mListener = null;
     }
 
-// todo on save
     private void saveTimeControl() {
-        if (mTimeControlWrapper != null) {
+        if (timeControlWrapper == null) return;
 
-            // Hide soft keyboard
-            mTimeControlNameEditText.clearFocus();
-            InputMethodManager imm =
-                    (InputMethodManager) getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(mTimeControlNameEditText.getWindowToken(), 0);
+        // Hide soft keyboard
+        nameEt.clearFocus();
+        InputMethodManager imm =
+                (InputMethodManager) getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(nameEt.getWindowToken(), 0);
 
-            if (mTimeControlNameEditText != null &&
-                    mTimeControlNameEditText.getText().toString() == null ||
-                    mTimeControlNameEditText.getText().toString().equals("")) {
-                mTimeControlNameEditText.requestFocus();
-                Toast.makeText(getActivity(), getString(R.string.toast_requesting_time_control_name), Toast.LENGTH_LONG).show();
-            } else {
-                if (mTimeControlWrapper.isSameAsPlayerOne()) {
+        String newControlName = nameEt.getText().toString();
+        if (newControlName.equals("")) {
+            nameEt.requestFocus();
+            Toast.makeText(getActivity(), getString(R.string.toast_requesting_time_control_name), Toast.LENGTH_LONG).show();
+        } else {
+            if (advancedMode) {
+                if (timeControlWrapper.isSameAsPlayerOne()) {
                     TimeControl playerOneClone = null;
                     try {
-                        playerOneClone = (TimeControl) mTimeControlWrapper.getTimeControlPlayerOne().clone();
+                        playerOneClone = (TimeControl) timeControlWrapper.getTimeControlPlayerOne().clone();
                     } catch (CloneNotSupportedException e) {
                         e.printStackTrace();
                     }
-                    mTimeControlWrapper.setTimeControlPlayerTwo(playerOneClone);
+                    timeControlWrapper.setTimeControlPlayerTwo(playerOneClone);
                 }
-                mListener.saveTimeControl();
-                getActivity().getSupportFragmentManager().popBackStack();
+            } else {
+                int minutes = 5; // todo
+                int seconds = 1; // todo
+                Stage stage = new Stage(0, minutes * 60 * 1000L + seconds * 1000L);
+                TimeIncrement timeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, 0);
+                TimeControl simpleControl = new TimeControl(newControlName, new Stage[]{stage}, timeIncrement);
+                timeControlWrapper.setTimeControlPlayerOne(simpleControl);
+                timeControlWrapper.setTimeControlPlayerTwo(simpleControl);
             }
+
+            mListener.saveTimeControl();
+            getActivity().getSupportFragmentManager().popBackStack();
         }
     }
 
@@ -292,7 +376,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     }
 
     public void showConfirmGoBackDialog() {
-        if (!(mTimeControlWrapper.isEqual(mTimeControlSnapshot))) {
+        if (!(timeControlWrapper.isEqual(mTimeControlSnapshot))) {
             DialogFragment newFragment = ExitConfirmationDialogFragment.newInstance();
             newFragment.setTargetFragment(this, REQUEST_EXIT_DIALOG);
             newFragment.show(getFragmentManager(), TAG_EXIT_DIALOG_FRAGMENT);
@@ -300,14 +384,15 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             getActivity().getSupportFragmentManager().popBackStack();
         }
     }
-// todo on add stage
+
+    // todo on add stage
     private void addNewStage() {
 
         // Hide soft keyboard
-        mTimeControlNameEditText.clearFocus();
+        nameEt.clearFocus();
         InputMethodManager imm =
                 (InputMethodManager) getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mTimeControlNameEditText.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(nameEt.getWindowToken(), 0);
 
 
         if (mSelectedTimeControl.getStageManager().getTotalStages() < 3) {
@@ -342,14 +427,14 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     private void showPlayerOneViews() {
         TimeControl playerOneClone;
         try {
-            playerOneClone = (TimeControl) mTimeControlWrapper.getTimeControlPlayerOne().clone();
+            playerOneClone = (TimeControl) timeControlWrapper.getTimeControlPlayerOne().clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not clone player one time control");
         }
-        mTimeControlWrapper.setTimeControlPlayerTwo(playerOneClone);
+        timeControlWrapper.setTimeControlPlayerTwo(playerOneClone);
         mTimeIncrementDescription.setText(playerOneClone.getTimeIncrement().toString());
-        mSelectedTimeControl = mPlayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
+        mSelectedTimeControl = mPlayerOneSelected ? timeControlWrapper.getTimeControlPlayerOne() : timeControlWrapper.getTimeControlPlayerTwo();
 
         StageAdapter stageAdapter = new StageAdapter(getActivity(), mSelectedTimeControl.getStageManager(), TimeControlFragment.this);
         mStageListView.setAdapter(stageAdapter);

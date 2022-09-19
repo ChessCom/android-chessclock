@@ -39,6 +39,20 @@ public enum AppTheme {
 
         int[] colors = new int[]{
                 color(context),
+                ContextCompat.getColor(context, R.color.gray)
+        };
+
+        return new ColorStateList(states, colors);
+    }
+
+    public ColorStateList colorStateListFocused(Context context) {
+        int[][] states = new int[][]{
+                new int[]{android.R.attr.state_enabled, android.R.attr.state_focused},
+                new int[]{}
+        };
+
+        int[] colors = new int[]{
+                color(context),
                 ContextCompat.getColor(context, R.color.white_20)
         };
 

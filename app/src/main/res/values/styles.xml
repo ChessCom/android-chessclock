@@ -54,6 +54,18 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <style name="timeInputEditTextStyle">
+        <item name="android:background">@color/white_20</item>
+        <item name="android:inputType">number</item>
+        <item name="android:minWidth">30dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:maxLength">2</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <!-- Custom Attributes of TimePickerView compound view-->
     <declare-styleable name="TimePickerCompoundView">
         <attr name="type">
