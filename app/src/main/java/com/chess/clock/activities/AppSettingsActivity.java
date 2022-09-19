@@ -59,17 +59,8 @@ public class AppSettingsActivity extends BaseActivity {
     }
 
     private void updateUiState() {
-        if (soundsEnabled) {
-            soundImg.setImageResource(R.drawable.ic_sound);
-        } else {
-            soundImg.setImageResource(R.drawable.ic_sound_off);
-        }
-
-        if (fullScreenMode) {
-            fullScreenImg.setImageResource(R.drawable.ic_fullscreen);
-        } else {
-            fullScreenImg.setImageResource(R.drawable.ic_fullscreen_exit);
-        }
+        soundImg.setImageResource(soundsEnabled ? R.drawable.ic_sound : R.drawable.ic_sound_off);
+        fullScreenImg.setImageResource(fullScreenMode ? R.drawable.ic_fullscreen : R.drawable.ic_fullscreen_exit);
     }
 
     @Override
