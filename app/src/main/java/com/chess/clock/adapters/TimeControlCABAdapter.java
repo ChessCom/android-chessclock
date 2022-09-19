@@ -1,16 +1,22 @@
 package com.chess.clock.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import androidx.fragment.app.Fragment;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.widget.CompoundButtonCompat;
+import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
+import com.chess.clock.entities.AppTheme;
 import com.chess.clock.fragments.TimeSettingsFragment;
 
 import java.util.ArrayList;
@@ -20,17 +26,24 @@ import java.util.ArrayList;
  */
 public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
 
-    private Context context;
-    private int layoutResourceId;
-    private ArrayList<TimeControlWrapper> data;
-    private Fragment mTargetFragment;
+    private final int layoutResourceId;
+    private final ArrayList<TimeControlWrapper> data;
+    private final Fragment mTargetFragment;
+    private ColorStateList checkBoxColors;
 
-    public TimeControlCABAdapter(Context context, ArrayList<TimeControlWrapper> objects, Fragment targetFragment) {
+    public TimeControlCABAdapter(
+            Context context,
+            ArrayList<TimeControlWrapper> objects,
+            Fragment targetFragment,
+            AppTheme theme
+    ) {
         super(context, R.layout.list_time_control_item_multi_choice, objects);
         this.layoutResourceId = R.layout.list_time_control_item_multi_choice;
-        this.context = context;
         this.data = objects;
         this.mTargetFragment = targetFragment;
+        if (theme != null) {
+            checkBoxColors = theme.colorStateListChecked(context);
+        }
     }
 
     @Override
@@ -55,7 +68,7 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
         final TimeControlHolder holder;
 
         if (row == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            LayoutInflater inflater = LayoutInflater.from(getContext());
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new TimeControlHolder();
@@ -80,11 +93,20 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
         TimeControl tc = data.get(position).getTimeControlPlayerOne();
         holder.textView.setText(tc.getName());
 
+        if (checkBoxColors != null) {
+            CompoundButtonCompat.setButtonTintList(holder.checkBox, checkBoxColors);
+        }
+
         return row;
     }
 
+    public void updateTheme(AppTheme theme) {
+        checkBoxColors = theme.colorStateListChecked(getContext());
+        notifyDataSetChanged();
+    }
+
     static class TimeControlHolder {
-        CheckBox checkBox;
+        AppCompatCheckBox checkBox;
         TextView textView;
         ImageButton editImgBtn;
     }

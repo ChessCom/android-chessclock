@@ -3,12 +3,20 @@
     <!-- Common palette -->
     <color name="black">#000</color>
     <color name="black_65">#A6000000</color>
+    <color name="blue">#0381b8</color>
     <color name="green">#7fa650</color>
     <color name="green_65">#A67FA650</color>
+    <color name="gold">#c1a45a</color>
+    <color name="orange">#e58f2a</color>
+    <color name="pink">#f38272</color>
+    <color name="red">#ed3239</color>
     <color name="transparent">#00000000</color>
+    <color name="turquoise">#1bada6</color>
     <color name="white">#fff</color>
     <color name="white_20">#33FFFFFF</color>
     <color name="white_50">#80ffffff</color>
+    <color name="gray">#4b4847</color>
+    <color name="gray_light">#8b8987</color>
 
     <!-- App colors-->
     <color name="toolbar_gray">#312e2b</color>
@@ -24,7 +32,6 @@
     <color name="bg_finished_clock_button_gradient_end_color">#ad2c33</color>
     <color name="clock_button_stroke_color">#000000</color>
     <color name="clock_timer_idle_textColor">#000000</color>
-    <color name="clock_timer_selected_textColor">#ffffff</color>
     <color name="clock_stage_icon_color">#aa312e2b</color>
     <color name="clock_moves_text_color">#aa312e2b</color>
 

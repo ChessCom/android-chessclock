@@ -11,6 +11,7 @@
     <dimen name="default_radius">8dp</dimen>
     <dimen name="default_elevation">4dp</dimen>
     <dimen name="max_content_width">480dp</dimen>
+    <dimen name="button_height">56dp</dimen>
 
     <!-- Text sizes-->
     <dimen name="text_size_default">14sp</dimen>

@@ -5,14 +5,15 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.Stage;
@@ -35,10 +36,10 @@ public class StageAdapter extends ArrayAdapter<Stage> {
     /**
      * STATE
      */
-    private Context mContext;
-    private int mLayoutResourceId;
-    private StageManager mStageManager;
-    private Fragment mTargetFragment;
+    private final Context mContext;
+    private final int mLayoutResourceId;
+    private final StageManager mStageManager;
+    private final Fragment mTargetFragment;
 
     public StageAdapter(Context context, StageManager stageManager, Fragment targetFragment) {
         super(context, R.layout.list_stage_item, stageManager.getStages());
