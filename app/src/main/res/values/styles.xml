@@ -55,7 +55,7 @@
     </style>
 
     <style name="timeInputEditTextStyle">
-        <item name="android:background">@color/white_20</item>
+        <item name="android:background">@color/black</item>
         <item name="android:inputType">number</item>
         <item name="android:minWidth">30dp</item>
         <item name="android:paddingTop">6dp</item>

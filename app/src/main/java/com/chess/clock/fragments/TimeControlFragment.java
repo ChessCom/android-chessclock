@@ -111,16 +111,12 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     private ViewGroup mTimeIncrementBtn;
     private TextView mTimeIncrementDescription;
     private FrameLayout mSameAsPlayerOneSwitchContainer;
-    private SwitchCompat mSameAsPlayerOneSwtich;
+    private SwitchCompat sameAsPlayerOneSwitch;
     private SwitchCompat advancedModeSwitch;
     private Button saveBtn;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public TimeControlFragment() {
-    }
+
+    public TimeControlFragment() {}
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -155,8 +151,8 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         advancedModeSwitch = v.findViewById(R.id.advancedModeSwitch);
         saveBtn = v.findViewById(R.id.saveBtn);
         mSameAsPlayerOneSwitchContainer = v.findViewById(R.id.switch_same_as_player_one_container);
-        mSameAsPlayerOneSwtich = v.findViewById(R.id.switch_same_as_player_one);
-        mSameAsPlayerOneSwtich.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        sameAsPlayerOneSwitch = v.findViewById(R.id.switch_same_as_player_one);
+        sameAsPlayerOneSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             timeControlWrapper.setSameAsPlayerOne(isChecked);
             if (isChecked && !mPlayerOneSelected) {
                 showPlayerOneViews();
@@ -205,7 +201,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
                     }
                 }
 
-                mSameAsPlayerOneSwtich.setChecked(timeControlWrapper.isSameAsPlayerOne());
+                sameAsPlayerOneSwitch.setChecked(timeControlWrapper.isSameAsPlayerOne());
 
                 nameEt = v.findViewById(R.id.time_control_name);
                 minutesEt = v.findViewById(R.id.baseMinEt);
@@ -232,8 +228,6 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             }
         }
 
-        // todo tab lay selection
-//        mBottomNavigationActionListener.setSelected(R.id.nav_player1);
         mSelectedTimeControl = timeControlWrapper.getTimeControlPlayerOne();
 
         return v;
@@ -261,19 +255,18 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
                 }
             }
         });
-        setMinutesTextWatcher(secondsEt, savedInstanceState == null);
-        setMinutesTextWatcher(incrementSecondsEt, savedInstanceState == null);
+        setMinutesTextWatcher(secondsEt);
+        setMinutesTextWatcher(incrementSecondsEt);
         if (savedInstanceState == null) {
-            minutesEt.setText(R.string.default_minutes_value);
-            incrementMinutesEt.setText(R.string.default_minutes_value);
+            String hint = twoDecimalPlacesFormat(0);
+            minutesEt.setHint(hint);
+            incrementMinutesEt.setHint(hint);
+            secondsEt.setHint(hint);
+            incrementSecondsEt.setHint(hint);
         }
     }
 
-    @SuppressLint("DefaultLocale")
-    private void setMinutesTextWatcher(EditText editText, Boolean setDefaultValues) {
-        if (setDefaultValues) {
-            editText.setText(twoDecimalPlacesFormat(0));
-        }
+    private void setMinutesTextWatcher(EditText editText) {
         TextWatcher minutesTextWatcher = new TextWatcher() {
             final int MAX = 59;
 
@@ -303,6 +296,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
                 String minutesAsString = v.getText().toString();
                 int minutes = minutesAsString.isEmpty() ? 0 : Integer.parseInt(minutesAsString);
                 v.setText(twoDecimalPlacesFormat(minutes));
+                v.clearFocus();
             }
             return false;
         });
@@ -331,8 +325,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
 
         // Hide soft keyboard
         nameEt.clearFocus();
-        InputMethodManager imm =
-                (InputMethodManager) getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(nameEt.getWindowToken(), 0);
 
         String newControlName = nameEt.getText().toString();
@@ -372,7 +365,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             }
 
             mListener.saveTimeControl();
-            getActivity().getSupportFragmentManager().popBackStack();
+            requireActivity().getSupportFragmentManager().popBackStack();
         }
     }
 
@@ -386,18 +379,15 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
      */
     public void updateDisplay() {
         ((StageAdapter) mStageListView.getAdapter()).notifyDataSetChanged();
-
-        // Remove "add stage" action from menu if total stages is 3
-        getActivity().supportInvalidateOptionsMenu();
     }
 
     public void showConfirmGoBackDialog() {
         if (!(timeControlWrapper.isEqual(mTimeControlSnapshot))) {
             DialogFragment newFragment = ExitConfirmationDialogFragment.newInstance();
             newFragment.setTargetFragment(this, REQUEST_EXIT_DIALOG);
-            newFragment.show(getFragmentManager(), TAG_EXIT_DIALOG_FRAGMENT);
+            newFragment.show(getParentFragmentManager(), TAG_EXIT_DIALOG_FRAGMENT);
         } else {
-            getActivity().getSupportFragmentManager().popBackStack();
+            requireActivity().getSupportFragmentManager().popBackStack();
         }
     }
 
@@ -407,7 +397,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         // Hide soft keyboard
         nameEt.clearFocus();
         InputMethodManager imm =
-                (InputMethodManager) getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
+                (InputMethodManager) requireActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(nameEt.getWindowToken(), 0);
 
 
@@ -434,7 +424,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         newFragment.setTargetFragment(this, REQUEST_STAGE_DIALOG);
 
         // Launch Stage Editor Dialog.
-        newFragment.show(getActivity().getSupportFragmentManager(), TAG_STAGE_EDITOR_DIALOG_FRAGMENT);
+        newFragment.show(requireActivity().getSupportFragmentManager(), TAG_STAGE_EDITOR_DIALOG_FRAGMENT);
     }
 
     /**
@@ -481,7 +471,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         newFragment.setTargetFragment(this, REQUEST_TIME_INCREMENT_DIALOG);
 
         // Launch Time Increment Editor Dialog.
-        newFragment.show(getActivity().getSupportFragmentManager(), TAG_TIME_INCREMENT_EDITOR_DIALOG_FRAGMENT);
+        newFragment.show(requireActivity().getSupportFragmentManager(), TAG_TIME_INCREMENT_EDITOR_DIALOG_FRAGMENT);
     }
 
     @Override
@@ -514,6 +504,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             return new ExitConfirmationDialogFragment();
         }
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 

@@ -51,6 +51,8 @@
 
             <EditText
                 android:id="@+id/baseMinEt"
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@id/baseSecEt"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/timeInputEditTextStyle" />
@@ -69,6 +71,7 @@
 
             <EditText
                 android:id="@+id/baseSecEt"
+                android:imeOptions="actionDone"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/timeInputEditTextStyle" />
@@ -115,6 +118,8 @@
 
             <EditText
                 android:id="@+id/baseIncrementMinEt"
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@id/baseIncrementSecEt"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/timeInputEditTextStyle" />
@@ -134,6 +139,7 @@
             <EditText
                 android:id="@+id/baseIncrementSecEt"
                 android:layout_width="wrap_content"
+                android:imeOptions="actionDone"
                 android:layout_height="match_parent"
                 style="@style/timeInputEditTextStyle" />
         </androidx.cardview.widget.CardView>
