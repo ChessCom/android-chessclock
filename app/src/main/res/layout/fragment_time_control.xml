@@ -153,8 +153,7 @@
             style="@style/TabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            >
+            android:background="@color/transparent">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="match_parent"
@@ -168,7 +167,6 @@
         </com.google.android.material.tabs.TabLayout>
 
         <TextView
-            android:id="@+id/stages_title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_standard"
@@ -176,6 +174,53 @@
             android:text="@string/stages"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/text_size_default" />
+
+        <ListView
+            android:id="@+id/list_stages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:footerDividersEnabled="true" />
+
+        <TextView
+            android:id="@+id/addStageTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackground"
+            android:drawablePadding="@dimen/margin_small"
+            android:padding="@dimen/margin_small"
+            android:text="@string/action_add_new_stage"
+            android:textColor="@color/gray_light_2"
+            android:textSize="@dimen/text_size_large"
+            app:drawableLeftCompat="@drawable/ic_plus_green"
+            app:drawableTint="@color/gray_light_2" />
+
+        <LinearLayout
+            android:id="@+id/copyPlayerOneLay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/time_item_height"
+            android:layout_marginHorizontal="@dimen/margin_standard"
+            android:layout_marginTop="@dimen/margin_standard"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/same_as_player_one"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_large" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/copyPlayerOneSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -216,88 +261,4 @@
         android:background="@color/green"
         android:text="@string/action_save_time_control"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!--    old part to verify/remove-->
-
-
-    <ListView
-        android:id="@+id/list_stages"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffff"
-        android:footerDividersEnabled="true"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/increment_title_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="32dp"
-        android:text="INCREMENT"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <RelativeLayout
-        android:id="@+id/btn_edit_increment"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="@drawable/simple_list_item_bg"
-        android:clickable="true"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/increment_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:text="Type"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/time_control_list_text_size"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/increment_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:text="Fischer, 5 secs"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="@dimen/time_control_list_text_size" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_alignParentBottom="true"
-            android:background="@android:color/darker_gray" />
-    </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/switch_same_as_player_one_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="@string/same_as_player_one"
-            android:textSize="@dimen/stage_list_text_size" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch_same_as_player_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:checked="true" />
-    </FrameLayout>
 </LinearLayout>
