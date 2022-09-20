@@ -91,5 +91,6 @@
     <string name="time">Time</string>
     <string name="increment">Increment</string>
     <string name="advanced_mode">Advanced mode</string>
+    <string name="please_set_time">Please add a time to save.</string>
 
 </resources>

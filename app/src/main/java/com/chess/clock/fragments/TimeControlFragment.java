@@ -351,10 +351,21 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
                     timeControlWrapper.setTimeControlPlayerTwo(playerOneClone);
                 }
             } else {
-                int minutes = 5; // todo
-                int seconds = 1; // todo
-                Stage stage = new Stage(0, minutes * 60 * 1000L + seconds * 1000L);
-                TimeIncrement timeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, 0);
+                int minutes = getIntOrZero(minutesEt);
+                int seconds = getIntOrZero(secondsEt);
+                int incrementMinutes = getIntOrZero(incrementMinutesEt);
+                int incrementSeconds = getIntOrZero(incrementSecondsEt);
+
+                long gameDurationMs = minutes * 60 * 1000L + seconds * 1000L;
+                long incrementMs = incrementMinutes * 60 * 1000L + incrementSeconds * 1000L;
+
+                if (gameDurationMs == 0) {
+                    Toast.makeText(getActivity(), getString(R.string.please_set_time), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                Stage stage = new Stage(0, gameDurationMs);
+                TimeIncrement timeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, incrementMs);
                 TimeControl simpleControl = new TimeControl(newControlName, new Stage[]{stage}, timeIncrement);
                 timeControlWrapper.setTimeControlPlayerOne(simpleControl);
                 timeControlWrapper.setTimeControlPlayerTwo(simpleControl);
@@ -363,6 +374,11 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             mListener.saveTimeControl();
             getActivity().getSupportFragmentManager().popBackStack();
         }
+    }
+
+    private int getIntOrZero(EditText et) {
+        String textValue = et.getText().toString();
+        return textValue.isEmpty() ? 0 : Integer.parseInt(textValue);
     }
 
     /**
