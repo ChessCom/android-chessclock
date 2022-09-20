@@ -1,13 +1,15 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="@dimen/margin_standard">
+    android:orientation="vertical">
 
     <EditText
         android:id="@+id/time_control_name"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/time_item_height"
+        android:layout_marginHorizontal="@dimen/margin_standard"
         android:layout_marginTop="@dimen/margin_large"
         android:background="@drawable/edit_text_bg"
         android:hint="@string/name"
@@ -17,144 +19,171 @@
         android:paddingHorizontal="@dimen/margin_small"
         android:textColor="@color/white"
         android:textColorHint="@color/white_50"
-        android:textSize="@dimen/text_size_large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="@dimen/text_size_large" />
 
     <LinearLayout
-        android:id="@+id/baseTimeLay"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/time_item_height"
-        android:layout_marginTop="@dimen/margin_standard"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/time_control_name">
+        android:id="@+id/baseLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/margin_standard"
+        tools:visibility="gone">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="@string/time"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_large" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/time_item_height"
+            android:layout_marginTop="@dimen/margin_standard"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/default_radius">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/time"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_large" />
 
-            <EditText
-                android:id="@+id/baseMinEt"
-                android:imeOptions="actionNext"
-                android:nextFocusForward="@id/baseSecEt"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                style="@style/timeInputEditTextStyle" />
-        </androidx.cardview.widget.CardView>
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/default_radius">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_small"
-            android:text="@string/colon" />
+                <EditText
+                    android:id="@+id/baseMinEt"
+                    style="@style/timeInputEditTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/baseSecEt" />
+            </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/default_radius">
-
-            <EditText
-                android:id="@+id/baseSecEt"
-                android:imeOptions="actionDone"
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                style="@style/timeInputEditTextStyle" />
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_small"
+                android:text="@string/colon" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/margin_small"
-        android:background="@color/gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/baseTimeLay"
-        app:layout_constraintWidth_max="@dimen/max_content_width" />
-
-    <LinearLayout
-        android:id="@+id/baseIncrementLay"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/time_item_height"
-        android:layout_marginTop="@dimen/margin_small"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="@string/increment"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_large" />
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/default_radius">
-
-            <EditText
-                android:id="@+id/baseIncrementMinEt"
-                android:imeOptions="actionNext"
-                android:nextFocusForward="@id/baseIncrementSecEt"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                style="@style/timeInputEditTextStyle" />
-        </androidx.cardview.widget.CardView>
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/default_radius">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_small"
-            android:text="@string/colon" />
+                <EditText
+                    android:id="@+id/baseSecEt"
+                    style="@style/timeInputEditTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:imeOptions="actionDone" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/default_radius">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:background="@color/gray" />
 
-            <EditText
-                android:id="@+id/baseIncrementSecEt"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/time_item_height"
+            android:layout_marginTop="@dimen/margin_small"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/increment"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_large" />
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
-                android:imeOptions="actionDone"
-                android:layout_height="match_parent"
-                style="@style/timeInputEditTextStyle" />
-        </androidx.cardview.widget.CardView>
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/default_radius">
+
+                <EditText
+                    android:id="@+id/baseIncrementMinEt"
+                    style="@style/timeInputEditTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/baseIncrementSecEt" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_small"
+                android:text="@string/colon" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/default_radius">
+
+                <EditText
+                    android:id="@+id/baseIncrementSecEt"
+                    style="@style/timeInputEditTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:imeOptions="actionDone" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/advancedModeLay"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/time_item_height"
+        android:id="@+id/advancedLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_standard"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/baseIncrementLay"
-        app:layout_constraintWidth_max="@dimen/max_content_width">
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            style="@style/TabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            >
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/time_control_player_one" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/time_control_player_two" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <TextView
+            android:id="@+id/stages_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_standard"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="@string/stages"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/text_size_default" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/time_item_height"
+        android:layout_marginHorizontal="@dimen/margin_standard"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
@@ -174,34 +203,21 @@
             android:layout_gravity="center_vertical" />
     </LinearLayout>
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <Button
         android:id="@+id/saveBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_standard"
+        android:layout_margin="@dimen/margin_standard"
         android:background="@color/green"
         android:text="@string/action_save_time_control"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <!--    old part to verify/remove-->
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="32dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/stages_title_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:text="STAGES"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="18sp" />
-
-    </RelativeLayout>
 
 
     <ListView
@@ -284,4 +300,4 @@
             android:layout_gravity="right"
             android:checked="true" />
     </FrameLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -41,6 +41,7 @@ import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.entities.AppTheme;
+import com.chess.clock.views.ViewUtils;
 
 /**
  * UI fragment to create and edit a TimeControl.
@@ -70,7 +71,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     /**
      * Activity attached.
      */
-    private OnTimeControlListener mListener;
+    private OnTimeControlListener timeControlListener;
     /**
      * State.
      */
@@ -89,7 +90,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
 
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (mListener != null) {
+            if (timeControlListener != null) {
                 mEditableStageIndex = position;
                 showStageEditorDialog();
             }
@@ -114,17 +115,20 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     private SwitchCompat sameAsPlayerOneSwitch;
     private SwitchCompat advancedModeSwitch;
     private Button saveBtn;
+    private View baseView;
+    private View advancedView;
 
 
-    public TimeControlFragment() {}
+    public TimeControlFragment() {
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            mListener = (OnTimeControlListener) requireActivity();
+            timeControlListener = (OnTimeControlListener) requireActivity();
             // Fetch current TimeControl object
-            timeControlWrapper = mListener.getEditableTimeControl();
+            timeControlWrapper = timeControlListener.getEditableTimeControl();
 
         } catch (ClassCastException e) {
             throw new ClassCastException(requireActivity() + " must implement OnTimeControlListener");
@@ -150,6 +154,8 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         mStageListView = v.findViewById(R.id.list_stages);
         advancedModeSwitch = v.findViewById(R.id.advancedModeSwitch);
         saveBtn = v.findViewById(R.id.saveBtn);
+        baseView = v.findViewById(R.id.baseLay);
+        advancedView = v.findViewById(R.id.advancedLay);
         mSameAsPlayerOneSwitchContainer = v.findViewById(R.id.switch_same_as_player_one_container);
         sameAsPlayerOneSwitch = v.findViewById(R.id.switch_same_as_player_one);
         sameAsPlayerOneSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -257,6 +263,11 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         });
         setMinutesTextWatcher(secondsEt);
         setMinutesTextWatcher(incrementSecondsEt);
+        advancedModeSwitch.setChecked(advancedMode);
+        advancedModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            advancedMode = isChecked;
+            updateUi();
+        });
         if (savedInstanceState == null) {
             String hint = twoDecimalPlacesFormat(0);
             minutesEt.setHint(hint);
@@ -264,6 +275,12 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             secondsEt.setHint(hint);
             incrementSecondsEt.setHint(hint);
         }
+        updateUi();
+    }
+
+    private void updateUi() {
+        ViewUtils.showView(baseView, !advancedMode);
+        ViewUtils.showView(advancedView, advancedMode);
     }
 
     private void setMinutesTextWatcher(EditText editText) {
@@ -317,7 +334,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        timeControlListener = null;
     }
 
     private void saveTimeControl() {
@@ -364,7 +381,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
                 timeControlWrapper.setTimeControlPlayerTwo(simpleControl);
             }
 
-            mListener.saveTimeControl();
+            timeControlListener.saveTimeControl();
             requireActivity().getSupportFragmentManager().popBackStack();
         }
     }
