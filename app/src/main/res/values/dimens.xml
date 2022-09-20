@@ -39,7 +39,6 @@
     <dimen name="increment_subtitle_text_size">14sp</dimen>
 
     <!-- Time Control Screen -->
-    <dimen name="stage_list_text_size">18sp</dimen>
     <dimen name="time_control_list_text_size">18sp</dimen>
 
 </resources>

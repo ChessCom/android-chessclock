@@ -180,7 +180,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
                 }
 
                 // Setup Stages list
-                StageAdapter stageAdapter = new StageAdapter(getActivity(), tc.getStageManager(), this);
+                StageAdapter stageAdapter = new StageAdapter(getActivity(), tc, this);
                 stagesListView.setAdapter(stageAdapter);
             }
         }
@@ -238,7 +238,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
                 if (!playerOneTab && timeControlWrapper.isSameAsPlayerOne()) {
                     showPlayerOneViews();
                 } else {
-                    StageAdapter stageAdapter = new StageAdapter(getActivity(), selectedTimeControl.getStageManager(), TimeControlFragment.this);
+                    StageAdapter stageAdapter = new StageAdapter(getActivity(), selectedTimeControl, TimeControlFragment.this);
                     stagesListView.setAdapter(stageAdapter);
                     updateStagesDisplay();
                 }
@@ -441,7 +441,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         timeControlWrapper.setTimeControlPlayerTwo(playerOneClone);
         selectedTimeControl = playerOneSelected ? timeControlWrapper.getTimeControlPlayerOne() : timeControlWrapper.getTimeControlPlayerTwo();
 
-        StageAdapter stageAdapter = new StageAdapter(getActivity(), selectedTimeControl.getStageManager(), TimeControlFragment.this);
+        StageAdapter stageAdapter = new StageAdapter(getActivity(), selectedTimeControl, TimeControlFragment.this);
         stagesListView.setAdapter(stageAdapter);
     }
 

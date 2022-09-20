@@ -13,7 +13,6 @@
     <dimen name="clock_menu_btn_margin">100dp</dimen>
 
     <!-- Time Control Screen -->
-    <dimen name="stage_list_text_size">13sp</dimen>
     <dimen name="time_control_list_text_size">13sp</dimen>
 
     <!-- Time Increment Dialog -->

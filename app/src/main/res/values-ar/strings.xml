@@ -39,9 +39,6 @@
     <!-- Stage Delete Dialog -->
     <string name="delete_stage_dialog_message">حذف المرحلة؟</string>
 
-    <!-- Stage Adapter -->
-    <string name="stage_item_list_label">مرحلة</string>
-
     <!-- Stage Editor Dialog -->
     <string name="stage_editor_dialog_title">تعديل المرحلة</string>
     <string name="tstage_editor_dialog_set">ضبط</string>

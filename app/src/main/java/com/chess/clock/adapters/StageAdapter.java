@@ -1,6 +1,5 @@
 package com.chess.clock.adapters;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
@@ -18,36 +16,20 @@ import androidx.fragment.app.Fragment;
 import com.chess.clock.R;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.StageManager;
+import com.chess.clock.engine.TimeControl;
+import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.fragments.TimeControlFragment;
 
 
 public class StageAdapter extends ArrayAdapter<Stage> {
 
-    /**
-     * FRAGMENT TAG
-     */
-    private static final String TAG_DELETE_STAGE_DIALOG_FRAGMENT = "DeleteDialogFragment";
-
-    /**
-     * DIALOG request code
-     */
-    private static final int DELETE_STAGE_DIALOG = 1;
-
-    /**
-     * STATE
-     */
-    private final Context mContext;
-    private final int mLayoutResourceId;
     private final StageManager mStageManager;
-    private final Fragment mTargetFragment;
+    private final TimeIncrement timeIncrement;
 
-    public StageAdapter(Context context, StageManager stageManager, Fragment targetFragment) {
-        super(context, R.layout.list_stage_item, stageManager.getStages());
-
-        mLayoutResourceId = R.layout.list_stage_item;
-        mContext = context;
-        mStageManager = stageManager;
-        mTargetFragment = targetFragment;
+    public StageAdapter(Context context, TimeControl timeControl, Fragment targetFragment) {
+        super(context, R.layout.list_stage_item, timeControl.getStageManager().getStages());
+        mStageManager = timeControl.getStageManager();
+        timeIncrement = timeControl.getTimeIncrement();
     }
 
     @Override
@@ -61,30 +43,18 @@ public class StageAdapter extends ArrayAdapter<Stage> {
     }
 
     @Override
-    public long getItemId(int position) {
-        return super.getItemId(position);
-    }
-
-    @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         final StageHolder holder;
 
         if (row == null) {
-            LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-            row = inflater.inflate(mLayoutResourceId, parent, false);
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            row = inflater.inflate(R.layout.list_stage_item, parent, false);
 
             holder = new StageHolder();
-            holder.label = row.findViewById(R.id.stage_label);
-            holder.description = row.findViewById(R.id.stage_description);
-            holder.deleteBtn = row.findViewById(R.id.stage_remove_btn);
-            holder.deleteBtn.setOnClickListener(v -> {
-                int listPosition = (Integer) holder.deleteBtn.getTag();
-                DeleteDialogFragment resetClockDialog = DeleteDialogFragment.newInstance(listPosition);
-                resetClockDialog.setTargetFragment(mTargetFragment, DELETE_STAGE_DIALOG);
-                resetClockDialog.show(mTargetFragment.getActivity().getSupportFragmentManager(),
-                        TAG_DELETE_STAGE_DIALOG_FRAGMENT);
-            });
+            holder.positionLabel = row.findViewById(R.id.positionTv);
+            holder.stageDetails = row.findViewById(R.id.stageDetailsTv);
+            holder.timeIncrementDetails = row.findViewById(R.id.incrementDetailsTv);
 
             row.setTag(holder);
         } else {
@@ -92,20 +62,9 @@ public class StageAdapter extends ArrayAdapter<Stage> {
         }
 
         Stage stage = mStageManager.getStages()[position];
-        holder.label.setText(mContext.getString(R.string.stage_item_list_label) + " " + (stage.getId() + 1));
-        holder.description.setText(stage.toString());
-        holder.deleteBtn.setTag(position);
-
-        if (stage.getId() > 0) {
-            holder.deleteBtn.setVisibility(View.VISIBLE);
-
-            // Img Button must set focusable as false otherwise it will steal clicks from parent.
-            holder.deleteBtn.setFocusable(false);
-
-        } else {
-            holder.deleteBtn.setVisibility(View.GONE);
-        }
-
+        holder.positionLabel.setText(String.valueOf(position + 1));
+        holder.stageDetails.setText(stage.toString());
+        holder.timeIncrementDetails.setText(timeIncrement.toString());
         return row;
     }
 
@@ -150,8 +109,8 @@ public class StageAdapter extends ArrayAdapter<Stage> {
     }
 
     static class StageHolder {
-        TextView label;
-        TextView description;
-        ImageButton deleteBtn;
+        TextView stageDetails;
+        TextView timeIncrementDetails;
+        TextView positionLabel;
     }
 }

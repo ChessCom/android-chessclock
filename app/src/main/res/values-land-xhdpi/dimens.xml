@@ -10,7 +10,6 @@
     <dimen name="increment_subtitle_text_size">13sp</dimen>
 
     <!-- Time Control Screen -->
-    <dimen name="stage_list_text_size">17sp</dimen>
     <dimen name="time_control_list_text_size">17sp</dimen>
 
     <!-- stage editor widget -->

@@ -41,9 +41,6 @@
     <!-- Stage Delete Dialog -->
     <string name="delete_stage_dialog_message">Delete stage?</string>
 
-    <!-- Stage Adapter -->
-    <string name="stage_item_list_label">Stage</string>
-
     <!-- Stage Editor Dialog -->
     <string name="stage_editor_dialog_title">Edit Stage</string>
     <string name="tstage_editor_dialog_set">Set</string>
