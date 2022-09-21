@@ -55,7 +55,7 @@ public class TimeControlManager {
         // Build default List if none was restored from shared preferences.
         if (mTimeControls == null || mTimeControls.size() == 0) {
             Log.i(TAG, "Time controls list empty. Building and saving default list.");
-            mTimeControls = TimeControlParser.buildDefaultTimeControlsList(context);
+            mTimeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
         }
     }
 
@@ -142,7 +142,7 @@ public class TimeControlManager {
 
             // Notifies list became empty.
             mCallback.onTimeControlListEmpty();
-            mTimeControls = TimeControlParser.buildDefaultTimeControlsList(context);
+            mTimeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
 
         } else {
             Log.v(TAG, "Requesting to save the remaining " + mTimeControls.size() + " time controls.");
@@ -177,7 +177,7 @@ public class TimeControlManager {
         // Set current editable time control with a new "blank" time control
         try {
             mEditableTimeControl = new TimeControlWrapper(blank, (TimeControl) blank.clone());
-        } catch(CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not create Editable time control with blank time control.");
         }
@@ -225,7 +225,7 @@ public class TimeControlManager {
             TimeControlWrapper original = mTimeControls.get(position);
             try {
                 return (TimeControlWrapper) original.clone();
-            } catch(CloneNotSupportedException e) {
+            } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
                 throw new IllegalStateException("Could not build editable time control.");
             }

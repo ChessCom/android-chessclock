@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.chess.clock.R;
 import com.chess.clock.service.ChessClockLocalService;
 
 import org.json.JSONArray;
@@ -13,8 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -55,7 +52,7 @@ public class TimeControlParser {
         // Build default List if none was restored from shared preferences.
         if (timeControls == null || timeControls.size() == 0) {
             Log.i(TAG, "Time controls list empty. Building and saving default list.");
-            timeControls = TimeControlParser.buildDefaultTimeControlsList(context);
+            timeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
         }
 
         int index = getLastTimeControlCheckIndex(context);
@@ -165,7 +162,7 @@ public class TimeControlParser {
      */
     public static int getLastTimeControlCheckIndex(Context context) {
         SharedPreferences sp = getSharedPreferences(context);
-        int idx = sp.getInt(TIME_CONTROL_SELECTED_PREF_IDX, 0);
+        int idx = sp.getInt(TIME_CONTROL_SELECTED_PREF_IDX, TimeControlDefaults.DEFAULT_TIME_INDEX);
         return Math.max(idx, 0);
     }
 
@@ -244,38 +241,6 @@ public class TimeControlParser {
         return jsonString;
     }
 
-    /**
-     * Creates default TimeControl list, saves it on shared preferences.
-     *
-     * @return Default TimeControl list.
-     */
-    public static ArrayList<TimeControlWrapper> buildDefaultTimeControlsList(Context context) {
-
-        ArrayList<TimeControlWrapper> timeControls = new ArrayList<>();
-        List<TimePreset> presets = Arrays.asList(
-                new TimePreset(1),
-                new TimePreset(1, 1),
-                new TimePreset(2, 1),
-                new TimePreset(3),
-                new TimePreset(3, 2),
-                new TimePreset(5),
-                new TimePreset(5, 5),
-                new TimePreset(10),
-                new TimePreset(15, 10),
-                new TimePreset(20),
-                new TimePreset(30)
-        );
-
-        for (TimePreset timePreset : presets) {
-            timeControls.add(timePreset.toTimeControl(context));
-        }
-
-        // Saving default time controls
-        TimeControlParser.saveTimeControls(context, timeControls);
-
-        return timeControls;
-    }
-
     private static TimeIncrement getTimeIncrement(JSONObject timeIncrementJSONObject) {
         try {
             // Restore TimeIncrement
@@ -322,36 +287,6 @@ public class TimeControlParser {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
             return null;
-        }
-    }
-
-    private static class TimePreset {
-        int minutes;
-        int incrementSeconds;
-
-        TimePreset(int minutes) {
-            this.minutes = minutes;
-            incrementSeconds = 0;
-        }
-
-        TimePreset(int minutes, int incrementSeconds) {
-            this.minutes = minutes;
-            this.incrementSeconds = incrementSeconds;
-        }
-
-        String getName(Context context) {
-            if (incrementSeconds == 0) {
-                return context.getString(R.string.x_min, minutes);
-            } else {
-                return context.getString(R.string.x_min_y_sec, minutes, incrementSeconds);
-            }
-        }
-
-        TimeControlWrapper toTimeControl(Context context) {
-            Stage stage = new Stage(0, minutes * 60 * 1000L);
-            TimeIncrement timeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, incrementSeconds * 1000L);
-            TimeControl timeControl = new TimeControl(getName(context), new Stage[]{stage}, timeIncrement);
-            return new TimeControlWrapper(timeControl, timeControl);
         }
     }
 }
