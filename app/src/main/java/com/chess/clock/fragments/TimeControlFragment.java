@@ -375,7 +375,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             nameEt.requestFocus();
             Toast.makeText(getActivity(), getString(R.string.toast_requesting_time_control_name), Toast.LENGTH_LONG).show();
         } else {
-            if (advancedMode) {
+            if (advancedMode || editMode) {
                 if (timeControlWrapper.isSameAsPlayerOne()) {
                     TimeControl playerOneClone = null;
                     try {
