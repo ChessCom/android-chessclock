@@ -51,11 +51,12 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
      */
     private static final int MAX_ALLOWED_STAGES_COUNT = 3;
     /**
-     * Save Instance state keys
+     * Bundle/Instance state keys
      */
     private static final String STATE_TIME_CONTROL_SNAPSHOT_KEY = "time_control_snapshot_key";
     private static final String STATE_ADVANCED_MODE_KEY = "advanced_mode_key";
     private static final String STATE_PLAYER_ONE_KEY = "player_one_key";
+    private static final String ARG_EDIT_MODE = "arg_edit_mode";
     /**
      * Dialog Fragment TAGS
      */
@@ -79,6 +80,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     private TimeControl selectedTimeControl;
     private boolean playerOneSelected = true;
     private boolean advancedMode = false;
+    private boolean editMode = false;
 
     /**
      * This is used to check for modifications before exiting.
@@ -104,6 +106,16 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
 
 
     public TimeControlFragment() {
+    }
+
+    public static TimeControlFragment newInstance(Boolean editMode) {
+
+        Bundle args = new Bundle();
+        args.putBoolean(ARG_EDIT_MODE, editMode);
+
+        TimeControlFragment fragment = new TimeControlFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -138,6 +150,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         requireActivity().setTitle(R.string.custom_time);
+        editMode = requireArguments().getBoolean(ARG_EDIT_MODE);
         View v = inflater.inflate(R.layout.fragment_time_control, container, false);
         stagesListView = v.findViewById(R.id.list_stages);
         advancedModeSwitch = v.findViewById(R.id.advancedModeSwitch);
@@ -258,6 +271,9 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
 
             }
         });
+        if (editMode) {
+            view.findViewById(R.id.advancedModeSwitchLay).setVisibility(View.INVISIBLE);
+        }
         if (savedInstanceState == null) {
             String hint = twoDecimalPlacesFormat(0);
             minutesEt.setHint(hint);
@@ -275,8 +291,8 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     }
 
     private void updateUi() {
-        ViewUtils.showView(baseView, !advancedMode);
-        ViewUtils.showView(advancedView, advancedMode);
+        ViewUtils.showView(baseView, !advancedMode && !editMode);
+        ViewUtils.showView(advancedView, advancedMode || editMode);
     }
 
     private void setMinutesTextWatcher(EditText editText) {

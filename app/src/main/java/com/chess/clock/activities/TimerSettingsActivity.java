@@ -199,8 +199,8 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      * FRAGMENT TRANSACTIONS
      */
 
-    public void loadTimeControlFragment() {
-        loadFragment(new TimeControlFragment(), TAG_TIME_CONTROL_FRAGMENT);
+    public void loadTimeControlFragment(Boolean edit) {
+        loadFragment(TimeControlFragment.newInstance(edit), TAG_TIME_CONTROL_FRAGMENT);
     }
 
     private void loadFragment(Fragment fragment, String tag) {
@@ -253,7 +253,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
         timeControlManager.prepareNewEditableTimeControl();
 
         // Load UI
-        loadTimeControlFragment();
+        loadTimeControlFragment(false);
     }
 
     /**
@@ -264,7 +264,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     @Override
     public void loadTimeControl(int position) {
         timeControlManager.prepareEditableTimeControl(position);
-        loadTimeControlFragment();
+        loadTimeControlFragment(true);
     }
 
     /**
