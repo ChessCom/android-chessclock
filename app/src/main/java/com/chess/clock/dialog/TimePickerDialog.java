@@ -165,7 +165,6 @@ public class TimePickerDialog extends AlertDialog implements OnClickListener {
 
         public Builder(Context context) {
             mContext = context;
-            mTheme = 0;
         }
 
         /**

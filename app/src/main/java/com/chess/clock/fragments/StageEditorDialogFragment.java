@@ -3,6 +3,7 @@ package com.chess.clock.fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.fragment.app.DialogFragment;
 
 import com.chess.clock.R;
@@ -72,6 +73,7 @@ public class StageEditorDialogFragment extends DialogFragment {
         builder.setSecond(second);
         builder.setMovesVisible(movesVisible);
         builder.setMoves(moves);
+        builder.setStageId(mStage.getId());
         builder.setType(TimePickerDialog.Type.HOUR_MINUTE_SECOND);
         builder.setOnStageEditListener((StageEditorDialog.OnStageEditListener) getTargetFragment());
 

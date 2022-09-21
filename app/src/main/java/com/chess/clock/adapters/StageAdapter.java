@@ -20,7 +20,7 @@ import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.fragments.TimeControlFragment;
 
-
+// todo remove
 public class StageAdapter extends ArrayAdapter<Stage> {
 
     private final StageManager mStageManager;

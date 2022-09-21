@@ -17,7 +17,7 @@ public class StageEditorDialog extends TimePickerDialog {
     private static final String MOVES = "moves";
     private OnStageEditListener mCallback;
     private StageEditorView mStageEditorView;
-    private int mInitialMoves;
+    private int stageId;
 
     /**
      * @param context Parent context.
@@ -31,11 +31,9 @@ public class StageEditorDialog extends TimePickerDialog {
         mCallback = listener;
     }
 
-    public void setInitialMoves(int initialMoves) {
-        mInitialMoves = initialMoves;
-        if (mStageEditorView != null) {
-            mStageEditorView.setCurrentMoves(mInitialMoves);
-        }
+    public void setInitialMovesAndId(int initialMoves, int stageId) {
+        mStageEditorView.setCurrentMoves(initialMoves);
+        this.stageId = stageId;
     }
 
     @Override
@@ -74,8 +72,8 @@ public class StageEditorDialog extends TimePickerDialog {
                 int minute = mStageEditorView.getCurrentMinute();
                 int second = mStageEditorView.getCurrentSeconds();
 
-                long newDuration = (hour * 60 * 60 * 1000) + (second * 1000) + (minute * 60 * 1000);
-                mCallback.onStageEditDone(moves, newDuration);
+                long newDuration = (hour * 60 * 60 * 1000L) + (second * 1000L) + (minute * 60 * 1000L);
+                mCallback.onStageEditDone(stageId, moves, newDuration);
             }
         }
     }
@@ -90,12 +88,13 @@ public class StageEditorDialog extends TimePickerDialog {
          * @param moves The number of moves that was set.
          * @param time  The time that was set in milliseconds.
          */
-        void onStageEditDone(int moves, long time);
+        void onStageEditDone(int stageId, int moves, long time);
     }
 
     public static class Builder extends TimePickerDialog.Builder {
 
         private int mMoves;
+        private int stageId;
         private boolean mMovesVisible;
         private OnStageEditListener mOnStageEditListener;
 
@@ -117,6 +116,11 @@ public class StageEditorDialog extends TimePickerDialog {
             return this;
         }
 
+        public Builder setStageId(int id) {
+            stageId = id;
+            return this;
+        }
+
         public Builder setOnStageEditListener(OnStageEditListener listener) {
             mOnStageEditListener = listener;
             return this;
@@ -133,7 +137,7 @@ public class StageEditorDialog extends TimePickerDialog {
 
             // setView() mandatory to be called first, as so the following are applied correctly.
             dialog.setView(stageEditorView);
-            dialog.setInitialMoves(mMoves);
+            dialog.setInitialMovesAndId(mMoves, stageId);
             dialog.setInitialHour(mHour);
             dialog.setInitialMinute(mMinute);
             dialog.setInitialSecond(mSecond);
