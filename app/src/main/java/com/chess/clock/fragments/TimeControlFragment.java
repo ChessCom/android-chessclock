@@ -55,6 +55,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
      */
     private static final String STATE_TIME_CONTROL_SNAPSHOT_KEY = "time_control_snapshot_key";
     private static final String STATE_ADVANCED_MODE_KEY = "advanced_mode_key";
+    private static final String STATE_PLAYER_ONE_KEY = "player_one_key";
     /**
      * Dialog Fragment TAGS
      */
@@ -76,7 +77,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
      */
     private TimeControlWrapper timeControlWrapper;
     private TimeControl selectedTimeControl;
-    private boolean playerOneSelected = false;
+    private boolean playerOneSelected = true;
     private boolean advancedMode = false;
 
     /**
@@ -99,6 +100,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     private View advancedView;
     private View addStageView;
     private View saveButton;
+    private TabLayout tabLayout;
 
 
     public TimeControlFragment() {
@@ -130,6 +132,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         DrawableCompat.setTintList(advancedModeSwitch.getThumbDrawable(), tintChecked);
         DrawableCompat.setTintList(copyPLayerOneSwitch.getThumbDrawable(), tintChecked);
         saveButton.setBackgroundResource(theme.primaryColorRes);
+        tabLayout.setSelectedTabIndicatorColor(theme.color(requireContext()));
     }
 
     @Override
@@ -149,6 +152,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         incrementMinutesEt = v.findViewById(R.id.baseIncrementMinEt);
         incrementSecondsEt = v.findViewById(R.id.baseIncrementSecEt);
         addStageView = v.findViewById(R.id.addStageTv);
+        tabLayout = v.findViewById(R.id.tabLayout);
 
         if (stagesListView != null) {
             stagesListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -161,6 +165,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
                 if (savedInstanceState != null) {
                     mTimeControlSnapshot = savedInstanceState.getParcelable(STATE_TIME_CONTROL_SNAPSHOT_KEY);
                     advancedMode = savedInstanceState.getBoolean(STATE_ADVANCED_MODE_KEY);
+                    playerOneSelected = savedInstanceState.getBoolean(STATE_PLAYER_ONE_KEY);
                 } else {
                     // Save copy to check modifications before exit.
                     mTimeControlSnapshot = null;
@@ -227,7 +232,6 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             }
         });
         copyPlayerOneLay.setVisibility(GONE);
-        TabLayout tabLayout = view.findViewById(R.id.tabLayout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -260,6 +264,12 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
             incrementMinutesEt.setHint(hint);
             secondsEt.setHint(hint);
             incrementSecondsEt.setHint(hint);
+        } else {
+            int tabId = playerOneSelected ? 0 : 1;
+            TabLayout.Tab tab = tabLayout.getTabAt(tabId);
+            if (tab != null) {
+                tab.select();
+            }
         }
         updateUi();
     }
@@ -314,6 +324,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(STATE_TIME_CONTROL_SNAPSHOT_KEY, mTimeControlSnapshot);
         outState.putBoolean(STATE_ADVANCED_MODE_KEY, advancedMode);
+        outState.putBoolean(STATE_PLAYER_ONE_KEY, playerOneSelected);
         super.onSaveInstanceState(outState);
     }
 
