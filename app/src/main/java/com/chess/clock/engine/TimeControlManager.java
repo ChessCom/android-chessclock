@@ -241,6 +241,6 @@ public class TimeControlManager {
         /**
          * Called when Time Control list gets empty.
          */
-        public void onTimeControlListEmpty();
+        void onTimeControlListEmpty();
     }
 }

@@ -29,7 +29,7 @@ public class TimeControlAdapter extends ArrayAdapter<TimeControlWrapper> {
         super(context, R.layout.list_time_control_item_single_choice, R.id.time_control_text,
                 timeControls);
         data = timeControls;
-        if(theme!= null){
+        if (theme != null) {
             radioButtonColors = theme.colorStateListChecked(getContext());
         }
     }
