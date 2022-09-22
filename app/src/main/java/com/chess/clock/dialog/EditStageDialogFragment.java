@@ -22,7 +22,6 @@ import com.chess.clock.activities.BaseActivity;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.entities.AppTheme;
-import com.chess.clock.fragments.BaseFragment;
 import com.chess.clock.fragments.TimeControlFragment;
 import com.chess.clock.util.ClockUtils;
 import com.chess.clock.views.ViewUtils;
@@ -63,7 +62,12 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         stage = requireArguments().getParcelable(ARG_STAGE_KEY);
-        timeIncrement = requireArguments().getParcelable(ARG_TIME_INCREMENT_KEY);
+        if (savedInstanceState == null) {
+            timeIncrement = requireArguments().getParcelable(ARG_TIME_INCREMENT_KEY);
+        } else {
+            timeIncrement = savedInstanceState.getParcelable(ARG_TIME_INCREMENT_KEY);
+        }
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -72,13 +76,11 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
         super.onViewCreated(view, savedInstanceState);
         int titleRes = R.string.stage_editor_dialog_title;
         setName(view, titleRes);
-        ((View) view.findViewById(R.id.backBtn)).setOnClickListener(v -> {
-            dismissAllowingStateLoss();
-        });
-        ((View) view.findViewById(R.id.deleteBtn)).setOnClickListener(v -> {
-            DeleteConfirmationDialogFragment.newInstance(stage.getId())
-                    .show(getParentFragmentManager(), DeleteConfirmationDialogFragment.TAG);
-        });
+        ((View) view.findViewById(R.id.backBtn)).setOnClickListener(v -> dismissAllowingStateLoss());
+        ((View) view.findViewById(R.id.deleteBtn)).setOnClickListener(v ->
+                DeleteConfirmationDialogFragment.newInstance(stage.getId())
+                        .show(getParentFragmentManager(), DeleteConfirmationDialogFragment.TAG)
+        );
 
         timeIncrementDetailsTv = view.findViewById(R.id.incrementDetailsTv);
         timeIncrementDetailsTv.setText(timeIncrement.toString());
@@ -164,11 +166,12 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
         timeIncrement.setType(type);
         timeIncrement.setValue(time);
         timeIncrementDetailsTv.setText(timeIncrement.toString());
+    }
 
-        Bundle arguments = new Bundle();
-        arguments.putParcelable(ARG_TIME_INCREMENT_KEY, timeIncrement);
-        arguments.putParcelable(ARG_STAGE_KEY, stage);
-        setArguments(arguments);
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(ARG_TIME_INCREMENT_KEY, timeIncrement);
     }
 
     /**
@@ -191,6 +194,7 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
             return myFragment;
         }
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 

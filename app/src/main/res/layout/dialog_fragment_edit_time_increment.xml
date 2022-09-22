@@ -40,13 +40,14 @@
         android:layout_marginHorizontal="@dimen/margin_standard"
         android:layout_marginTop="@dimen/margin_large"
         android:text="@string/type"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/white_50"
         android:textSize="@dimen/text_size_default" />
 
     <androidx.appcompat.widget.AppCompatCheckedTextView
         android:id="@+id/delayBtn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/time_item_height"
+        android:background="?selectableItemBackground"
         android:checkMark="@drawable/list_radio_button_selector"
         android:ellipsize="end"
         android:gravity="center_vertical"
@@ -60,6 +61,7 @@
         android:id="@+id/bronsteinBtn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/time_item_height"
+        android:background="?selectableItemBackground"
         android:checkMark="@drawable/list_radio_button_selector"
         android:ellipsize="end"
         android:gravity="center_vertical"
@@ -73,6 +75,7 @@
         android:id="@+id/fisherBtn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/time_item_height"
+        android:background="?selectableItemBackground"
         android:checkMark="@drawable/list_radio_button_selector"
         android:ellipsize="end"
         android:gravity="center_vertical"
@@ -81,6 +84,16 @@
         android:text="@string/radio_fischer_title"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_large" />
+
+    <TextView
+        android:id="@+id/typeDetailsTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_standard"
+        android:layout_marginTop="@dimen/margin_large"
+        android:text="@string/fischer_option_subtitle"
+        android:textColor="@color/white_50"
+        android:textSize="@dimen/text_size_default" />
 
 
     <View

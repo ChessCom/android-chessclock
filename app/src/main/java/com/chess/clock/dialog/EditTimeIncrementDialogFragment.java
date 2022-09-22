@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatCheckedTextView;
 import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
@@ -29,6 +30,11 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
 
     EditText secondsEt;
     EditText minutesEt;
+
+    AppCompatCheckedTextView delayTv;
+    AppCompatCheckedTextView bronsteinTv;
+    AppCompatCheckedTextView fischerTv;
+    TextView typeDetailsTv;
 
     @Override
     int layoutRes() {
@@ -48,20 +54,29 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        timeIncrement = requireArguments().getParcelable(ARG_TIME_INCREMENT_KEY);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        if (savedInstanceState == null) {
+            timeIncrement = requireArguments().getParcelable(ARG_TIME_INCREMENT_KEY);
+        } else {
+            timeIncrement = savedInstanceState.getParcelable(ARG_TIME_INCREMENT_KEY);
+        }
+
+        assert view != null;
+        secondsEt = view.findViewById(R.id.secondsEt);
+        minutesEt = view.findViewById(R.id.minutesEt);
+        delayTv = view.findViewById(R.id.delayBtn);
+        bronsteinTv = view.findViewById(R.id.bronsteinBtn);
+        fischerTv = view.findViewById(R.id.fisherBtn);
+        typeDetailsTv = view.findViewById(R.id.typeDetailsTv);
+
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((TextView) view.findViewById(R.id.titleTv)).setText(R.string.increment);
-        ((View) view.findViewById(R.id.backBtn)).setOnClickListener(v -> {
-            dismissAllowingStateLoss();
-        });
-
-        secondsEt = view.findViewById(R.id.secondsEt);
-        minutesEt = view.findViewById(R.id.minutesEt);
+        ((View) view.findViewById(R.id.backBtn)).setOnClickListener(v -> dismissAllowingStateLoss());
 
         ClockUtils.clearFocusOnActionDone(minutesEt);
         ClockUtils.setClockTextWatcher(secondsEt);
@@ -72,6 +87,34 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
             minutesEt.setText(ClockUtils.twoDecimalPlacesFormat(minutes));
             secondsEt.setText(ClockUtils.twoDecimalPlacesFormat(duration[2]));
         }
+
+        delayTv.setOnClickListener(v -> setCheckedViews(TimeIncrement.Type.DELAY));
+        bronsteinTv.setOnClickListener(v -> setCheckedViews(TimeIncrement.Type.BRONSTEIN));
+        fischerTv.setOnClickListener(v -> setCheckedViews(TimeIncrement.Type.FISCHER));
+
+        setCheckedViews(timeIncrement.getType());
+    }
+
+    private void setCheckedViews(TimeIncrement.Type type) {
+        delayTv.setChecked(type == TimeIncrement.Type.DELAY);
+        bronsteinTv.setChecked(type == TimeIncrement.Type.BRONSTEIN);
+        fischerTv.setChecked(type == TimeIncrement.Type.FISCHER);
+
+        int subtitleRes;
+        switch (type) {
+            case DELAY:
+                subtitleRes = R.string.delay_option_subtitle;
+                break;
+            case BRONSTEIN:
+                subtitleRes = R.string.bronstein_option_subtitle;
+                break;
+            default:
+                subtitleRes = R.string.fischer_option_subtitle;
+                break;
+        }
+        typeDetailsTv.setText(subtitleRes);
+
+        timeIncrement.setType(type);
     }
 
     @Override
@@ -85,6 +128,12 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
                 secondsEt.setBackgroundTintList(tintList);
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(ARG_TIME_INCREMENT_KEY, timeIncrement);
     }
 
     @Override
