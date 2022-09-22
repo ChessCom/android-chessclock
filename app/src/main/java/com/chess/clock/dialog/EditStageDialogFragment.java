@@ -78,6 +78,11 @@ public class EditStageDialogFragment extends FullScreenDialogFragment {
         });
         ((TextView) view.findViewById(R.id.incrementDetailsTv)).setText(timeIncrement.toString());
 
+        view.findViewById(R.id.incrementLay).setOnClickListener(v -> {
+            DialogFragment dialogFragment = EditTimeIncrementDialogFragment.newInstance(timeIncrement);
+            dialogFragment.show(getParentFragmentManager(), EditTimeIncrementDialogFragment.TAG);
+        });
+
         hoursEt = view.findViewById(R.id.hoursEt);
         minutesEt = view.findViewById(R.id.minutesEt);
         secondsEt = view.findViewById(R.id.secondsEt);

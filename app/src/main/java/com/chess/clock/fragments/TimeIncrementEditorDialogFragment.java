@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 
 import com.chess.clock.R;
+import com.chess.clock.dialog.EditTimeIncrementDialogFragment;
 import com.chess.clock.dialog.TimeIncrementEditorDialog;
 import com.chess.clock.dialog.TimePickerDialog;
 import com.chess.clock.engine.TimeIncrement;
@@ -71,7 +72,7 @@ public class TimeIncrementEditorDialogFragment extends DialogFragment {
         builder.setSecond(second);
         builder.setTimeIncrementType(incrementType);
         builder.setType(TimePickerDialog.Type.MINUTE_SECOND);
-        builder.setOnTimeIncrementEditListener((TimeIncrementEditorDialog.OnTimeIncrementEditListener) getTargetFragment());
+        builder.setOnTimeIncrementEditListener((EditTimeIncrementDialogFragment.OnTimeIncrementEditListener) getTargetFragment());
 
         return builder.create();
     }

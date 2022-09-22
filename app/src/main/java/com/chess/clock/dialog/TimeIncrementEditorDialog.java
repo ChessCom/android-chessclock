@@ -16,7 +16,7 @@ import com.chess.clock.engine.TimeIncrement;
 public class TimeIncrementEditorDialog extends TimePickerDialog {
 
     private static final String INCREMENT_TYPE = "increment_type";
-    private OnTimeIncrementEditListener mCallback;
+    private EditTimeIncrementDialogFragment.OnTimeIncrementEditListener mCallback;
     private TimeIncrementEditorView mTimeIncrementEditorView;
     private int mInitialTimeIncrementType;
 
@@ -28,7 +28,7 @@ public class TimeIncrementEditorDialog extends TimePickerDialog {
         super(context, theme);
     }
 
-    public void setOnStageEditListener(OnTimeIncrementEditListener listener) {
+    public void setOnStageEditListener(EditTimeIncrementDialogFragment.OnTimeIncrementEditListener listener) {
         mCallback = listener;
     }
 
@@ -81,23 +81,12 @@ public class TimeIncrementEditorDialog extends TimePickerDialog {
         }
     }
 
-    /**
-     * The callback interface used to indicate the user is done filling in
-     * the stage data (the user clicked on the 'Set' button).
-     */
-    public interface OnTimeIncrementEditListener {
 
-        /**
-         * @param type The increment Type that was set.
-         * @param time The time that was set in milliseconds.
-         */
-        void onTimeIncrementEditDone(TimeIncrement.Type type, long time);
-    }
 
     public static class Builder extends TimePickerDialog.Builder {
 
         private int mType;
-        private OnTimeIncrementEditListener mOnTimeIncrementEditListener;
+        private EditTimeIncrementDialogFragment.OnTimeIncrementEditListener mOnTimeIncrementEditListener;
 
         public Builder(Context context) {
             super(context);
@@ -111,7 +100,7 @@ public class TimeIncrementEditorDialog extends TimePickerDialog {
             return this;
         }
 
-        public Builder setOnTimeIncrementEditListener(OnTimeIncrementEditListener listener) {
+        public Builder setOnTimeIncrementEditListener(EditTimeIncrementDialogFragment.OnTimeIncrementEditListener listener) {
             mOnTimeIncrementEditListener = listener;
             return this;
         }

@@ -93,5 +93,7 @@
     <string name="stage_two">Stage Two</string>
     <string name="stage_three">Stage Three</string>
     <string name="moves">Moves</string>
+    <string name="value">Value</string>
+    <string name="type">Type</string>
 
 </resources>

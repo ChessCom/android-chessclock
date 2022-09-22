@@ -31,7 +31,7 @@ import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
 import com.chess.clock.dialog.EditStageDialogFragment;
-import com.chess.clock.dialog.TimeIncrementEditorDialog;
+import com.chess.clock.dialog.EditTimeIncrementDialogFragment;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
@@ -45,7 +45,7 @@ import com.google.android.material.tabs.TabLayout;
  * UI fragment to create and edit a TimeControl.
  */
 public class TimeControlFragment extends BaseFragment implements EditStageDialogFragment.OnStageEditListener,
-        TimeIncrementEditorDialog.OnTimeIncrementEditListener {
+        EditTimeIncrementDialogFragment.OnTimeIncrementEditListener {
 
     /**
      * Bundle/Instance state keys
@@ -57,12 +57,10 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     /**
      * Dialog Fragment TAGS
      */
-    private static final String TAG_TIME_INCREMENT_EDITOR_DIALOG_FRAGMENT = "TimeIncrementEditorDialog";
     private static final String TAG_EXIT_DIALOG_FRAGMENT = "ExitDialogFragment";
     /**
      * DIALOG request code
      */
-    private static final int REQUEST_TIME_INCREMENT_DIALOG = 2;
     private static final int REQUEST_EXIT_DIALOG = 3;
     /**
      * Activity attached.
@@ -433,19 +431,6 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         }
 
         updateStagesDisplay();
-    }
-
-    // todo increment lay
-    public void showTimeIncrementEditorDialog() {
-        // Get Time Increment
-        TimeIncrement timeIncrement = selectedTimeControl.getTimeIncrement();
-
-        // Setup Time Increment Editor Dialog
-        DialogFragment newFragment = new TimeIncrementEditorDialogFragment(getActivity(), timeIncrement);
-        newFragment.setTargetFragment(this, REQUEST_TIME_INCREMENT_DIALOG);
-
-        // Launch Time Increment Editor Dialog.
-        newFragment.show(requireActivity().getSupportFragmentManager(), TAG_TIME_INCREMENT_EDITOR_DIALOG_FRAGMENT);
     }
 
     @Override
