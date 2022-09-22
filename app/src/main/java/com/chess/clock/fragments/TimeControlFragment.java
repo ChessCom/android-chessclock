@@ -17,7 +17,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -48,10 +47,6 @@ import com.google.android.material.tabs.TabLayout;
 public class TimeControlFragment extends BaseFragment implements EditStageDialogFragment.OnStageEditListener,
         TimeIncrementEditorDialog.OnTimeIncrementEditListener {
 
-    /**
-     * view constants
-     */
-    private static final int MAX_ALLOWED_STAGES_COUNT = 3;
     /**
      * Bundle/Instance state keys
      */
@@ -199,9 +194,9 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
 
     private void loadStages(TimeControl timeControl) {
         Stage[] stages = timeControl.getStageManager().getStages();
-        ViewUtils.showView(addStageView, stages.length < MAX_ALLOWED_STAGES_COUNT);
+        ViewUtils.showView(addStageView, stages.length < Stage.MAX_ALLOWED_STAGES_COUNT);
         int i = 0;
-        while (i < MAX_ALLOWED_STAGES_COUNT) {
+        while (i < Stage.MAX_ALLOWED_STAGES_COUNT) {
             StageRowView row = (StageRowView) stagesList.getChildAt(i);
             if (i < stages.length) {
                 Stage stage = stages[i];
@@ -218,8 +213,6 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
             }
             i++;
         }
-
-
     }
 
     @Override
@@ -393,7 +386,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         imm.hideSoftInputFromWindow(nameEt.getWindowToken(), 0);
 
 
-        if (selectedTimeControl.getStageManager().getTotalStages() < MAX_ALLOWED_STAGES_COUNT) {
+        if (selectedTimeControl.getStageManager().getTotalStages() < Stage.MAX_ALLOWED_STAGES_COUNT) {
             selectedTimeControl.getStageManager().addNewStage();
             updateStagesDisplay();
         }

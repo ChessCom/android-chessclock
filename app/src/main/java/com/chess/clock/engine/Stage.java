@@ -15,6 +15,7 @@ public class Stage implements Parcelable, Cloneable {
     public static final int STAGE_ONE_ID = 0;
     public static final int STAGE_TWO_ID = 1;
     public static final int STAGE_THREE_ID = 2;
+    public static final int MAX_ALLOWED_STAGES_COUNT = 3;
 
     public static final Parcelable.Creator<Stage> CREATOR = new Parcelable.Creator<Stage>() {
         public Stage createFromParcel(Parcel source) {
@@ -97,7 +98,7 @@ public class Stage implements Parcelable, Cloneable {
      * @param id
      */
     public void setId(int id) {
-        if (id >= 0 && id < 3) {
+        if (id >= 0 && id < MAX_ALLOWED_STAGES_COUNT) {
             mId = id;
         }
     }
