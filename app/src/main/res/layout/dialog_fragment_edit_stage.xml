@@ -178,8 +178,7 @@
             android:text="@string/increment"
             app:layout_constraintEnd_toStartOf="@id/arrowImg"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/incrementDetailsTv"
