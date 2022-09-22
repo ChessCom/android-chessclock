@@ -29,6 +29,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
+import com.chess.clock.dialog.EditStageDialogFragment;
 import com.chess.clock.dialog.StageEditorDialog;
 import com.chess.clock.dialog.TimeIncrementEditorDialog;
 import com.chess.clock.engine.Stage;
@@ -208,7 +209,7 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
                 row.updateData(i + 1, stage, timeControl.getTimeIncrement());
                 row.setOnClickListener(v -> {
                     if (timeControlListener != null) {
-                        showStageEditorDialog(stage);
+                        showStageEditorDialog(stage, timeControl.getTimeIncrement());
                     }
                 });
                 row.setVisibility(View.VISIBLE);
@@ -448,19 +449,23 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
 
     public void removeStage(int stageIndex) {
         selectedTimeControl.getStageManager().removeStage(stageIndex);
+        DialogFragment editDialog = (DialogFragment) getChildFragmentManager().findFragmentByTag(EditStageDialogFragment.TAG);
+        if (editDialog != null) {
+            editDialog.dismissAllowingStateLoss();
+        }
         updateStagesDisplay();
     }
 
-    /**
-     * Launch Stage Editor Dialog where the user can manipulate the Stage's properties.
-     */
-    private void showStageEditorDialog(Stage stage) {
+    private void showStageEditorDialog(Stage stage, TimeIncrement timeIncrement) {
+        DialogFragment dialogFragment = EditStageDialogFragment.newInstance(stage, timeIncrement);
+        dialogFragment.show(getChildFragmentManager(), EditStageDialogFragment.TAG);
+        //before
         // Setup Stage Editor Dialog.
-        DialogFragment newFragment = new StageEditorDialogFragment(getActivity(), stage);
-        newFragment.setTargetFragment(this, REQUEST_STAGE_DIALOG);
-
-        // Launch Stage Editor Dialog.
-        newFragment.show(requireActivity().getSupportFragmentManager(), TAG_STAGE_EDITOR_DIALOG_FRAGMENT);
+//        DialogFragment newFragment = new StageEditorDialogFragment(getActivity(), stage);
+//        newFragment.setTargetFragment(this, REQUEST_STAGE_DIALOG);
+//
+//        // Launch Stage Editor Dialog.
+//        newFragment.show(requireActivity().getSupportFragmentManager(), TAG_STAGE_EDITOR_DIALOG_FRAGMENT);
     }
 
     /**

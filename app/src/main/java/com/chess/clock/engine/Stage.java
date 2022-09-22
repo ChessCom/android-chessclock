@@ -12,6 +12,9 @@ import android.util.Log;
 public class Stage implements Parcelable, Cloneable {
 
     private final static String TAG = Stage.class.getName();
+    public static final int STAGE_ONE_ID = 0;
+    public static final int STAGE_TWO_ID = 1;
+    public static final int STAGE_THREE_ID = 2;
 
     public static final Parcelable.Creator<Stage> CREATOR = new Parcelable.Creator<Stage>() {
         public Stage createFromParcel(Parcel source) {

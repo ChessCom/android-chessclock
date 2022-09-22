@@ -89,5 +89,8 @@
     <string name="advanced_mode">Advanced mode</string>
     <string name="please_set_time">Please add a time to save.</string>
     <string name="stages">Stages</string>
+    <string name="stage_one">Stage One</string>
+    <string name="stage_two">Stage Two</string>
+    <string name="stage_three">Stage Three</string>
 
 </resources>

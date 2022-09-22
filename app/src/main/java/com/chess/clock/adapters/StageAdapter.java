@@ -68,46 +68,6 @@ public class StageAdapter extends ArrayAdapter<Stage> {
         return row;
     }
 
-    /**
-     * Delete dialog to be displayed when user presses the delete widget.
-     */
-    public static class DeleteDialogFragment extends DialogFragment {
-
-        public static final String ARG_STAGE_ID = "stageID";
-
-        public DeleteDialogFragment() {
-            super();
-        }
-
-        public static DeleteDialogFragment newInstance(int stageID) {
-            DeleteDialogFragment myFragment = new DeleteDialogFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_STAGE_ID, stageID);
-            myFragment.setArguments(args);
-            return myFragment;
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            // Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.delete_stage_dialog_message)
-                    .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
-                        TimeControlFragment fragment = (TimeControlFragment) getTargetFragment();
-                        int stageID = getArguments().getInt(ARG_STAGE_ID, 0);
-                        fragment.removeStage(stageID);
-                    })
-                    .setNegativeButton(R.string.dialog_no, (dialog, id) -> {
-                        // Resume
-                    });
-            // Create the AlertDialog object and return it
-            Dialog dialog = builder.create();
-            dialog.setCanceledOnTouchOutside(false);
-            return dialog;
-        }
-    }
-
     static class StageHolder {
         TextView stageDetails;
         TextView timeIncrementDetails;
