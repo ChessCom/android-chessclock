@@ -2,20 +2,29 @@ package com.chess.clock.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeIncrement;
+import com.chess.clock.entities.AppTheme;
+import com.chess.clock.fragments.BaseFragment;
 import com.chess.clock.fragments.TimeControlFragment;
+import com.chess.clock.util.ClockUtils;
+import com.chess.clock.views.ViewUtils;
 
 public class EditStageDialogFragment extends FullScreenDialogFragment {
 
@@ -25,6 +34,11 @@ public class EditStageDialogFragment extends FullScreenDialogFragment {
 
     private Stage stage;
     private TimeIncrement timeIncrement;
+
+    EditText hoursEt;
+    EditText minutesEt;
+    EditText secondsEt;
+    EditText movesEt;
 
     @Override
     int layoutRes() {
@@ -56,13 +70,64 @@ public class EditStageDialogFragment extends FullScreenDialogFragment {
         int titleRes = R.string.stage_editor_dialog_title;
         setName(view, titleRes);
         ((View) view.findViewById(R.id.backBtn)).setOnClickListener(v -> {
-            // todo save and finish
             dismissAllowingStateLoss();
         });
         ((View) view.findViewById(R.id.deleteBtn)).setOnClickListener(v -> {
             DeleteConfirmationDialogFragment.newInstance(stage.getId())
                     .show(getParentFragmentManager(), DeleteConfirmationDialogFragment.TAG);
         });
+        ((TextView) view.findViewById(R.id.incrementDetailsTv)).setText(timeIncrement.toString());
+
+        hoursEt = view.findViewById(R.id.hoursEt);
+        minutesEt = view.findViewById(R.id.minutesEt);
+        secondsEt = view.findViewById(R.id.secondsEt);
+        movesEt = view.findViewById(R.id.movesEt);
+
+        ClockUtils.setClockTextWatcher(minutesEt);
+        ClockUtils.setClockTextWatcher(secondsEt);
+
+        ClockUtils.clearFocusOnActionDone(hoursEt);
+        ClockUtils.clearFocusOnActionDone(movesEt);
+
+        if (savedInstanceState == null) {
+            int[] time = stage.getTime();
+            hoursEt.setText(ClockUtils.twoDecimalPlacesFormat(time[0]));
+            minutesEt.setText(ClockUtils.twoDecimalPlacesFormat(time[1]));
+            secondsEt.setText(ClockUtils.twoDecimalPlacesFormat(time[2]));
+            movesEt.setText(String.valueOf(stage.getTotalMoves()));
+        }
+
+        ViewUtils.showView(view.findViewById(R.id.movesLay), stage.getStageType() != Stage.StageType.GAME);
+        ViewUtils.showView(view.findViewById(R.id.movesDivider), stage.getStageType() != Stage.StageType.GAME);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AppTheme theme = ((BaseFragment) requireParentFragment()).loadedTheme;
+        if (theme != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ColorStateList tintList = theme.colorStateListFocused(requireContext());
+                hoursEt.setBackgroundTintList(tintList);
+                minutesEt.setBackgroundTintList(tintList);
+                secondsEt.setBackgroundTintList(tintList);
+                movesEt.setBackgroundTintList(tintList);
+            }
+        }
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        int hours = ClockUtils.getIntOrZero(hoursEt);
+        int minutes = ClockUtils.getIntOrZero(minutesEt);
+        int seconds = ClockUtils.getIntOrZero(secondsEt);
+        long duration = hours * 60 * 60 * 1000L + minutes * 60 * 1000L + seconds * 1000L;
+        int moves = Math.max(1, ClockUtils.getIntOrZero(movesEt));
+        Fragment parentFragment = getParentFragment();
+        if (parentFragment != null) {
+            ((OnStageEditListener) parentFragment).onStageEditDone(stage.getId(), moves, duration);
+        }
     }
 
     private void setName(@NonNull View view, int titleRes) {
@@ -122,5 +187,18 @@ public class EditStageDialogFragment extends FullScreenDialogFragment {
             dialog.setCanceledOnTouchOutside(false);
             return dialog;
         }
+    }
+
+    /**
+     * The callback interface used to indicate the user is done filling in
+     * the stage data (the user clicked on the 'Set' button).
+     */
+    public interface OnStageEditListener {
+
+        /**
+         * @param moves The number of moves that was set.
+         * @param time  The time that was set in milliseconds.
+         */
+        void onStageEditDone(int stageId, int moves, long time);
     }
 }

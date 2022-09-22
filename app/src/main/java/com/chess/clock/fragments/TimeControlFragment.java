@@ -1,8 +1,10 @@
 package com.chess.clock.fragments;
 
 import static android.view.View.GONE;
+import static com.chess.clock.util.ClockUtils.getIntOrZero;
+import static com.chess.clock.util.ClockUtils.setClockTextWatcher;
+import static com.chess.clock.util.ClockUtils.twoDecimalPlacesFormat;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Service;
@@ -30,7 +32,6 @@ import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
 import com.chess.clock.dialog.EditStageDialogFragment;
-import com.chess.clock.dialog.StageEditorDialog;
 import com.chess.clock.dialog.TimeIncrementEditorDialog;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControl;
@@ -44,7 +45,7 @@ import com.google.android.material.tabs.TabLayout;
 /**
  * UI fragment to create and edit a TimeControl.
  */
-public class TimeControlFragment extends BaseFragment implements StageEditorDialog.OnStageEditListener,
+public class TimeControlFragment extends BaseFragment implements EditStageDialogFragment.OnStageEditListener,
         TimeIncrementEditorDialog.OnTimeIncrementEditListener {
 
     /**
@@ -61,13 +62,11 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     /**
      * Dialog Fragment TAGS
      */
-    private static final String TAG_STAGE_EDITOR_DIALOG_FRAGMENT = "StageEditorDialog";
     private static final String TAG_TIME_INCREMENT_EDITOR_DIALOG_FRAGMENT = "TimeIncrementEditorDialog";
     private static final String TAG_EXIT_DIALOG_FRAGMENT = "ExitDialogFragment";
     /**
      * DIALOG request code
      */
-    private static final int REQUEST_STAGE_DIALOG = 1;
     private static final int REQUEST_TIME_INCREMENT_DIALOG = 2;
     private static final int REQUEST_EXIT_DIALOG = 3;
     /**
@@ -246,8 +245,8 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
                 }
             }
         });
-        setMinutesTextWatcher(secondsEt);
-        setMinutesTextWatcher(incrementSecondsEt);
+        setClockTextWatcher(secondsEt);
+        setClockTextWatcher(incrementSecondsEt);
         advancedModeSwitch.setChecked(advancedMode);
         advancedModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             advancedMode = isChecked;
@@ -306,47 +305,6 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     private void updateUi() {
         ViewUtils.showView(baseView, !advancedMode && !editMode);
         ViewUtils.showView(advancedView, advancedMode || editMode);
-    }
-
-    private void setMinutesTextWatcher(EditText editText) {
-        TextWatcher minutesTextWatcher = new TextWatcher() {
-            final int MAX = 59;
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                editText.removeTextChangedListener(this);
-                String minutesAsString = s.toString();
-                int minutes = minutesAsString.isEmpty() ? 0 : Integer.parseInt(minutesAsString);
-                if (minutes > MAX) {
-                    s.clear();
-                    s.append(twoDecimalPlacesFormat(MAX));
-                }
-                editText.addTextChangedListener(this);
-            }
-        };
-        editText.addTextChangedListener(minutesTextWatcher);
-        editText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
-                String minutesAsString = v.getText().toString();
-                int minutes = minutesAsString.isEmpty() ? 0 : Integer.parseInt(minutesAsString);
-                v.setText(twoDecimalPlacesFormat(minutes));
-                v.clearFocus();
-            }
-            return false;
-        });
-    }
-
-    @SuppressLint("DefaultLocale")
-    private String twoDecimalPlacesFormat(int value) {
-        return String.format("%02d", value);
     }
 
     @Override
@@ -412,14 +370,8 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
         }
     }
 
-    private int getIntOrZero(EditText et) {
-        String textValue = et.getText().toString();
-        return textValue.isEmpty() ? 0 : Integer.parseInt(textValue);
-    }
-
     private void updateStagesDisplay() {
         loadStages(selectedTimeControl);
-        ;
     }
 
     public void showConfirmGoBackDialog() {
@@ -459,13 +411,6 @@ public class TimeControlFragment extends BaseFragment implements StageEditorDial
     private void showStageEditorDialog(Stage stage, TimeIncrement timeIncrement) {
         DialogFragment dialogFragment = EditStageDialogFragment.newInstance(stage, timeIncrement);
         dialogFragment.show(getChildFragmentManager(), EditStageDialogFragment.TAG);
-        //before
-        // Setup Stage Editor Dialog.
-//        DialogFragment newFragment = new StageEditorDialogFragment(getActivity(), stage);
-//        newFragment.setTargetFragment(this, REQUEST_STAGE_DIALOG);
-//
-//        // Launch Stage Editor Dialog.
-//        newFragment.show(requireActivity().getSupportFragmentManager(), TAG_STAGE_EDITOR_DIALOG_FRAGMENT);
     }
 
     /**

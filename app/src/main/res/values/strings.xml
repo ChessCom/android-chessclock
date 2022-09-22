@@ -92,5 +92,6 @@
     <string name="stage_one">Stage One</string>
     <string name="stage_two">Stage Two</string>
     <string name="stage_three">Stage Three</string>
+    <string name="moves">Moves</string>
 
 </resources>
