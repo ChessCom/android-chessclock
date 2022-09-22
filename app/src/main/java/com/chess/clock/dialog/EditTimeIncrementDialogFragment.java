@@ -15,9 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
+import com.chess.clock.activities.BaseActivity;
 import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.entities.AppTheme;
-import com.chess.clock.fragments.BaseFragment;
 import com.chess.clock.util.ClockUtils;
 
 public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
@@ -77,7 +77,7 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AppTheme theme = ((BaseFragment) requireParentFragment()).loadedTheme;
+        AppTheme theme = ((BaseActivity) requireActivity()).selectedTheme;
         if (theme != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ColorStateList tintList = theme.colorStateListFocused(requireContext());

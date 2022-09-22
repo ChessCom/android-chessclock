@@ -18,6 +18,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
+import com.chess.clock.activities.BaseActivity;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.entities.AppTheme;
@@ -26,7 +27,8 @@ import com.chess.clock.fragments.TimeControlFragment;
 import com.chess.clock.util.ClockUtils;
 import com.chess.clock.views.ViewUtils;
 
-public class EditStageDialogFragment extends FullScreenDialogFragment {
+public class EditStageDialogFragment extends FullScreenDialogFragment
+        implements EditTimeIncrementDialogFragment.OnTimeIncrementEditListener {
 
     public static final String TAG = "EditStageDialogFragment";
     private static final String ARG_STAGE_KEY = "arg_stage_key";
@@ -39,6 +41,7 @@ public class EditStageDialogFragment extends FullScreenDialogFragment {
     EditText minutesEt;
     EditText secondsEt;
     EditText movesEt;
+    TextView timeIncrementDetailsTv;
 
     @Override
     int layoutRes() {
@@ -76,11 +79,13 @@ public class EditStageDialogFragment extends FullScreenDialogFragment {
             DeleteConfirmationDialogFragment.newInstance(stage.getId())
                     .show(getParentFragmentManager(), DeleteConfirmationDialogFragment.TAG);
         });
-        ((TextView) view.findViewById(R.id.incrementDetailsTv)).setText(timeIncrement.toString());
+
+        timeIncrementDetailsTv = view.findViewById(R.id.incrementDetailsTv);
+        timeIncrementDetailsTv.setText(timeIncrement.toString());
 
         view.findViewById(R.id.incrementLay).setOnClickListener(v -> {
             DialogFragment dialogFragment = EditTimeIncrementDialogFragment.newInstance(timeIncrement);
-            dialogFragment.show(getParentFragmentManager(), EditTimeIncrementDialogFragment.TAG);
+            dialogFragment.show(getChildFragmentManager(), EditTimeIncrementDialogFragment.TAG);
         });
 
         hoursEt = view.findViewById(R.id.hoursEt);
@@ -109,7 +114,7 @@ public class EditStageDialogFragment extends FullScreenDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AppTheme theme = ((BaseFragment) requireParentFragment()).loadedTheme;
+        AppTheme theme = ((BaseActivity) requireActivity()).selectedTheme;
         if (theme != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ColorStateList tintList = theme.colorStateListFocused(requireContext());
@@ -149,6 +154,21 @@ public class EditStageDialogFragment extends FullScreenDialogFragment {
 
         }
         ((TextView) view.findViewById(R.id.titleTv)).setText(titleRes);
+    }
+
+    @Override
+    public void onTimeIncrementEditDone(TimeIncrement.Type type, long time) {
+        ((EditTimeIncrementDialogFragment.OnTimeIncrementEditListener) requireParentFragment())
+                .onTimeIncrementEditDone(type, time);
+
+        timeIncrement.setType(type);
+        timeIncrement.setValue(time);
+        timeIncrementDetailsTv.setText(timeIncrement.toString());
+
+        Bundle arguments = new Bundle();
+        arguments.putParcelable(ARG_TIME_INCREMENT_KEY, timeIncrement);
+        arguments.putParcelable(ARG_STAGE_KEY, stage);
+        setArguments(arguments);
     }
 
     /**
