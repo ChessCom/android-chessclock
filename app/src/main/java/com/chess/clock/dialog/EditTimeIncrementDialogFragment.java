@@ -76,7 +76,7 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((TextView) view.findViewById(R.id.titleTv)).setText(R.string.increment);
-        ((View) view.findViewById(R.id.backBtn)).setOnClickListener(v -> dismissAllowingStateLoss());
+        view.findViewById(R.id.backBtn).setOnClickListener(v -> dismissAllowingStateLoss());
 
         ClockUtils.clearFocusOnActionDone(minutesEt);
         ClockUtils.setClockTextWatcher(secondsEt);
