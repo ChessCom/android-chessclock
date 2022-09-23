@@ -287,7 +287,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
             startBtn.setVisibility(View.GONE);
 
         } else {
-            adapter = new TimeControlAdapter(getActivity(), mListener.getCurrentTimeControls());
+            adapter = new TimeControlAdapter(getActivity(), mListener.getCurrentTimeControls(), loadedTheme);
             timesListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
             timesListView.setAdapter(adapter);
         }
@@ -388,8 +388,11 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
         if (timesListView != null) {
 
             mTotalItemChecked = 0;
-
-            adapter = new TimeControlAdapter(getActivity(), mListener.getCurrentTimeControls());
+            if (adapter == null) {
+                adapter = new TimeControlAdapter(getActivity(), mListener.getCurrentTimeControls(), loadedTheme);
+            } else {
+                adapter.updateTimeControls(mListener.getCurrentTimeControls());
+            }
             timesListView.setAdapter(adapter);
             timesListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
             setListViewItemChecked();

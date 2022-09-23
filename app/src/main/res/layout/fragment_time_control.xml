@@ -1,141 +1,288 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:background="#ffffff"
-              android:orientation="vertical"
-              android:paddingBottom="@dimen/activity_vertical_margin"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin"
-    >
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <EditText
-        android:id="@+id/time_control_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name"
-        android:imeOptions="actionDone"
-        android:singleLine="true"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:orientation="horizontal"
-        >
+        <EditText
+            android:id="@+id/time_control_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/time_item_height"
+            android:layout_marginHorizontal="@dimen/margin_standard"
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@drawable/edit_text_bg"
+            android:hint="@string/name"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="100"
+            android:maxLines="1"
+            android:paddingHorizontal="@dimen/margin_small"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white_50"
+            android:textSize="@dimen/text_size_large" />
 
-        <TextView
-            android:id="@+id/stages_title_text"
+        <LinearLayout
+            android:id="@+id/baseLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:text="STAGES"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="18sp"
-            />
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/margin_standard"
+            tools:visibility="gone">
 
-    </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/time_item_height"
+                android:layout_marginTop="@dimen/margin_standard"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/darker_gray"
-        />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/time"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_large" />
 
-    <ListView
-        android:id="@+id/list_stages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:footerDividersEnabled="true"
-        />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/default_radius">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@android:color/darker_gray"
-        />
+                    <EditText
+                        android:id="@+id/baseMinEt"
+                        style="@style/timeInputEditTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/baseSecEt" />
+                </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/increment_title_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="32dp"
-        android:text="INCREMENT"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp"
-        />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_small"
+                    android:text="@string/colon" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/darker_gray"
-        />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/default_radius">
 
-    <RelativeLayout
-        android:id="@+id/btn_edit_increment"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="@drawable/simple_list_item_bg"
-        android:clickable="true"
-        >
+                    <EditText
+                        android:id="@+id/baseSecEt"
+                        style="@style/timeInputEditTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:imeOptions="actionDone" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/increment_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:text="Type"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/time_control_list_text_size"
-            android:textStyle="bold"
-            />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/margin_small"
+                android:background="@color/gray" />
 
-        <TextView
-            android:id="@+id/increment_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:text="Fischer, 5 secs"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="@dimen/time_control_list_text_size"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/time_item_height"
+                android:layout_marginTop="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <View
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/increment"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_large" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/default_radius">
+
+                    <EditText
+                        android:id="@+id/baseIncrementMinEt"
+                        style="@style/timeInputEditTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/baseIncrementSecEt" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_small"
+                    android:text="@string/colon" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/default_radius">
+
+                    <EditText
+                        android:id="@+id/baseIncrementSecEt"
+                        style="@style/timeInputEditTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:imeOptions="actionDone" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/advancedLay"
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_alignParentBottom="true"
-            android:background="@android:color/darker_gray"
-            />
-    </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/switch_same_as_player_one_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/same_as_player_one"
-            android:textSize="@dimen/stage_list_text_size"
-            android:layout_gravity="left"/>
+            android:layout_marginTop="@dimen/margin_standard"
+            android:orientation="vertical">
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch_same_as_player_one"
-            android:layout_width="wrap_content"
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                style="@style/TabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_control_player_one" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_control_player_two" />
+            </com.google.android.material.tabs.TabLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_standard"
+                android:layout_marginTop="@dimen/margin_large"
+                android:text="@string/stages"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_default" />
+
+            <LinearLayout
+                android:id="@+id/list_stages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.chess.clock.views.StageRowView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <com.chess.clock.views.StageRowView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <com.chess.clock.views.StageRowView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/addStageTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="?selectableItemBackground"
+                android:drawablePadding="@dimen/margin_small"
+                android:padding="@dimen/margin_small"
+                android:text="@string/action_add_new_stage"
+                android:textColor="@color/gray_light_2"
+                android:textSize="@dimen/text_size_large"
+                app:drawableLeftCompat="@drawable/ic_plus_green"
+                app:drawableTint="@color/gray_light_2" />
+
+            <LinearLayout
+                android:id="@+id/copyPlayerOneLay"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/time_item_height"
+                android:layout_marginHorizontal="@dimen/margin_standard"
+                android:layout_marginTop="@dimen/margin_standard"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/same_as_player_one"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_large" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/copyPlayerOneSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/advancedModeSwitchLay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/time_item_height"
+            android:layout_marginHorizontal="@dimen/margin_standard"
+            android:layout_marginTop="@dimen/margin_standard"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/advanced_mode"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_large" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/advancedModeSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:checked="true"/>
-    </FrameLayout>
-</LinearLayout>
+            android:layout_margin="@dimen/margin_standard"
+            android:background="@color/green"
+            android:text="@string/action_save_time_control"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

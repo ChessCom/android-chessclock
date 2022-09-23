@@ -12,6 +12,12 @@ import android.util.Log;
 public class Stage implements Parcelable, Cloneable {
 
     private final static String TAG = Stage.class.getName();
+    public static final int STAGE_ONE_ID = 0;
+    public static final int STAGE_TWO_ID = 1;
+    public static final int STAGE_THREE_ID = 2;
+    public static final int MAX_ALLOWED_STAGES_COUNT = 3;
+    public static final int DEFAULT_STAGE_MOVES = 20;
+    public static final int STAGE_DURATION_5_MIN = 300000;
 
     public static final Parcelable.Creator<Stage> CREATOR = new Parcelable.Creator<Stage>() {
         public Stage createFromParcel(Parcel source) {
@@ -94,7 +100,7 @@ public class Stage implements Parcelable, Cloneable {
      * @param id
      */
     public void setId(int id) {
-        if (id >= 0 && id < 3) {
+        if (id >= 0 && id < MAX_ALLOWED_STAGES_COUNT) {
             mId = id;
         }
     }
@@ -361,7 +367,7 @@ public class Stage implements Parcelable, Cloneable {
 
         private final int value;
 
-        private StageType(int value) {
+        StageType(int value) {
             this.value = value;
         }
 
@@ -402,7 +408,7 @@ public class Stage implements Parcelable, Cloneable {
 
         private final int value;
 
-        private StageState(int value) {
+        StageState(int value) {
             this.value = value;
         }
 
@@ -433,7 +439,7 @@ public class Stage implements Parcelable, Cloneable {
          *
          * @param stageFinishedNumber The identifier of the stage finished.
          */
-        public void onStageFinished(int stageFinishedNumber);
+        void onStageFinished(int stageFinishedNumber);
     }
 
     /**

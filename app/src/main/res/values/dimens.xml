@@ -5,6 +5,7 @@
 
     <dimen name="margin_x_small">4dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_x_standard">12dp</dimen>
     <dimen name="margin_standard">16dp</dimen>
     <dimen name="margin_large">24dp</dimen>
 
@@ -12,10 +13,11 @@
     <dimen name="default_elevation">4dp</dimen>
     <dimen name="max_content_width">480dp</dimen>
     <dimen name="button_height">56dp</dimen>
+    <dimen name="time_item_height">48dp</dimen>
 
     <!-- Text sizes-->
     <dimen name="text_size_default">14sp</dimen>
-    <dimen name="item_text_size">16sp</dimen>
+    <dimen name="text_size_large">16sp</dimen>
     <dimen name="button_text_size">22sp</dimen>
 
     <!-- Clock timer screen -->
@@ -29,6 +31,7 @@
 
     <!-- Settings screen -->
     <dimen name="list_item_text_size">18sp</dimen>
+    <dimen name="times_edit_text_padding">6dp</dimen>
 
     <!-- Time Increment Dialog -->
     <dimen name="increments_text_size">10sp</dimen>
@@ -37,8 +40,6 @@
     <dimen name="increment_subtitle_text_size">14sp</dimen>
 
     <!-- Time Control Screen -->
-    <dimen name="stage_list_text_size">18sp</dimen>
     <dimen name="time_control_list_text_size">18sp</dimen>
-    <dimen name="time_item_height">48dp</dimen>
 
 </resources>

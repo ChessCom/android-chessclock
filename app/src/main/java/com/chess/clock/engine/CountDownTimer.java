@@ -562,31 +562,31 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
          *
          * @param millisUntilFinished Time until finish in milliseconds.
          */
-        public void onClockTimeUpdate(long millisUntilFinished);
+        void onClockTimeUpdate(long millisUntilFinished);
 
         /**
          * Called when the time finishes.
          */
-        public void onClockFinish();
+        void onClockFinish();
 
         /**
          * Called when new game stage begins.
          *
          * @param stage The current game stage.
          */
-        public void onStageUpdate(Stage stage);
+        void onStageUpdate(Stage stage);
 
         /**
          * Called when the move count is updated.
          */
-        public void onMoveCountUpdate(int moves);
+        void onMoveCountUpdate(int moves);
 
         /**
          * Called only on registering listener.
          *
          * @param stagesNumber Total number of stages.
          */
-        public void onTotalStageNumber(int stagesNumber);
+        void onTotalStageNumber(int stagesNumber);
     }
 
     /**
@@ -597,6 +597,6 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
         /**
          * Called when the time finishes.
          */
-        public void onClockFinish();
+        void onClockFinish();
     }
 }

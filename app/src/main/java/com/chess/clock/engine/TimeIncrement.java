@@ -184,7 +184,7 @@ public class TimeIncrement implements Parcelable, Cloneable {
 
         private final int value;
 
-        private Type(int value) {
+        Type(int value) {
             this.value = value;
         }
 

@@ -1,50 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-    >
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:padding="@dimen/margin_standard">
 
     <TextView
-        android:id="@+id/stage_label"
+        android:id="@+id/positionTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/stage_list_item_margin"
-        android:text="Stage 1"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/stage_list_text_size"
-        android:textStyle="bold"
-        />
+        android:background="@drawable/bg_white_50_rounded"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/margin_small"
+        android:paddingVertical="@dimen/margin_x_small"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/stageDetailsTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintEnd_toStartOf="@id/arrowImg"
+        app:layout_constraintStart_toEndOf="@id/positionTv"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1 Move in 5:00" />
+
+    <TextView
+        android:id="@+id/incrementDetailsTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_x_small"
+        android:textColor="@color/white_50"
+        android:textSize="@dimen/text_size_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/stageDetailsTv"
+        app:layout_constraintStart_toStartOf="@id/stageDetailsTv"
+        app:layout_constraintTop_toBottomOf="@id/stageDetailsTv"
+        tools:text="Fischer, 5 secs" />
+
+    <ImageView
+        android:id="@+id/arrowImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        >
+        android:src="@drawable/ic_arrow_right_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white_50" />
 
-        <TextView
-            android:id="@+id/stage_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="@dimen/stage_list_item_margin"
-            android:text="1 Move in 5:00"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="@dimen/stage_list_text_size"
-            />
-
-        <ImageButton
-            android:id="@+id/stage_remove_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_action_discard"
-            android:focusable="false"
-            android:visibility="gone"
-            />
-
-    </LinearLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

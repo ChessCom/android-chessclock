@@ -2,6 +2,8 @@
 <resources>
     <!-- Non translatable-->
     <string name="default_moves_value" translatable="false">0</string>
+    <string name="colon" translatable="false">:</string>
+
 
     <!-- ChessClock Activity -->
     <string name="app_name">Chess Clock</string>
@@ -25,8 +27,7 @@
     <!-- Time Control Fragment -->
     <string name="action_add_new_stage">Add Stage</string>
     <string name="action_save_time_control">Save</string>
-    <string name="title_activity_time_control_new">New Time Control</string>
-    <string name="title_activity_time_control">Time Control</string>
+    <string name="time_control">Time Control</string>
     <string name="toast_requesting_time_control_name">Please add a name to save.</string>
     <string name="exit_dialog_title">Do you want to save before exiting?</string>
     <string name="exit_dialog_message">There are unsaved changes in this Time Control.</string>
@@ -39,9 +40,6 @@
 
     <!-- Stage Delete Dialog -->
     <string name="delete_stage_dialog_message">Delete stage?</string>
-
-    <!-- Stage Adapter -->
-    <string name="stage_item_list_label">Stage</string>
 
     <!-- Stage Editor Dialog -->
     <string name="stage_editor_dialog_title">Edit Stage</string>
@@ -82,8 +80,21 @@
     <string name="app_settings">App Settings</string>
     <string name="theme_color">Theme color</string>
     <string name="sound">Sound</string>
-
+    <string name="custom_time">Custom time</string>
     <string name="x_min">%d min</string>
     <string name="x_min_y_sec">%d min | %2d sec</string>
+    <string name="name">Name</string>
+    <string name="time">Time</string>
+    <string name="increment">Increment</string>
+    <string name="advanced_mode">Advanced mode</string>
+    <string name="please_set_time">Please add a time to save.</string>
+    <string name="stages">Stages</string>
+    <string name="stage_one">Stage One</string>
+    <string name="stage_two">Stage Two</string>
+    <string name="stage_three">Stage Three</string>
+    <string name="moves">Moves</string>
+    <string name="value">Value</string>
+    <string name="type">Type</string>
+    <string name="toast_requesting_time_control_stage">Please add at least one stage for each user.</string>
 
 </resources>

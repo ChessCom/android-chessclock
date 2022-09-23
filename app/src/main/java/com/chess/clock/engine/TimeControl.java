@@ -220,11 +220,11 @@ public class TimeControl implements Parcelable, Cloneable, StageManager.StageMan
          *
          * @param stage The current game stage.
          */
-        public void onStageUpdate(Stage stage);
+        void onStageUpdate(Stage stage);
 
         /**
          * Called when the move count is updated.
          */
-        public void onMoveCountUpdate(int moves);
+        void onMoveCountUpdate(int moves);
     }
 }

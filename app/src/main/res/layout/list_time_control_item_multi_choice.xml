@@ -28,7 +28,7 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/white"
-        android:textSize="@dimen/item_text_size"
+        android:textSize="@dimen/text_size_large"
         tools:text="@string/x_min_y_sec" />
 
     <FrameLayout
