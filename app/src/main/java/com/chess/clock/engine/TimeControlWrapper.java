@@ -84,4 +84,12 @@ public class TimeControlWrapper implements Parcelable, Cloneable {
                 mTimeControlPlayerTwo.isEqual(wrapper.getTimeControlPlayerTwo()) &&
                 mSameAsPlayerOne == wrapper.isSameAsPlayerOne();
     }
+
+    public boolean bothUsersHaveAtLeastOneStage() {
+        if (mSameAsPlayerOne) {
+            return mTimeControlPlayerOne.getStageManager().getTotalStages() > 0;
+        } else {
+            return mTimeControlPlayerOne.getStageManager().getTotalStages() > 0 && mTimeControlPlayerTwo.getStageManager().getTotalStages() > 0;
+        }
+    }
 }

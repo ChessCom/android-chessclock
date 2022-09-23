@@ -320,6 +320,8 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         if (newControlName.equals("")) {
             nameEt.requestFocus();
             Toast.makeText(getActivity(), getString(R.string.toast_requesting_time_control_name), Toast.LENGTH_LONG).show();
+        }else if(!timeControlWrapper.bothUsersHaveAtLeastOneStage()){
+            Toast.makeText(getActivity(), getString(R.string.toast_requesting_time_control_stage), Toast.LENGTH_LONG).show();
         } else {
             if (advancedMode || editMode) {
                 if (timeControlWrapper.isSameAsPlayerOne()) {
@@ -351,7 +353,6 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
                 timeControlWrapper.setTimeControlPlayerOne(simpleControl);
                 timeControlWrapper.setTimeControlPlayerTwo(simpleControl);
             }
-
             timeControlListener.saveTimeControl();
             requireActivity().getSupportFragmentManager().popBackStack();
         }
@@ -380,7 +381,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         imm.hideSoftInputFromWindow(nameEt.getWindowToken(), 0);
 
 
-        if (selectedTimeControl.getStageManager().getTotalStages() < Stage.MAX_ALLOWED_STAGES_COUNT) {
+        if (selectedTimeControl.getStageManager().canAddStage()) {
             selectedTimeControl.getStageManager().addNewStage();
             updateStagesDisplay();
         }

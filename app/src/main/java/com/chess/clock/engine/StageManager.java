@@ -100,30 +100,34 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
      * Add new Stage object
      */
     public void addNewStage() {
+        if (!canAddStage()) return;
 
-        if (getTotalStages() < 3) {
+        if (getTotalStages() == 0) {
+            Stage newStage = new Stage(Stage.STAGE_ONE_ID, Stage.STAGE_DURATION_5_MIN);
+            newStage.setStageListener(this);
+            mStages.add(newStage);
+        } else if (getTotalStages() == 1) {
+            // Set first stage as type MOVES, with 1 move
+            mStages.get(Stage.STAGE_ONE_ID).setStageType(Stage.StageType.MOVES);
+            mStages.get(Stage.STAGE_ONE_ID).setMoves(Stage.DEFAULT_STAGE_MOVES);
 
-            if (getTotalStages() == 1) {
+            Stage newStage = new Stage(Stage.STAGE_TWO_ID, Stage.STAGE_DURATION_5_MIN);
+            newStage.setStageListener(this);
+            mStages.add(newStage);
 
-                // Set first stage as type MOVES, with 1 move
-                mStages.get(0).setStageType(Stage.StageType.MOVES);
-                mStages.get(0).setMoves(20);
+        } else if (getTotalStages() == 2) {
+            // Set second stage as Type MOVES, with 1 move each.
+            mStages.get(Stage.STAGE_TWO_ID).setStageType(Stage.StageType.MOVES);
+            mStages.get(Stage.STAGE_TWO_ID).setMoves(Stage.DEFAULT_STAGE_MOVES);
 
-                Stage newStage = new Stage(1, 300000);
-                newStage.setStageListener(this);
-                mStages.add(newStage);
-
-            } else if (getTotalStages() == 2) {
-
-                // Set second stage as Type MOVES, with 1 move each.
-                mStages.get(1).setStageType(Stage.StageType.MOVES);
-                mStages.get(1).setMoves(20);
-
-                Stage newStage = new Stage(2, 300000);
-                newStage.setStageListener(this);
-                mStages.add(newStage);
-            }
+            Stage newStage = new Stage(Stage.STAGE_THREE_ID, Stage.STAGE_DURATION_5_MIN);
+            newStage.setStageListener(this);
+            mStages.add(newStage);
         }
+    }
+
+    public boolean canAddStage() {
+        return getTotalStages() < Stage.MAX_ALLOWED_STAGES_COUNT;
     }
 
     /**
