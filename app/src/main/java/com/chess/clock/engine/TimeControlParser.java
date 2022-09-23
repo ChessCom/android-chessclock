@@ -109,8 +109,8 @@ public class TimeControlParser {
                 timeIncrementJSONObject.put(TC_JSON_TYPE, tc.getTimeControlPlayerOne().getTimeIncrement().getType().getValue());
 
                 JSONObject timeIncrementPlayerTwoJSONObject = new JSONObject();
-                timeIncrementPlayerTwoJSONObject.put(TC_JSON_VALUE, tc.getTimeControlPlayerOne().getTimeIncrement().getValue());
-                timeIncrementPlayerTwoJSONObject.put(TC_JSON_TYPE, tc.getTimeControlPlayerOne().getTimeIncrement().getType().getValue());
+                timeIncrementPlayerTwoJSONObject.put(TC_JSON_VALUE, tc.getTimeControlPlayerTwo().getTimeIncrement().getValue());
+                timeIncrementPlayerTwoJSONObject.put(TC_JSON_TYPE, tc.getTimeControlPlayerTwo().getTimeIncrement().getType().getValue());
 
                 // Add name, stages and time increment to TimeControl json object.
                 timeControlJSONObject.put(TC_JSON_NAME, tc.getTimeControlPlayerOne().getName());
