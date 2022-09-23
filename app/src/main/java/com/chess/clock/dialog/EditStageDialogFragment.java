@@ -76,8 +76,8 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
         super.onViewCreated(view, savedInstanceState);
         int titleRes = R.string.stage_editor_dialog_title;
         setName(view, titleRes);
-        ((View) view.findViewById(R.id.backBtn)).setOnClickListener(v -> dismissAllowingStateLoss());
-        ((View) view.findViewById(R.id.deleteBtn)).setOnClickListener(v ->
+        view.findViewById(R.id.backBtn).setOnClickListener(v -> dismissAllowingStateLoss());
+        view.findViewById(R.id.deleteBtn).setOnClickListener(v ->
                 DeleteConfirmationDialogFragment.newInstance(stage.getId())
                         .show(getParentFragmentManager(), DeleteConfirmationDialogFragment.TAG)
         );

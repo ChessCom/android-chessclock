@@ -160,6 +160,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         addStageView = v.findViewById(R.id.addStageTv);
         tabLayout = v.findViewById(R.id.tabLayout);
         if (timeControlWrapper != null) {
+            selectedTimeControl = timeControlWrapper.getTimeControlPlayerOne();
 
             if (savedInstanceState != null) {
                 mTimeControlSnapshot = savedInstanceState.getParcelable(STATE_TIME_CONTROL_SNAPSHOT_KEY);
@@ -178,31 +179,26 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
 
             copyPLayerOneSwitch.setChecked(timeControlWrapper.isSameAsPlayerOne());
 
-            TimeControl tc = timeControlWrapper.getTimeControlPlayerOne();
-            if (tc.getName() != null && !tc.getName().equals("")) {
-                nameEt.setText(tc.getName());
+            String name = selectedTimeControl.getName();
+            if (name != null && !name.isEmpty()) {
+                nameEt.setText(name);
             }
-            loadStages(tc);
+            loadStages();
         }
-
-        assert timeControlWrapper != null;
-        selectedTimeControl = timeControlWrapper.getTimeControlPlayerOne();
         return v;
     }
 
-    private void loadStages(TimeControl timeControl) {
-        Stage[] stages = timeControl.getStageManager().getStages();
+    private void loadStages() {
+        Stage[] stages = selectedTimeControl.getStageManager().getStages();
         ViewUtils.showView(addStageView, stages.length < Stage.MAX_ALLOWED_STAGES_COUNT);
         int i = 0;
         while (i < Stage.MAX_ALLOWED_STAGES_COUNT) {
             StageRowView row = (StageRowView) stagesList.getChildAt(i);
             if (i < stages.length) {
                 Stage stage = stages[i];
-                row.updateData(i + 1, stage, timeControl.getTimeIncrement());
+                row.updateData(i + 1, stage, selectedTimeControl.getTimeIncrement());
                 row.setOnClickListener(v -> {
-                    if (timeControlListener != null) {
-                        showStageEditorDialog(stage, timeControl.getTimeIncrement());
-                    }
+                    showStageEditorDialog(stage, selectedTimeControl.getTimeIncrement());
                 });
                 row.setVisibility(View.VISIBLE);
             } else {
@@ -362,7 +358,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     }
 
     private void updateStagesDisplay() {
-        loadStages(selectedTimeControl);
+        loadStages();
     }
 
     public void showConfirmGoBackDialog() {
@@ -423,7 +419,12 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
 
     @Override
     public void onStageEditDone(int stageId, int moves, long timeValue) {
-        Stage stage = selectedTimeControl.getStageManager().getStages()[stageId];
+        Stage[] stages = selectedTimeControl.getStageManager().getStages();
+
+        // verify stage was not removed
+        if (stages.length <= stageId) return;
+
+        Stage stage = stages[stageId];
         stage.setMoves(moves);
 
         if (stage.getDuration() != timeValue) {
