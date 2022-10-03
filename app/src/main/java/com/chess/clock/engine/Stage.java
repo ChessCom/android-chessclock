@@ -17,6 +17,7 @@ public class Stage implements Parcelable, Cloneable {
     public static final int STAGE_THREE_ID = 2;
     public static final int MAX_ALLOWED_STAGES_COUNT = 3;
     public static final int DEFAULT_STAGE_MOVES = 20;
+    public static final int GAME_STAGE_MOVES = 0;
     public static final int STAGE_DURATION_5_MIN = 300000;
 
     public static final Parcelable.Creator<Stage> CREATOR = new Parcelable.Creator<Stage>() {

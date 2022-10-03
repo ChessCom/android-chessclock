@@ -137,27 +137,20 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
      */
     public void removeStage(int removeStageIdx) {
 
-        if (removeStageIdx != -1) {
+        if (removeStageIdx == -1) return;
 
-            Stage changingStage;
+        mStages.remove(removeStageIdx);
 
-            // Removing the middle and last one
-            if (removeStageIdx > 0 && removeStageIdx == (getTotalStages() - 1)) {
-
-                // Change the previous one
-                changingStage = mStages.get(removeStageIdx - 1);
-                changingStage.setMoves(0);
-                changingStage.setStageType(Stage.StageType.GAME);
-            }
-            // Remove the middle one
-            else if (removeStageIdx == 1) {
-
-                // Change the next one
-                changingStage = mStages.get(removeStageIdx + 1);
-                changingStage.setId(removeStageIdx);
-            }
-
-            mStages.remove(removeStageIdx);
+        // update indexes
+        int totalStages = getTotalStages();
+        for (int i = 0; i < totalStages; i++) {
+            mStages.get(i).setId(i);
+        }
+        // set last stage as game
+        if (totalStages > 0) {
+            Stage lastStage = mStages.get(totalStages - 1);
+            lastStage.setMoves(Stage.GAME_STAGE_MOVES);
+            lastStage.setStageType(Stage.StageType.GAME);
         }
     }
 
