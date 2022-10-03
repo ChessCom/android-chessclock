@@ -249,28 +249,10 @@ public class Stage implements Parcelable, Cloneable {
     }
 
     /**
-     * Get formated string ready to UI info display.
-     *
-     * @return String representing info content of Stage.
-     */
-    public String toString() {
-
-        String durationString = formatTime(getDuration());
-        int moves = getTotalMoves();
-        if (moves == 0) {
-            return "Game in " + durationString;
-        } else if (moves == 1) {
-            return "1 move in " + durationString;
-        } else {
-            return moves + " moves in " + durationString;
-        }
-    }
-
-    /**
-     * @param time Player time in milliseconds.
      * @return Readable String format of time.
      */
-    public String formatTime(long time) {
+    public String durationTimeFormatted() {
+        long time = getDuration();
 
         int s = (int) (time / 1000) % 60;
         int m = (int) ((time / (1000 * 60)) % 60);

@@ -426,7 +426,11 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         if (stages.length <= stageId) return;
 
         Stage stage = stages[stageId];
-        stage.setMoves(moves);
+        if (stage.getStageType() == Stage.StageType.GAME) {
+            stage.setMoves(Stage.GAME_STAGE_MOVES);
+        } else {
+            stage.setMoves(moves);
+        }
 
         if (stage.getDuration() != timeValue) {
             stage.setDuration(timeValue);
