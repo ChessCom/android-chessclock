@@ -138,86 +138,6 @@ public class ClockTimersActivity extends BaseActivity {
         }
     };
     private TimersState mTimersStatePreviousToPause;
-    private final View.OnClickListener mPlayerOneButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Log.i(TAG, "Player one pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
-
-            // Set pause btn visibility
-            if (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) {
-                clockMenu.showPause();
-            }
-
-            if (mTimersState == TimersState.PLAYER_ONE_RUNNING || mTimersState == TimersState.PAUSED) {
-
-                // If bound to clock service, press clock and update UI state.
-                if (mBound) {
-
-                    // First or continuation move
-                    if ((mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) ||
-                            (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PLAYER_ONE_RUNNING) ||
-                            mTimersState == TimersState.PLAYER_ONE_RUNNING) {
-
-                        mService.pressPlayerOneClock();
-                        mTimersState = TimersState.PLAYER_TWO_RUNNING;
-
-                    }
-                    // Resuming clock
-                    else {
-                        mService.resumeClock();
-                        mTimersState = mTimersStatePreviousToPause;
-                        mTimersStatePreviousToPause = TimersState.PAUSED;
-                    }
-
-                    soundManager.playSound(ClockSound.PLAYER_ONE_MOVE);
-
-                    updateUIState();
-                }
-            } else if (mTimersState == TimersState.PLAYER_ONE_FINISHED ||
-                    mTimersState == TimersState.PLAYER_TWO_FINISHED) {
-                showResetClockDialog();
-            }
-        }
-    };
-    private final View.OnClickListener mPlayerTwoButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Log.i(TAG, "Player two pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
-
-            if (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) {
-                clockMenu.showPause();
-            }
-
-            if (mTimersState == TimersState.PLAYER_TWO_RUNNING || mTimersState == TimersState.PAUSED) {
-
-                // If bound to clock service, press clock and update UI state.
-                if (mBound) {
-                    if ((mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) ||
-                            (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PLAYER_TWO_RUNNING) ||
-                            (mTimersState == TimersState.PLAYER_TWO_RUNNING)) {
-
-                        mService.pressPlayerTwoClock();
-
-                        mTimersState = TimersState.PLAYER_ONE_RUNNING;
-
-                    }
-                    // Resuming clock
-                    else {
-                        mService.resumeClock();
-                        mTimersState = mTimersStatePreviousToPause;
-                        mTimersStatePreviousToPause = TimersState.PAUSED;
-                    }
-
-                    soundManager.playSound(ClockSound.PLAYER_TWO_MOVE);
-
-                    updateUIState();
-                }
-            } else if (mTimersState == TimersState.PLAYER_ONE_FINISHED ||
-                    mTimersState == TimersState.PLAYER_TWO_FINISHED) {
-                showResetClockDialog();
-            }
-        }
-    };
     /**
      * Defines callbacks for chess clock service binding, passed to bindService()
      */
@@ -557,8 +477,28 @@ public class ClockTimersActivity extends BaseActivity {
         clockMenu = findViewById(R.id.menu_container);
 
         // Set listeners
-        playerOneButton.setClockButtonClickListener(mPlayerOneButtonListener);
-        playerTwoButton.setClockButtonClickListener(mPlayerTwoButtonListener);
+        playerOneButton.setClockButtonClickListener(new ClockButton.ClockClickListener() {
+            @Override
+            public void onClickClock() {
+                onPlayerOnClockClicked();
+            }
+
+            @Override
+            public void onClickOptions() {
+// todo
+            }
+        });
+        playerTwoButton.setClockButtonClickListener(new ClockButton.ClockClickListener() {
+            @Override
+            public void onClickClock() {
+                onPlayerTwoClockClicked();
+            }
+
+            @Override
+            public void onClickOptions() {
+// todo
+            }
+        });
         clockMenu.setListener(new ClockMenu.MenuClickListener() {
             @Override
             public void timeSettingsClicked() {
@@ -574,9 +514,9 @@ public class ClockTimersActivity extends BaseActivity {
             public void playPauseClicked() {
                 if (mTimersState == TimersState.PAUSED) {
                     if (mTimersStatePreviousToPause == TimersState.PLAYER_ONE_RUNNING) {
-                        mPlayerTwoButtonListener.onClick(playerTwoButton);
+                        onPlayerTwoClockClicked();
                     } else {
-                        mPlayerOneButtonListener.onClick(playerOneButton);
+                        onPlayerOnClockClicked();
                     }
                 } else {
                     pauseClock();
@@ -633,6 +573,66 @@ public class ClockTimersActivity extends BaseActivity {
                 break;
         }
         clockMenu.updateSoundIcon(soundManager.areSoundsEnabled());
+    }
+
+    private void onPlayerOnClockClicked() {
+        Log.i(TAG, "Player one pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
+        // Set pause btn visibility
+        if (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) {
+            clockMenu.showPause();
+        }
+        if (mTimersState == TimersState.PLAYER_ONE_RUNNING || mTimersState == TimersState.PAUSED) {
+            // If bound to clock service, press clock and update UI state.
+            if (mBound) {
+                // First or continuation move
+                if ((mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) ||
+                        (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PLAYER_ONE_RUNNING) ||
+                        mTimersState == TimersState.PLAYER_ONE_RUNNING) {
+                    mService.pressPlayerOneClock();
+                    mTimersState = TimersState.PLAYER_TWO_RUNNING;
+                }
+                // Resuming clock
+                else {
+                    mService.resumeClock();
+                    mTimersState = mTimersStatePreviousToPause;
+                    mTimersStatePreviousToPause = TimersState.PAUSED;
+                }
+                soundManager.playSound(ClockSound.PLAYER_ONE_MOVE);
+                updateUIState();
+            }
+        } else if (mTimersState == TimersState.PLAYER_ONE_FINISHED ||
+                mTimersState == TimersState.PLAYER_TWO_FINISHED) {
+            showResetClockDialog();
+        }
+    }
+
+    private void onPlayerTwoClockClicked() {
+        Log.i(TAG, "Player two pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
+        if (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) {
+            clockMenu.showPause();
+        }
+        if (mTimersState == TimersState.PLAYER_TWO_RUNNING || mTimersState == TimersState.PAUSED) {
+            // If bound to clock service, press clock and update UI state.
+            if (mBound) {
+                if ((mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) ||
+                        (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PLAYER_TWO_RUNNING) ||
+                        (mTimersState == TimersState.PLAYER_TWO_RUNNING)) {
+                    mService.pressPlayerTwoClock();
+                    mTimersState = TimersState.PLAYER_ONE_RUNNING;
+                }
+                // Resuming clock
+                else {
+                    mService.resumeClock();
+                    mTimersState = mTimersStatePreviousToPause;
+                    mTimersStatePreviousToPause = TimersState.PAUSED;
+                }
+                soundManager.playSound(ClockSound.PLAYER_TWO_MOVE);
+                updateUIState();
+            }
+        } else if (mTimersState == TimersState.PLAYER_ONE_FINISHED ||
+                mTimersState == TimersState.PLAYER_TWO_FINISHED) {
+            showResetClockDialog();
+        }
     }
 
     /**

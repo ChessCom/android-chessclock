@@ -65,8 +65,9 @@ public class ClockButton extends FrameLayout {
         return timeTv.getText();
     }
 
-    public void setClockButtonClickListener(OnClickListener listener) {
-        setOnClickListener(listener);
+    public void setClockButtonClickListener(ClockClickListener listener) {
+        setOnClickListener(v -> listener.onClickClock());
+        timeOptions.setOnClickListener(v -> listener.onClickOptions());
     }
 
     public void updateUi(
@@ -118,5 +119,11 @@ public class ClockButton extends FrameLayout {
 
     public enum State {
         IDLE, LOCKED, RUNNING, FINISHED
+    }
+
+    public interface ClockClickListener {
+        void onClickClock();
+
+        void onClickOptions();
     }
 }
