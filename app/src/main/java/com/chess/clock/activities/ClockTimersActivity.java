@@ -94,8 +94,8 @@ public class ClockTimersActivity extends BaseActivity {
         }
 
         @Override
-        public void onStageUpdate(Stage stage) {
-            playerOneButton.updateStage(stage.getId());
+        public void onStageUpdate(Stage stage, String timeControlName) {
+            playerOneButton.updateStage(stage.getId(), timeControlName);
         }
 
         @Override
@@ -123,8 +123,8 @@ public class ClockTimersActivity extends BaseActivity {
         }
 
         @Override
-        public void onStageUpdate(Stage stage) {
-            playerTwoButton.updateStage(stage.getId());
+        public void onStageUpdate(Stage stage, String timeControlName) {
+            playerTwoButton.updateStage(stage.getId(), timeControlName);
         }
 
         @Override

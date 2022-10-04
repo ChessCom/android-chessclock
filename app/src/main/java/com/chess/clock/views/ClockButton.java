@@ -23,6 +23,8 @@ public class ClockButton extends FrameLayout {
 
     private final TextView timeTv;
     private final TextView movesTv;
+    private final TextView controlNameTv;
+    private final View timeOptions;
     private final View stageOne;
     private final View stageTwo;
     private final View stageThree;
@@ -36,6 +38,8 @@ public class ClockButton extends FrameLayout {
         stageOne = view.findViewById(R.id.stageOne);
         stageTwo = view.findViewById(R.id.stageTwo);
         stageThree = view.findViewById(R.id.stageThree);
+        controlNameTv = view.findViewById(R.id.stageNameTv);
+        timeOptions = view.findViewById(R.id.adjustTimeImg);
 
         TypedArray a = getContext().getTheme().obtainStyledAttributes(R.style.AppTheme, new int[]{R.attr.selectableItemBackground});
         int attributeResourceId = a.getResourceId(0, 0);
@@ -85,6 +89,9 @@ public class ClockButton extends FrameLayout {
                 break;
         }
         setClickable(state != State.LOCKED);
+        Boolean showStageControls = state == State.IDLE;
+        ViewUtils.showView(timeOptions, showStageControls);
+        ViewUtils.showView(controlNameTv, showStageControls);
     }
 
     private void setStageBg(View stage, Boolean active) {
@@ -95,10 +102,11 @@ public class ClockButton extends FrameLayout {
         }
     }
 
-    public void updateStage(int stageId) {
+    public void updateStage(int stageId, String timeControlName) {
         //stage one is always filled if visible
         setStageBg(stageTwo, stageId > 0);
         setStageBg(stageThree, stageId > 1);
+        controlNameTv.setText(timeControlName);
     }
 
     public void setStages(int stagesNumber) {

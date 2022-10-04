@@ -156,9 +156,10 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
 
         if (mCallback != null && mTimeControl != null) {
             mCallback.onClockTimeUpdate(getTime());
-            mCallback.onMoveCountUpdate(mTimeControl.getStageManager().getTotalMoveCount());
-            mCallback.onTotalStageNumber(mTimeControl.getStageManager().getTotalStages());
-            mCallback.onStageUpdate(mTimeControl.getStageManager().getCurrentStage());
+            StageManager stageManager = mTimeControl.getStageManager();
+            mCallback.onMoveCountUpdate(stageManager.getTotalMoveCount());
+            mCallback.onTotalStageNumber(stageManager.getTotalStages());
+            mCallback.onStageUpdate(stageManager.getCurrentStage(), getTimeControlTitle());
         }
     }
 
@@ -501,7 +502,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
                 + formatTime(stageDuration) + ", time left: " + formatTime(getTime()));
 
         if (mCallback != null) {
-            mCallback.onStageUpdate(stage);
+            mCallback.onStageUpdate(stage, getTimeControlTitle());
             mCallback.onClockTimeUpdate(mTime);
         }
     }
@@ -574,7 +575,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
          *
          * @param stage The current game stage.
          */
-        void onStageUpdate(Stage stage);
+        void onStageUpdate(Stage stage, String timeControlName);
 
         /**
          * Called when the move count is updated.
