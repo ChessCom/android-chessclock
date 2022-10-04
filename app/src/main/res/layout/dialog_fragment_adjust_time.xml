@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_65">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/hoursCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/default_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/hourColon"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/hoursEt"
+            style="@style/timeInputEditTextStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:imeOptions="actionDone" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/hourColon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_small"
+        android:text="@string/colon"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@id/hoursCard"
+        app:layout_constraintEnd_toStartOf="@id/minutesCard"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/hoursCard"
+        app:layout_constraintTop_toTopOf="@id/hoursCard" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/minutesCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/default_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/minutesColon"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/hourColon"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/minutesEt"
+            style="@style/timeInputEditTextStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:imeOptions="actionDone" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/minutesColon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_small"
+        android:text="@string/colon"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@id/minutesCard"
+        app:layout_constraintEnd_toStartOf="@+id/secondsCard"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/minutesCard"
+        app:layout_constraintTop_toTopOf="@id/minutesCard" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/secondsCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/default_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/minutesColon"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/secondsEt"
+            style="@style/timeInputEditTextStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:imeOptions="actionDone" />
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
