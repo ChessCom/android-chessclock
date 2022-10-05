@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_65">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:text="@string/adjust_time"
+        android:textAllCaps="true"
+        android:textColor="@color/white_65"
+        android:textSize="@dimen/text_size_default"
+        app:drawableStart="@drawable/ic_edit_time_small"
+        app:layout_constraintBottom_toTopOf="@id/hoursCard"
+        app:layout_constraintStart_toStartOf="@id/hoursCard" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/hoursCard"
@@ -21,7 +34,8 @@
             style="@style/timeInputEditTextStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:imeOptions="actionDone" />
+            android:imeOptions="actionDone"
+            tools:text="00" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -54,7 +68,8 @@
             style="@style/timeInputEditTextStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:imeOptions="actionDone" />
+            android:imeOptions="actionDone"
+            tools:text="00" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -87,7 +102,74 @@
             style="@style/timeInputEditTextStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:imeOptions="actionDone" />
+            android:imeOptions="actionDone"
+            tools:text="00" />
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/hourLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_x_small"
+        android:text="@string/hour"
+        android:textColor="@color/white_50"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintEnd_toEndOf="@id/hoursCard"
+        app:layout_constraintStart_toStartOf="@id/hoursCard"
+        app:layout_constraintTop_toBottomOf="@id/hoursCard" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_x_small"
+        android:text="@string/minute"
+        android:textColor="@color/white_50"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintEnd_toEndOf="@id/minutesCard"
+        app:layout_constraintStart_toStartOf="@id/minutesCard"
+        app:layout_constraintTop_toBottomOf="@id/minutesCard" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_x_small"
+        android:text="@string/second"
+        android:textColor="@color/white_50"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintEnd_toEndOf="@id/secondsCard"
+        app:layout_constraintStart_toStartOf="@id/secondsCard"
+        app:layout_constraintTop_toBottomOf="@id/secondsCard" />
+
+    <TextView
+        android:id="@+id/saveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/margin_x_standard"
+        android:text="@string/save_time"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_default"
+        app:layout_constraintEnd_toEndOf="@id/secondsCard"
+        app:layout_constraintTop_toBottomOf="@id/hourLabel" />
+
+    <TextView
+        android:id="@+id/cancelBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/margin_x_standard"
+        android:text="@string/cancel"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_default"
+        app:layout_constraintEnd_toStartOf="@id/saveBtn"
+        app:layout_constraintTop_toBottomOf="@id/hourLabel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
