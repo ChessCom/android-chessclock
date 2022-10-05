@@ -18,6 +18,10 @@ import com.chess.clock.R;
 abstract class FullScreenDialogFragment extends DialogFragment {
     abstract int layoutRes();
 
+    public int bgColorRes(){
+        return R.color.windowBackground;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,7 +36,7 @@ abstract class FullScreenDialogFragment extends DialogFragment {
         content.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         dialog.setContentView(content);
         dialog.getWindow().setBackgroundDrawable(
-                new ColorDrawable(ContextCompat.getColor(requireContext(), R.color.windowBackground))
+                new ColorDrawable(ContextCompat.getColor(requireContext(), bgColorRes()))
         );
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         return dialog;

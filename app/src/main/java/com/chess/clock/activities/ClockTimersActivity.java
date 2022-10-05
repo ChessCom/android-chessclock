@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.chess.clock.R;
+import com.chess.clock.dialog.AdjustTimeDialogFragment;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControlParser;
@@ -485,7 +486,10 @@ public class ClockTimersActivity extends BaseActivity {
 
             @Override
             public void onClickOptions() {
-// todo
+                Long currentTime = 0L;//todo
+                AdjustTimeDialogFragment
+                        .newInstance(currentTime, true)
+                        .show(getSupportFragmentManager(), AdjustTimeDialogFragment.TAG);
             }
         });
         playerTwoButton.setClockButtonClickListener(new ClockButton.ClockClickListener() {
@@ -496,7 +500,10 @@ public class ClockTimersActivity extends BaseActivity {
 
             @Override
             public void onClickOptions() {
-// todo
+                Long currentTime = 0L;//todo
+                AdjustTimeDialogFragment
+                        .newInstance(currentTime, false)
+                        .show(getSupportFragmentManager(), AdjustTimeDialogFragment.TAG);
             }
         });
         clockMenu.setListener(new ClockMenu.MenuClickListener() {

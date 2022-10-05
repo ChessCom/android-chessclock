@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_65">
+    tools:background="@color/white_20">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -19,27 +19,32 @@
             android:layout_margin="@dimen/margin_large">
 
             <TextView
+                android:id="@+id/titleTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_large"
+                android:drawablePadding="@dimen/margin_x_small"
                 android:text="@string/adjust_time"
                 android:textAllCaps="true"
                 android:textColor="@color/white_65"
                 android:textSize="@dimen/text_size_default"
-                app:drawableStart="@drawable/ic_edit_time_small"
+                app:drawableStartCompat="@drawable/ic_edit_time_small"
                 app:layout_constraintBottom_toTopOf="@id/hoursCard"
-                app:layout_constraintStart_toStartOf="@id/hoursCard" />
+                app:layout_constraintStart_toStartOf="@id/hoursCard"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/hoursCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="@dimen/default_radius"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/hourLabel"
                 app:layout_constraintEnd_toStartOf="@id/hourColon"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/titleTv"
+                app:layout_constraintVertical_chainStyle="packed">
 
                 <EditText
                     android:id="@+id/hoursEt"
@@ -69,11 +74,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="@dimen/default_radius"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/hoursCard"
                 app:layout_constraintEnd_toStartOf="@id/minutesColon"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@id/hourColon"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="@id/hoursCard">
 
                 <EditText
                     android:id="@+id/minutesEt"
@@ -103,11 +108,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="@dimen/default_radius"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/hoursCard"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@id/minutesColon"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="@id/hoursCard">
 
                 <EditText
                     android:id="@+id/secondsEt"
@@ -164,6 +169,7 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_default"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/secondsCard"
                 app:layout_constraintTop_toBottomOf="@id/hourLabel" />
 

@@ -1,5 +1,11 @@
 package com.chess.clock.dialog;
 
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.chess.clock.R;
 
 public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
@@ -11,5 +17,31 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
     @Override
     int layoutRes() {
         return R.layout.dialog_fragment_adjust_time;
+    }
+
+    @Override
+    public int bgColorRes() {
+        return R.color.black_40;
+    }
+
+    public static AdjustTimeDialogFragment newInstance(Long time, Boolean firstPlayer) {
+
+        Bundle args = new Bundle();
+        args.putBoolean(ARG_FIRST_PLAYER_KEY, firstPlayer);
+        args.putLong(ARG_TIME_KEY, time);
+
+        AdjustTimeDialogFragment fragment = new AdjustTimeDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.saveBtn).setOnClickListener(v -> {
+            // todo call activity interface
+            dismissAllowingStateLoss();
+        });
+        view.findViewById(R.id.cancelBtn).setOnClickListener(v -> dismissAllowingStateLoss());
     }
 }
