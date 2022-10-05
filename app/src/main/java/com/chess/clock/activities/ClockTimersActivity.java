@@ -486,9 +486,8 @@ public class ClockTimersActivity extends BaseActivity {
 
             @Override
             public void onClickOptions() {
-                Long currentTime = 0L;//todo
                 AdjustTimeDialogFragment
-                        .newInstance(currentTime, true)
+                        .newInstance(mService.firstPlayerTime(), true)
                         .show(getSupportFragmentManager(), AdjustTimeDialogFragment.TAG);
             }
         });
@@ -500,9 +499,8 @@ public class ClockTimersActivity extends BaseActivity {
 
             @Override
             public void onClickOptions() {
-                Long currentTime = 0L;//todo
                 AdjustTimeDialogFragment
-                        .newInstance(currentTime, false)
+                        .newInstance(mService.secondPlayerTime(), false)
                         .show(getSupportFragmentManager(), AdjustTimeDialogFragment.TAG);
             }
         });

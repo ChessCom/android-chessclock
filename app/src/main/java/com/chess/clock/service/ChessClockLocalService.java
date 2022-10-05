@@ -1,5 +1,6 @@
 package com.chess.clock.service;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -10,13 +11,15 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
 
 import com.chess.clock.R;
 import com.chess.clock.activities.ClockTimersActivity;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.TimeControl;
+import com.chess.clock.entities.ClockTime;
 import com.chess.clock.util.Args;
 
 // Get access to the app resources, since this class is in a sub-package.
@@ -409,11 +412,18 @@ public class ChessClockLocalService extends Service {
      * @param time Player time in milliseconds.
      * @return Readable String format of time.
      */
+    @SuppressLint("DefaultLocale")
     private String formatTime(long time) {
-        int s = (int) (time / 1000) % 60;
-        int m = (int) ((time / (1000 * 60)) % 60);
-        int h = (int) ((time / (1000 * 60 * 60)) % 24);
-        return String.format("%02d:%02d:%02d", h, m, s);
+        ClockTime clockTime = new ClockTime(time);
+        return String.format("%02d:%02d:%02d", clockTime.hours, clockTime.minutes, clockTime.seconds);
+    }
+
+    public Long firstPlayerTime() {
+        return mPlayerOneTimer.getTime();
+    }
+
+    public Long secondPlayerTime() {
+        return mPlayerTwoTimer.getTime();
     }
 
     /**
