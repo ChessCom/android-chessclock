@@ -2,8 +2,6 @@ package com.chess.clock.entities;
 
 import android.annotation.SuppressLint;
 
-import com.chess.clock.R;
-
 public final class ClockTime {
     public final int hours;
     public final int minutes;

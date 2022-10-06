@@ -18,7 +18,7 @@ import com.chess.clock.R;
 abstract class FullScreenDialogFragment extends DialogFragment {
     abstract int layoutRes();
 
-    public int bgColorRes(){
+    public int bgColorRes() {
         return R.color.windowBackground;
     }
 

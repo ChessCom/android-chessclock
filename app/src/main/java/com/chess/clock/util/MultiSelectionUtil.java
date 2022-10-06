@@ -1,8 +1,6 @@
 package com.chess.clock.util;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +8,9 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 
 import java.util.ArrayList;
 
@@ -29,13 +30,13 @@ public class MultiSelectionUtil {
     /**
      * @see android.widget.AbsListView.MultiChoiceModeListener
      */
-    public static interface MultiChoiceModeListener extends ActionMode.Callback {
+    public interface MultiChoiceModeListener extends ActionMode.Callback {
         /**
          * @see android.widget.AbsListView.MultiChoiceModeListener#onItemCheckedStateChanged(
          *android.view.ActionMode, int, long, boolean)
          */
-        public void onItemCheckedStateChanged(ActionMode mode,
-                                              int position, boolean checked);
+        void onItemCheckedStateChanged(ActionMode mode,
+                                       int position, boolean checked);
     }
 
     public static class Controller implements ActionMode.Callback, AdapterView.OnItemClickListener {

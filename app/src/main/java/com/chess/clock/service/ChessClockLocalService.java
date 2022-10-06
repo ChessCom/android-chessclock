@@ -66,7 +66,7 @@ public class ChessClockLocalService extends Service {
      * Count down timer callback implementation to run when a timer is finished.
      * Removes foreground status and notification since the a player's clock is stopped.
      */
-    private CountDownTimer.FinishCallback mFinishListener = new CountDownTimer.FinishCallback() {
+    private final CountDownTimer.FinishCallback mFinishListener = new CountDownTimer.FinishCallback() {
         @Override
         public void onClockFinish() {
             stopForeground(true);

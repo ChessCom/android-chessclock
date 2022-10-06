@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import androidx.annotation.DimenRes;
 import androidx.core.content.ContextCompat;
 
 import com.chess.clock.R;
