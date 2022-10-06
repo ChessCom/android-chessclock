@@ -1,5 +1,7 @@
 package com.chess.clock.dialog;
 
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -8,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.chess.clock.R;
+import com.chess.clock.activities.BaseActivity;
+import com.chess.clock.entities.AppTheme;
 import com.chess.clock.entities.ClockTime;
 import com.chess.clock.util.ClockUtils;
 
@@ -52,7 +56,7 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
 
         if (savedInstanceState == null) {
             ClockTime clockTime = new ClockTime(requireArguments().getLong(ARG_TIME_KEY));
-            hoursEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.hours));
+            hoursEt.setText(ClockUtils.twoDecimalPlacesFormat(Math.min(clockTime.hours, 99)));
             minutesEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.minutes));
             secondsEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.seconds));
         }
@@ -60,5 +64,15 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
         ClockUtils.clearFocusOnActionDone(hoursEt);
         ClockUtils.setClockTextWatcher(minutesEt);
         ClockUtils.setClockTextWatcher(secondsEt);
+
+        AppTheme theme = ((BaseActivity) requireActivity()).selectedTheme;
+        if (theme != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ColorStateList tintList = theme.colorStateListFocused(requireContext());
+                hoursEt.setBackgroundTintList(tintList);
+                minutesEt.setBackgroundTintList(tintList);
+                secondsEt.setBackgroundTintList(tintList);
+            }
+        }
     }
 }
