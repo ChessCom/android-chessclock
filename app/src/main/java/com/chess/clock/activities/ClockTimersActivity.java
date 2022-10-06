@@ -27,6 +27,7 @@ import com.chess.clock.dialog.AdjustTimeDialogFragment;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControlParser;
+import com.chess.clock.entities.ClockTime;
 import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.views.ClockButton;
 import com.chess.clock.views.ClockMenu;
@@ -324,14 +325,14 @@ public class ClockTimersActivity extends BaseActivity {
      */
     private void restoreState(Bundle savedInstanceState) {
 
-        if (savedInstanceState.containsKey(STATE_PLAYER_ONE_KEY)) {
-            CharSequence text = savedInstanceState.getString(STATE_PLAYER_ONE_KEY);
-            playerOneButton.setTime(text.toString());
-        }
-        if (savedInstanceState.containsKey(STATE_PLAYER_TWO_KEY)) {
-            CharSequence text = savedInstanceState.getString(STATE_PLAYER_TWO_KEY);
-            playerTwoButton.setTime(text.toString());
-        }
+//        if (savedInstanceState.containsKey(STATE_PLAYER_ONE_KEY)) {
+//            CharSequence text = savedInstanceState.getString(STATE_PLAYER_ONE_KEY);
+//            playerOneButton.setTime(text.toString());
+//        }
+//        if (savedInstanceState.containsKey(STATE_PLAYER_TWO_KEY)) {
+//            CharSequence text = savedInstanceState.getString(STATE_PLAYER_TWO_KEY);
+//            playerTwoButton.setTime(text.toString());
+//        }
         if (savedInstanceState.containsKey(STATE_TIMERS_KEY)) {
             int state = savedInstanceState.getInt(STATE_TIMERS_KEY);
             mTimersState = TimersState.fromInteger(state);
@@ -661,26 +662,17 @@ public class ClockTimersActivity extends BaseActivity {
     @SuppressLint("DefaultLocale")
     private void setTime(ClockButton clockButton, long time) {
 
-        int remaining = (int) (time % 1000);
-
-        // Calibrate seconds to +1 if there is remaining ms
-        if (remaining > 0 && time > 0) {
-            time += 1000;
-        }
-
-        int s = (int) (time / 1000) % 60;
-        int m = (int) ((time / (1000 * 60)) % 60);
-        int h = (int) ((time / (1000 * 60 * 60)) % 24);
+        ClockTime clockTime = new ClockTime(time);
 
         // 1 hour
-        if (time >= 3600000) {
+        if (clockTime.remainingTimeMs >= 3600000) {
             clockButton.setTimeAndTextSize(
-                    String.format("%d:%02d:%02d", h, m, s),
+                    String.format("%d:%02d:%02d", clockTime.hours, clockTime.minutes, clockTime.seconds),
                     R.dimen.clock_timer_textSize_small
             );
         } else {
             clockButton.setTimeAndTextSize(
-                    String.format("%d:%02d", m, s),
+                    String.format("%d:%02d", clockTime.minutes, clockTime.seconds),
                     R.dimen.clock_timer_textSize_normal
             );
         }
