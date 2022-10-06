@@ -177,7 +177,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
      *
      * @param time Time position to be set in milliseconds.
      */
-    private void setTime(long time) {
+    public void setTime(long time) {
         // Avoid setting negative times.
         if (time >= 0) {
             mTime = time;

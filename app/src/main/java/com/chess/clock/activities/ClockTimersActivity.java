@@ -33,7 +33,7 @@ import com.chess.clock.views.ClockButton;
 import com.chess.clock.views.ClockMenu;
 import com.chess.clock.views.ViewUtils;
 
-public class ClockTimersActivity extends BaseActivity {
+public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialogFragment.TimeAdjustmentsListener {
 
     private static final String TAG = ClockTimersActivity.class.getName();
     /**
@@ -705,6 +705,16 @@ public class ClockTimersActivity extends BaseActivity {
         mTimersStatePreviousToPause = TimersState.fromInteger(sp.getInt(SP_KEY_TIMERS_STATE_PREVIOUS_TO_PAUSE, 0));
 
         Log.v(TAG, "Retrieving timer state: " + mTimersState + ", previous: " + mTimersStatePreviousToPause);
+    }
+
+    @Override
+    public void onTimeAdjustmentsConfirmed(long timeMs, Boolean firstPlayer) {
+        if (firstPlayer) {
+            mService.setFirstPlayerTime(timeMs);
+//            playerOneButton.
+        } else {
+            mService.setSecondPlayerTime(timeMs);
+        }
     }
 
     /**

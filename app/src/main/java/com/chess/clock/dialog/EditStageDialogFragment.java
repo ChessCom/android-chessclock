@@ -135,11 +135,14 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
         int hours = ClockUtils.getIntOrZero(hoursEt);
         int minutes = ClockUtils.getIntOrZero(minutesEt);
         int seconds = ClockUtils.getIntOrZero(secondsEt);
-        long duration = hours * 60 * 60 * 1000L + minutes * 60 * 1000L + seconds * 1000L;
         int moves = Math.max(1, ClockUtils.getIntOrZero(movesEt));
         Fragment parentFragment = getParentFragment();
         if (parentFragment != null) {
-            ((OnStageEditListener) parentFragment).onStageEditDone(stage.getId(), moves, duration);
+            ((OnStageEditListener) parentFragment).onStageEditDone(
+                    stage.getId(),
+                    moves,
+                    ClockUtils.durationMillis(hours, minutes, seconds)
+            );
         }
     }
 

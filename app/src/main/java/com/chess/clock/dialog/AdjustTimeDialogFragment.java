@@ -45,14 +45,21 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.saveBtn).setOnClickListener(v -> {
-            // todo call activity interface
-            dismissAllowingStateLoss();
-        });
-        view.findViewById(R.id.cancelBtn).setOnClickListener(v -> dismissAllowingStateLoss());
         EditText hoursEt = view.findViewById(R.id.hoursEt);
         EditText minutesEt = view.findViewById(R.id.minutesEt);
         EditText secondsEt = view.findViewById(R.id.secondsEt);
+
+        view.findViewById(R.id.saveBtn).setOnClickListener(v -> {
+            int hours = ClockUtils.getIntOrZero(hoursEt);
+            int minutes = ClockUtils.getIntOrZero(minutesEt);
+            int seconds = ClockUtils.getIntOrZero(secondsEt);
+            ((TimeAdjustmentsListener) requireActivity()).onTimeAdjustmentsConfirmed(
+                    ClockUtils.durationMillis(hours, minutes, seconds),
+                    requireArguments().getBoolean(ARG_FIRST_PLAYER_KEY)
+            );
+            dismissAllowingStateLoss();
+        });
+        view.findViewById(R.id.cancelBtn).setOnClickListener(v -> dismissAllowingStateLoss());
 
         if (savedInstanceState == null) {
             ClockTime clockTime = ClockTime.calibrated(requireArguments().getLong(ARG_TIME_KEY));
@@ -74,5 +81,9 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
                 secondsEt.setBackgroundTintList(tintList);
             }
         }
+    }
+
+    public interface TimeAdjustmentsListener {
+        void onTimeAdjustmentsConfirmed(long timeMs, Boolean firstPlayer);
     }
 }
