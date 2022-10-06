@@ -662,7 +662,7 @@ public class ClockTimersActivity extends BaseActivity {
     @SuppressLint("DefaultLocale")
     private void setTime(ClockButton clockButton, long time) {
 
-        ClockTime clockTime = new ClockTime(time);
+        ClockTime clockTime = ClockTime.calibrated(time);
 
         // 1 hour
         if (clockTime.remainingTimeMs >= 3600000) {

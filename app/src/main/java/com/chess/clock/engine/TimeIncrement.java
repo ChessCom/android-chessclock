@@ -1,8 +1,11 @@
 package com.chess.clock.engine;
 
+import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
+import com.chess.clock.entities.ClockTime;
 
 /**
  * A small amount of time that is added for each game addMove.
@@ -78,12 +81,8 @@ public class TimeIncrement implements Parcelable, Cloneable {
     /**
      * @return Int array with {hour,minute,second}
      */
-    public int[] getDuration() {
-        int s = (int) (mValue / 1000) % 60;
-        int m = (int) ((mValue / (1000 * 60)) % 60);
-        int h = (int) ((mValue / (1000 * 60 * 60)) % 24);
-
-        return new int[]{h, m, s};
+    public ClockTime getDuration() {
+        return ClockTime.raw(mValue);
     }
 
     /**
@@ -119,12 +118,10 @@ public class TimeIncrement implements Parcelable, Cloneable {
      * @param time Player time in milliseconds.
      * @return Readable String format of time.
      */
+    @SuppressLint("DefaultLocale")
     public String formatTime(long time) {
-
-        int s = (int) (time / 1000) % 60;
-        int m = (int) ((time / (1000 * 60)) % 60);
-
-        return String.format("%02d:%02d", m, s);
+        ClockTime clockTime = ClockTime.raw(time);
+        return String.format("%02d:%02d", clockTime.minutes, clockTime.seconds);
     }
 
     /**

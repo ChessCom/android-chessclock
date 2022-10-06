@@ -22,6 +22,7 @@ import com.chess.clock.activities.BaseActivity;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.entities.AppTheme;
+import com.chess.clock.entities.ClockTime;
 import com.chess.clock.fragments.TimeControlFragment;
 import com.chess.clock.util.ClockUtils;
 import com.chess.clock.views.ViewUtils;
@@ -102,10 +103,10 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
         ClockUtils.clearFocusOnActionDone(movesEt);
 
         if (savedInstanceState == null) {
-            int[] time = stage.getTime();
-            hoursEt.setText(ClockUtils.twoDecimalPlacesFormat(time[0]));
-            minutesEt.setText(ClockUtils.twoDecimalPlacesFormat(time[1]));
-            secondsEt.setText(ClockUtils.twoDecimalPlacesFormat(time[2]));
+            ClockTime time = stage.getTime();
+            hoursEt.setText(ClockUtils.twoDecimalPlacesFormat(time.hours));
+            minutesEt.setText(ClockUtils.twoDecimalPlacesFormat(time.minutes));
+            secondsEt.setText(ClockUtils.twoDecimalPlacesFormat(time.seconds));
             movesEt.setText(String.valueOf(stage.getTotalMoves()));
         }
 

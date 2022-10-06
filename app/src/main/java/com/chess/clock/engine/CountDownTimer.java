@@ -1,8 +1,10 @@
 package com.chess.clock.engine;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.util.Log;
 
+import com.chess.clock.entities.ClockTime;
 import com.chess.clock.util.Args;
 
 /**
@@ -466,11 +468,10 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
      * @param time Player time in milliseconds.
      * @return Readable String format of time.
      */
+    @SuppressLint("DefaultLocale")
     private String formatTime(long time) {
-        int s = (int) (time / 1000) % 60;
-        int m = (int) ((time / (1000 * 60)) % 60);
-        int h = (int) ((time / (1000 * 60 * 60)) % 24);
-        return String.format("%02d:%02d:%02d", h, m, s);
+        ClockTime clockTime = ClockTime.raw(time);
+        return String.format("%02d:%02d:%02d", clockTime.hours, clockTime.minutes, clockTime.seconds);
     }
 
     /**

@@ -1,8 +1,11 @@
 package com.chess.clock.engine;
 
+import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
+import com.chess.clock.entities.ClockTime;
 
 /**
  * A stage of a Time Control. One Time Control can have one or more stages. Every stage has a time
@@ -251,29 +254,24 @@ public class Stage implements Parcelable, Cloneable {
     /**
      * @return Readable String format of time.
      */
+    @SuppressLint("DefaultLocale")
     public String durationTimeFormatted() {
         long time = getDuration();
 
-        int s = (int) (time / 1000) % 60;
-        int m = (int) ((time / (1000 * 60)) % 60);
-        int h = (int) ((time / (1000 * 60 * 60)) % 24);
+        ClockTime clockTime = ClockTime.raw(time);
 
         if (time >= 3600000) {
-            return String.format("%02d:%02d:%02d", h, m, s);
+            return String.format("%02d:%02d:%02d", clockTime.hours, clockTime.minutes, clockTime.seconds);
         } else {
-            return String.format("%02d:%02d", m, s);
+            return String.format("%02d:%02d", clockTime.minutes, clockTime.seconds);
         }
     }
 
     /**
      * @return Int array with {hour,minute,second}
      */
-    public int[] getTime() {
-        int s = (int) (mDuration / 1000) % 60;
-        int m = (int) ((mDuration / (1000 * 60)) % 60);
-        int h = (int) ((mDuration / (1000 * 60 * 60)) % 24);
-
-        return new int[]{h, m, s};
+    public ClockTime getTime() {
+        return ClockTime.raw(mDuration);
     }
 
     /**

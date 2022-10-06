@@ -414,7 +414,7 @@ public class ChessClockLocalService extends Service {
      */
     @SuppressLint("DefaultLocale")
     private String formatTime(long time) {
-        ClockTime clockTime = new ClockTime(time);
+        ClockTime clockTime = ClockTime.raw(time);
         return String.format("%02d:%02d:%02d", clockTime.hours, clockTime.minutes, clockTime.seconds);
     }
 

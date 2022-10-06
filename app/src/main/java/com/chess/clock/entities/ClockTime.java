@@ -6,18 +6,24 @@ public final class ClockTime {
     public final int seconds;
     public final long remainingTimeMs;
 
-    public ClockTime(long timeMs) {
+    private ClockTime(long timeMs) {
+        remainingTimeMs = timeMs;
+        seconds = (int) (timeMs / 1000) % 60;
+        minutes = (int) ((timeMs / (1000 * 60)) % 60);
+        hours = (int) ((timeMs / (1000 * 60 * 60)));
+    }
 
+    public static ClockTime calibrated(long timeMs) {
         // calibration
+        long remainingTime = timeMs;
         int rest = (int) (timeMs % 1000);
         if (rest > 0 && timeMs > 0) {
-            remainingTimeMs = timeMs + 1000;
-        } else {
-            remainingTimeMs = timeMs;
+            remainingTime = timeMs + 1000;
         }
+        return new ClockTime(remainingTime);
+    }
 
-        seconds = (int) (remainingTimeMs / 1000) % 60;
-        minutes = (int) ((remainingTimeMs / (1000 * 60)) % 60);
-        hours = (int) ((remainingTimeMs / (1000 * 60 * 60)));
+    public static ClockTime raw(long timeMs) {
+        return new ClockTime(timeMs);
     }
 }

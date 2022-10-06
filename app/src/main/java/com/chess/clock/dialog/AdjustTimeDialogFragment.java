@@ -55,7 +55,7 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
         EditText secondsEt = view.findViewById(R.id.secondsEt);
 
         if (savedInstanceState == null) {
-            ClockTime clockTime = new ClockTime(requireArguments().getLong(ARG_TIME_KEY));
+            ClockTime clockTime = ClockTime.calibrated(requireArguments().getLong(ARG_TIME_KEY));
             hoursEt.setText(ClockUtils.twoDecimalPlacesFormat(Math.min(clockTime.hours, 99)));
             minutesEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.minutes));
             secondsEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.seconds));
