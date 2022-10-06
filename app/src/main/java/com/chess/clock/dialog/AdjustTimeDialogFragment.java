@@ -1,6 +1,7 @@
 package com.chess.clock.dialog;
 
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -45,6 +46,10 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        boolean firstPlayer = requireArguments().getBoolean(ARG_FIRST_PLAYER_KEY);
+        if (!firstPlayer && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            view.setRotation(180);
+        }
         EditText hoursEt = view.findViewById(R.id.hoursEt);
         EditText minutesEt = view.findViewById(R.id.minutesEt);
         EditText secondsEt = view.findViewById(R.id.secondsEt);
@@ -55,7 +60,7 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
             int seconds = ClockUtils.getIntOrZero(secondsEt);
             ((TimeAdjustmentsListener) requireActivity()).onTimeAdjustmentsConfirmed(
                     ClockUtils.durationMillis(hours, minutes, seconds),
-                    requireArguments().getBoolean(ARG_FIRST_PLAYER_KEY)
+                    firstPlayer
             );
             dismissAllowingStateLoss();
         });
