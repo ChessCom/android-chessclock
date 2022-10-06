@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 
 import com.chess.clock.R;
 import com.chess.clock.entities.AppTheme;
+import com.chess.clock.entities.ClockTime;
 
 public class ClockButton extends FrameLayout {
 
@@ -47,13 +48,14 @@ public class ClockButton extends FrameLayout {
         setForeground(drawable);
     }
 
-    public void setTimeAndTextSize(String time, @DimenRes int textSizeRes) {
-        timeTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(textSizeRes));
-        timeTv.setText(time);
-    }
-
-    public void setTime(String time) {
-        timeTv.setText(time);
+    public void setTime(long timeMillis) {
+        ClockTime clockTime = ClockTime.calibrated(timeMillis);
+        timeTv.setText(clockTime.toReadableFormat());
+        if (clockTime.atLeaseOneHourLeft()) {
+            timeTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.clock_timer_textSize_small));
+        } else {
+            timeTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.clock_timer_textSize_normal));
+        }
     }
 
     @SuppressLint("DefaultLocale")

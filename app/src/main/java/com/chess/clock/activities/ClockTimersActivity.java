@@ -1,6 +1,5 @@
 package com.chess.clock.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -27,7 +26,6 @@ import com.chess.clock.dialog.AdjustTimeDialogFragment;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControlParser;
-import com.chess.clock.entities.ClockTime;
 import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.views.ClockButton;
 import com.chess.clock.views.ClockMenu;
@@ -82,7 +80,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     private final CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
         @Override
         public void onClockTimeUpdate(long millisUntilFinished) {
-            setTime(playerOneButton, millisUntilFinished);
+            playerOneButton.setTime(millisUntilFinished);
         }
 
         @Override
@@ -111,7 +109,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     private final CountDownTimer.Callback playerTwoCallback = new CountDownTimer.Callback() {
         @Override
         public void onClockTimeUpdate(long millisUntilFinished) {
-            setTime(playerTwoButton, millisUntilFinished);
+            playerTwoButton.setTime(millisUntilFinished);
         }
 
         @Override
@@ -639,31 +637,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     }
 
     /**
-     * Set stylized time text on TextView.
-     *
-     * @param clockButton ClockButton object which text will be updated with String time.
-     * @param time        Player time in milliseconds.
-     */
-    @SuppressLint("DefaultLocale")
-    private void setTime(ClockButton clockButton, long time) {
-
-        ClockTime clockTime = ClockTime.calibrated(time);
-
-        // 1 hour
-        if (clockTime.remainingTimeMs >= 3600000) {
-            clockButton.setTimeAndTextSize(
-                    String.format("%d:%02d:%02d", clockTime.hours, clockTime.minutes, clockTime.seconds),
-                    R.dimen.clock_timer_textSize_small
-            );
-        } else {
-            clockButton.setTimeAndTextSize(
-                    String.format("%d:%02d", clockTime.minutes, clockTime.seconds),
-                    R.dimen.clock_timer_textSize_normal
-            );
-        }
-    }
-
-    /**
      * Save Timers State on Shared Preferences
      */
     public void saveTimersState() {
@@ -696,9 +669,10 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     public void onTimeAdjustmentsConfirmed(long timeMs, Boolean firstPlayer) {
         if (firstPlayer) {
             mService.setFirstPlayerTime(timeMs);
-//            playerOneButton.
+            playerOneButton.setTime(timeMs);
         } else {
             mService.setSecondPlayerTime(timeMs);
+            playerTwoButton.setTime(timeMs);
         }
     }
 
