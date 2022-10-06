@@ -43,8 +43,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     /**
      * UI saveInstance Bundle Keys.
      */
-    private static final String STATE_PLAYER_ONE_KEY = "STATE_PLAYER_ONE_KEY";
-    private static final String STATE_PLAYER_TWO_KEY = "STATE_PLAYER_TWO_KEY";
     private static final String STATE_TIMERS_KEY = "STATE_TIMERS_KEY";
     private static final String STATE_TIMERS_PREVIOUS_PAUSE_KEY = "STATE_TIMERS_PREVIOUS_PAUSE_KEY";
     private static final String STATE_LAST_TIME_PAUSED_ACTIVITY_KEY = "LAST_TIME_PAUSED_ACTIVITY_KEY";
@@ -324,15 +322,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
      * Restore Clock Timer state from saved Instance State bundle.
      */
     private void restoreState(Bundle savedInstanceState) {
-
-//        if (savedInstanceState.containsKey(STATE_PLAYER_ONE_KEY)) {
-//            CharSequence text = savedInstanceState.getString(STATE_PLAYER_ONE_KEY);
-//            playerOneButton.setTime(text.toString());
-//        }
-//        if (savedInstanceState.containsKey(STATE_PLAYER_TWO_KEY)) {
-//            CharSequence text = savedInstanceState.getString(STATE_PLAYER_TWO_KEY);
-//            playerTwoButton.setTime(text.toString());
-//        }
         if (savedInstanceState.containsKey(STATE_TIMERS_KEY)) {
             int state = savedInstanceState.getInt(STATE_TIMERS_KEY);
             mTimersState = TimersState.fromInteger(state);
@@ -457,13 +446,9 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
      */
     @Override
     public void onSaveInstanceState(Bundle saveInstanceState) {
-
         Log.v(TAG, "Saving UI State on instance Bundle ");
-        saveInstanceState.putCharSequence(STATE_PLAYER_ONE_KEY, playerOneButton.getTimeText());
-        saveInstanceState.putCharSequence(STATE_PLAYER_TWO_KEY, playerTwoButton.getTimeText());
         saveInstanceState.putInt(STATE_TIMERS_KEY, mTimersState.getValue());
         saveInstanceState.putInt(STATE_TIMERS_PREVIOUS_PAUSE_KEY, mTimersStatePreviousToPause.getValue());
-
         saveInstanceState.putLong(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY, mTimeStampOnPauseActivity);
         super.onSaveInstanceState(saveInstanceState);
     }
