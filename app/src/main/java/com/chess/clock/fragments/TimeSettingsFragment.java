@@ -357,8 +357,18 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
         if (menuItem.getItemId() == R.id.action_delete) {
             startBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
                     HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-            deleteTimeControls();
-            actionMode.finish(); // Action picked, so close the CAB
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.delete_custom_time)
+                    .setPositiveButton(R.string.action_delete, (dialog, id) -> {
+                        deleteTimeControls();
+                        actionMode.finish(); // Action picked, so close the CAB
+                    })
+                    .setNegativeButton(R.string.action_keep, (dialog, id) -> {
+                        // Resume the clock
+                    });
+            // Create the AlertDialog object and return it
+            Dialog dialog = builder.create();
+            dialog.show();
             return true;
         }
         return false;

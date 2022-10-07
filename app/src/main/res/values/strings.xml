@@ -96,5 +96,7 @@
     <string name="value">Value</string>
     <string name="type">Type</string>
     <string name="toast_requesting_time_control_stage">Please add at least one stage for each user.</string>
+    <string name="delete_custom_time">Delete custom time?</string>
+    <string name="action_keep">Keep</string>
 
 </resources>
