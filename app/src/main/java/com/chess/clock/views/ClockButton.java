@@ -73,7 +73,7 @@ public class ClockButton extends FrameLayout {
             case IDLE:
             case LOCKED:
                 setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray_light));
-                timeTv.setTextColor(getResources().getColor(R.color.clock_timer_idle_textColor));
+                timeTv.setTextColor(getResources().getColor(R.color.black));
                 break;
             case RUNNING:
                 setBackgroundColor(ContextCompat.getColor(getContext(), theme.primaryColorRes));
@@ -81,7 +81,7 @@ public class ClockButton extends FrameLayout {
                 break;
             case FINISHED:
                 setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red));
-                timeTv.setTextColor(getResources().getColor(R.color.clock_timer_idle_textColor));
+                timeTv.setTextColor(getResources().getColor(R.color.black));
                 break;
         }
         setClickable(state != State.LOCKED);
