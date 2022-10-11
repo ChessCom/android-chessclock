@@ -18,7 +18,11 @@
     </style>
 
     <!-- No Action bar Theme -->
-    <style name="TimersTheme" parent="@style/Theme.AppCompat"></style>
+    <style name="TimersTheme" parent="@style/Theme.AppCompat" />
+
+    <style name="ConfirmationDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@color/white</item>
+    </style>
 
     <!-- ActionBar styles -->
     <style name="NormalActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">

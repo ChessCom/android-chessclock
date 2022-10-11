@@ -29,6 +29,7 @@ import com.chess.clock.engine.TimeControlParser;
 import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.views.ClockButton;
 import com.chess.clock.views.ClockMenu;
+import com.chess.clock.views.ViewUtils;
 
 public class ClockTimersActivity extends BaseActivity {
 
@@ -760,7 +761,7 @@ public class ClockTimersActivity extends BaseActivity {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
             // Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.ConfirmationDialogTheme);
             builder.setMessage(R.string.dialog_reset_clock)
                     .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
                         // Reset the clock
@@ -774,6 +775,7 @@ public class ClockTimersActivity extends BaseActivity {
                     });
             // Create the AlertDialog object and return it
             Dialog dialog = builder.create();
+            ViewUtils.setUpConfirmationPopup(dialog, getResources());
             dialog.setCanceledOnTouchOutside(false);
             return dialog;
         }

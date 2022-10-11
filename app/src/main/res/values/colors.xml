@@ -25,23 +25,9 @@
 
     <!-- Clock timers screen -->
     <color name="clock_timers_activity_background">#FF312e2b</color>
-    <color name="bg_idle_clock_button_gradient_start_color">#ff514d48</color>
-    <color name="bg_idle_clock_button_gradient_end_color">#ff514d48</color>
     <color name="bg_clock_setting_button_normal">#6f6862</color>
     <color name="bg_clock_setting_button_pressed">#ff59534e</color>
-    <color name="bg_finished_clock_button_gradient_start_color">#ed3239</color>
-    <color name="bg_finished_clock_button_gradient_end_color">#ad2c33</color>
-    <color name="clock_button_stroke_color">#000000</color>
-    <color name="clock_timer_idle_textColor">#000000</color>
-    <color name="clock_stage_icon_color">#aa312e2b</color>
-    <color name="clock_moves_text_color">#aa312e2b</color>
-
-    <!-- Settings screen -->
-    <color name="list_item_text_color_normal">#000000</color>
-    <color name="list_item_text_color_checked">#324f85</color>
-
-    <!-- List item -->
-    <color name="bg_list_item">#ebebeb</color>
+    <color name="clock_stage_gray">#aa312e2b</color>
 
     <!-- Settings Contextual Action bar -->
     <color name="bg_settings_cab">#4f7838</color>

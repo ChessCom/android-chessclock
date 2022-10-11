@@ -4,6 +4,6 @@
        android:shape="oval"
        android:useLevel="false">
 
-    <solid android:color="@color/clock_stage_icon_color"/>
+    <solid android:color="@color/clock_stage_gray"/>
 
 </shape>
