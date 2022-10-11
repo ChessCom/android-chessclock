@@ -203,7 +203,7 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
             // Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
             builder.setMessage(R.string.delete_stage_dialog_message)
                     .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
                         TimeControlFragment fragment = (TimeControlFragment) getParentFragment();
@@ -218,6 +218,7 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
             // Create the AlertDialog object and return it
             Dialog dialog = builder.create();
             dialog.setCanceledOnTouchOutside(false);
+            ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
             return dialog;
         }
     }
