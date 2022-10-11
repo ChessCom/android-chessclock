@@ -17,6 +17,7 @@ public class Stage implements Parcelable, Cloneable {
     public static final int STAGE_THREE_ID = 2;
     public static final int MAX_ALLOWED_STAGES_COUNT = 3;
     public static final int DEFAULT_STAGE_MOVES = 20;
+    public static final int GAME_STAGE_MOVES = 0;
     public static final int STAGE_DURATION_5_MIN = 300000;
 
     public static final Parcelable.Creator<Stage> CREATOR = new Parcelable.Creator<Stage>() {
@@ -248,28 +249,10 @@ public class Stage implements Parcelable, Cloneable {
     }
 
     /**
-     * Get formated string ready to UI info display.
-     *
-     * @return String representing info content of Stage.
-     */
-    public String toString() {
-
-        String durationString = formatTime(getDuration());
-        int moves = getTotalMoves();
-        if (moves == 0) {
-            return "Game in " + durationString;
-        } else if (moves == 1) {
-            return "1 move in " + durationString;
-        } else {
-            return moves + " moves in " + durationString;
-        }
-    }
-
-    /**
-     * @param time Player time in milliseconds.
      * @return Readable String format of time.
      */
-    public String formatTime(long time) {
+    public String durationTimeFormatted() {
+        long time = getDuration();
 
         int s = (int) (time / 1000) % 60;
         int m = (int) ((time / (1000 * 60)) % 60);

@@ -128,7 +128,7 @@ public class TimeControlParser {
 
             json.put(TC_JSON_TIME_CONTROLS, timeControlJSONArray);
         } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "JSON saving failed: " + e.getMessage());
             e.printStackTrace();
             return;
         }

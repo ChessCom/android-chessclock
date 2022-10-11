@@ -33,7 +33,14 @@ public class StageRowView extends ConstraintLayout {
 
     public void updateData(int position, Stage stage, TimeIncrement timeIncrement) {
         positionLabel.setText(String.valueOf(position));
-        stageDetails.setText(stage.toString());
+        String details = "";
+        String timeFormatted = stage.durationTimeFormatted();
+        if (stage.getStageType() == Stage.StageType.GAME) {
+            details = getContext().getString(R.string.game_in_x, timeFormatted);
+        } else {
+            details = getResources().getQuantityString(R.plurals.x_moves_in, stage.getTotalMoves(), stage.getTotalMoves(), timeFormatted);
+        }
+        stageDetails.setText(details);
         timeIncrementDetails.setText(timeIncrement.toString());
     }
 }

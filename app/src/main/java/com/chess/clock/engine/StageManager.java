@@ -102,28 +102,33 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
     public void addNewStage() {
         if (!canAddStage()) return;
 
-        if (getTotalStages() == 0) {
-            Stage newStage = new Stage(Stage.STAGE_ONE_ID, Stage.STAGE_DURATION_5_MIN);
-            newStage.setStageListener(this);
-            mStages.add(newStage);
-        } else if (getTotalStages() == 1) {
-            // Set first stage as type MOVES, with 1 move
-            mStages.get(Stage.STAGE_ONE_ID).setStageType(Stage.StageType.MOVES);
-            mStages.get(Stage.STAGE_ONE_ID).setMoves(Stage.DEFAULT_STAGE_MOVES);
+        Stage newStage;
+        switch (getTotalStages()) {
+            case 0:
+                newStage = new Stage(Stage.STAGE_ONE_ID, Stage.STAGE_DURATION_5_MIN);
+                break;
+            case 1:
+                Stage existingStage = mStages.get(Stage.STAGE_ONE_ID);
+                existingStage.setStageType(Stage.StageType.MOVES);
+                existingStage.setMoves(Stage.DEFAULT_STAGE_MOVES);
 
-            Stage newStage = new Stage(Stage.STAGE_TWO_ID, Stage.STAGE_DURATION_5_MIN);
-            newStage.setStageListener(this);
-            mStages.add(newStage);
+                newStage = new Stage(Stage.STAGE_TWO_ID, Stage.STAGE_DURATION_5_MIN);
+                break;
+            case 2:
+                Stage lastExistingStage = mStages.get(Stage.STAGE_TWO_ID);
+                lastExistingStage.setStageType(Stage.StageType.MOVES);
+                lastExistingStage.setMoves(Stage.DEFAULT_STAGE_MOVES);
 
-        } else if (getTotalStages() == 2) {
-            // Set second stage as Type MOVES, with 1 move each.
-            mStages.get(Stage.STAGE_TWO_ID).setStageType(Stage.StageType.MOVES);
-            mStages.get(Stage.STAGE_TWO_ID).setMoves(Stage.DEFAULT_STAGE_MOVES);
-
-            Stage newStage = new Stage(Stage.STAGE_THREE_ID, Stage.STAGE_DURATION_5_MIN);
-            newStage.setStageListener(this);
-            mStages.add(newStage);
+                newStage = new Stage(Stage.STAGE_THREE_ID, Stage.STAGE_DURATION_5_MIN);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected stages state: " + getTotalStages());
         }
+
+        newStage.setStageListener(this);
+        mStages.add(newStage);
+
+        setLastStageAsGame();
     }
 
     public boolean canAddStage() {
@@ -137,28 +142,27 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
      */
     public void removeStage(int removeStageIdx) {
 
-        if (removeStageIdx != -1) {
+        if (removeStageIdx == -1) return;
 
-            Stage changingStage;
+        mStages.remove(removeStageIdx);
 
-            // Removing the middle and last one
-            if (removeStageIdx > 0 && removeStageIdx == (getTotalStages() - 1)) {
-
-                // Change the previous one
-                changingStage = mStages.get(removeStageIdx - 1);
-                changingStage.setMoves(0);
-                changingStage.setStageType(Stage.StageType.GAME);
-            }
-            // Remove the middle one
-            else if (removeStageIdx == 1) {
-
-                // Change the next one
-                changingStage = mStages.get(removeStageIdx + 1);
-                changingStage.setId(removeStageIdx);
-            }
-
-            mStages.remove(removeStageIdx);
+        // update indexes
+        int totalStages = getTotalStages();
+        for (int i = 0; i < totalStages; i++) {
+            mStages.get(i).setId(i);
         }
+
+        setLastStageAsGame();
+    }
+
+    private void setLastStageAsGame() {
+        int totalStages = getTotalStages();
+        if (totalStages <= 0) return;
+
+        Stage lastStage = mStages.get(totalStages - 1);
+        lastStage.setMoves(Stage.GAME_STAGE_MOVES);
+        lastStage.setStageType(Stage.StageType.GAME);
+
     }
 
     /**

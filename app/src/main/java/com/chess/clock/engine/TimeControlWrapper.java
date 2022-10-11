@@ -20,6 +20,14 @@ public class TimeControlWrapper implements Parcelable, Cloneable {
         mSameAsPlayerOne = in.readByte() != 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(mTimeControlPlayerOne, flags);
+        dest.writeParcelable(mTimeControlPlayerTwo, flags);
+        dest.writeByte((byte) (mSameAsPlayerOne ? 1 : 0));
+    }
+
+
     public static final Creator<TimeControlWrapper> CREATOR = new Creator<TimeControlWrapper>() {
         @Override
         public TimeControlWrapper createFromParcel(Parcel in) {
@@ -71,12 +79,6 @@ public class TimeControlWrapper implements Parcelable, Cloneable {
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(mTimeControlPlayerOne, flags);
-        dest.writeParcelable(mTimeControlPlayerTwo, flags);
     }
 
     public boolean isEqual(TimeControlWrapper wrapper) {
