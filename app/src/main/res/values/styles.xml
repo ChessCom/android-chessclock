@@ -20,8 +20,10 @@
     <!-- No Action bar Theme -->
     <style name="TimersTheme" parent="@style/Theme.AppCompat" />
 
-    <style name="ConfirmationDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="colorAccent">@color/white</item>
+    <style name="WhiteButtonsDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/bg_popup</item>
+        <item name="android:textSize">@dimen/text_size_default</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <!-- ActionBar styles -->
