@@ -20,8 +20,7 @@ public class ViewUtils {
     /**
      * call before dialog `show()`
      */
-    public static void setUpConfirmationPopup(Dialog dialog, Resources resources) {
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_popup);
+    public static void setLargePopupMessageTextSize(Dialog dialog, Resources resources) {
         dialog.setOnShowListener(dialogInterface -> {
             TextView messageTv = dialog.findViewById(android.R.id.message);
             if (messageTv != null) {

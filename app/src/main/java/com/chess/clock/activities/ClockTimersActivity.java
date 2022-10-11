@@ -698,7 +698,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
             // Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.ConfirmationDialogTheme);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
             builder.setMessage(R.string.dialog_reset_clock)
                     .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
                         // Reset the clock
@@ -712,7 +712,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
                     });
             // Create the AlertDialog object and return it
             Dialog dialog = builder.create();
-            ViewUtils.setUpConfirmationPopup(dialog, getResources());
+            ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
             dialog.setCanceledOnTouchOutside(false);
             return dialog;
         }

@@ -20,7 +20,7 @@
     <dimen name="text_size_default">14sp</dimen>
     <dimen name="text_size_large">16sp</dimen>
     <dimen name="button_text_size">22sp</dimen>
-    <dimen name="text_size_dialog_title">24sp</dimen>
+    <dimen name="text_size_dialog_title">20sp</dimen>
 
     <!-- Clock timer screen -->
     <dimen name="clock_button_stock_width">1px</dimen>

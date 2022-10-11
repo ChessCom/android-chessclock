@@ -358,7 +358,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
         if (menuItem.getItemId() == R.id.action_delete) {
             startBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
                     HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.ConfirmationDialogTheme);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
             builder
                     .setMessage(R.string.delete_custom_time)
                     .setPositiveButton(R.string.action_delete, (dialog, id) -> {
@@ -369,7 +369,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
                         // Resume the clock
                     });
             Dialog dialog = builder.create();
-            ViewUtils.setUpConfirmationPopup(dialog, getResources());
+            ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
             dialog.show();
             return true;
         }

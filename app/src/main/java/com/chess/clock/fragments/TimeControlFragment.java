@@ -470,8 +470,8 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            return builder
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
+            AlertDialog alertDialog = builder
                 .setTitle(getString(R.string.exit_dialog_title))
                 .setMessage(getString(R.string.exit_dialog_message))
                 .setNegativeButton(getString(R.string.exit_dialog_cancel), (arg0, arg1) -> {
@@ -487,6 +487,8 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
                     }
                 })
                 .create();
+            ViewUtils.setLargePopupMessageTextSize(alertDialog, getResources());
+            return alertDialog;
         }
     }
 }
