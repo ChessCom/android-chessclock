@@ -358,19 +358,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
         if (menuItem.getItemId() == R.id.action_delete) {
             startBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
                     HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
-            builder
-                    .setMessage(R.string.delete_custom_time)
-                    .setPositiveButton(R.string.action_delete, (dialog, id) -> {
-                        deleteTimeControls();
-                        actionMode.finish(); // Action picked, so close the CAB
-                    })
-                    .setNegativeButton(R.string.action_keep, (dialog, id) -> {
-                        // Resume the clock
-                    });
-            Dialog dialog = builder.create();
-            ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
-            dialog.show();
+            deleteTimeControls(actionMode);
             return true;
         }
         return false;
@@ -424,7 +412,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
         timesListView.setItemChecked(itemChecked, true);
     }
 
-    private void deleteTimeControls() {
+    private void deleteTimeControls(ActionMode actionMode) {
         Log.d(TAG, "Requested to delete " + mTotalItemChecked + " time controls.");
 
         boolean updateList = false;
@@ -457,8 +445,22 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
 
         // If checked items found request their removal.
         if (updateList) {
-            mListener.removeTimeControl(positions);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
+            builder
+                    .setMessage(R.string.delete_custom_time)
+                    .setPositiveButton(R.string.action_delete, (dialog, id) -> {
+                        mListener.removeTimeControl(positions);
+                        actionMode.finish();
+                    })
+                    .setNegativeButton(R.string.action_keep, (dialog, id) -> {
+                        // Resume the clock
+                    });
+            Dialog dialog = builder.create();
+            ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
+            dialog.show();
             // Note: No need to notifyDataSetChanged as mListView will have adapters swap.
+        } else {
+            actionMode.finish();
         }
     }
 
