@@ -16,6 +16,7 @@
     <dimen name="time_item_height">48dp</dimen>
 
     <!-- Text sizes-->
+    <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_default">14sp</dimen>
     <dimen name="text_size_large">16sp</dimen>
     <dimen name="button_text_size">22sp</dimen>

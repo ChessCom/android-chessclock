@@ -199,7 +199,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      * FRAGMENT TRANSACTIONS
      */
 
-    public void loadTimeControlFragment(Boolean edit) {
+    public void loadTimeControlFragment(boolean edit) {
         loadFragment(TimeControlFragment.newInstance(edit), TAG_TIME_CONTROL_FRAGMENT);
     }
 

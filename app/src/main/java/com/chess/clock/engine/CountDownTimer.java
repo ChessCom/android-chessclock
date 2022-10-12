@@ -1,8 +1,10 @@
 package com.chess.clock.engine;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.util.Log;
 
+import com.chess.clock.entities.ClockTime;
 import com.chess.clock.util.Args;
 
 /**
@@ -156,9 +158,10 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
 
         if (mCallback != null && mTimeControl != null) {
             mCallback.onClockTimeUpdate(getTime());
-            mCallback.onMoveCountUpdate(mTimeControl.getStageManager().getTotalMoveCount());
-            mCallback.onTotalStageNumber(mTimeControl.getStageManager().getTotalStages());
-            mCallback.onStageUpdate(mTimeControl.getStageManager().getCurrentStage());
+            StageManager stageManager = mTimeControl.getStageManager();
+            mCallback.onMoveCountUpdate(stageManager.getTotalMoveCount());
+            mCallback.onTotalStageNumber(stageManager.getTotalStages());
+            mCallback.onStageUpdate(stageManager.getCurrentStage(), getTimeControlTitle());
         }
     }
 
@@ -174,13 +177,9 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
      *
      * @param time Time position to be set in milliseconds.
      */
-    private void setTime(long time) {
+    public void setTime(long time) {
         // Avoid setting negative times.
-        if (time >= 0) {
-            mTime = time;
-        } else {
-            mTime = 0;
-        }
+        mTime = Math.max(0, time);
     }
 
     public int getTotalMoveCount() {
@@ -465,11 +464,10 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
      * @param time Player time in milliseconds.
      * @return Readable String format of time.
      */
+    @SuppressLint("DefaultLocale")
     private String formatTime(long time) {
-        int s = (int) (time / 1000) % 60;
-        int m = (int) ((time / (1000 * 60)) % 60);
-        int h = (int) ((time / (1000 * 60 * 60)) % 24);
-        return String.format("%02d:%02d:%02d", h, m, s);
+        ClockTime clockTime = ClockTime.raw(time);
+        return String.format("%02d:%02d:%02d", clockTime.hours, clockTime.minutes, clockTime.seconds);
     }
 
     /**
@@ -501,7 +499,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
                 + formatTime(stageDuration) + ", time left: " + formatTime(getTime()));
 
         if (mCallback != null) {
-            mCallback.onStageUpdate(stage);
+            mCallback.onStageUpdate(stage, getTimeControlTitle());
             mCallback.onClockTimeUpdate(mTime);
         }
     }
@@ -574,7 +572,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
          *
          * @param stage The current game stage.
          */
-        void onStageUpdate(Stage stage);
+        void onStageUpdate(Stage stage, String timeControlName);
 
         /**
          * Called when the move count is updated.

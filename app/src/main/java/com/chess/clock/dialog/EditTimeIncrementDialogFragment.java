@@ -19,6 +19,7 @@ import com.chess.clock.R;
 import com.chess.clock.activities.BaseActivity;
 import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.entities.AppTheme;
+import com.chess.clock.entities.ClockTime;
 import com.chess.clock.util.ClockUtils;
 
 public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
@@ -82,10 +83,9 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
         ClockUtils.setClockTextWatcher(secondsEt);
 
         if (savedInstanceState == null) {
-            int[] duration = timeIncrement.getDuration();
-            int minutes = duration[0] * 60 + duration[1];
-            minutesEt.setText(ClockUtils.twoDecimalPlacesFormat(minutes));
-            secondsEt.setText(ClockUtils.twoDecimalPlacesFormat(duration[2]));
+            ClockTime clockTime = timeIncrement.getDuration();
+            minutesEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.minutes));
+            secondsEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.seconds));
         }
 
         delayTv.setOnClickListener(v -> setCheckedViews(TimeIncrement.Type.DELAY));

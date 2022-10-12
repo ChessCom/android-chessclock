@@ -99,5 +99,11 @@
     <string name="delete_custom_time">Delete custom time?</string>
     <string name="action_keep">Keep</string>
     <string name="game_in_x">Game in %s</string>
+    <string name="hour">Hour</string>
+    <string name="minute">Minute</string>
+    <string name="second">Second</string>
+    <string name="save_time">Save time</string>
+    <string name="cancel">cancel</string>
+    <string name="adjust_time">Adjust Time</string>
 
 </resources>
