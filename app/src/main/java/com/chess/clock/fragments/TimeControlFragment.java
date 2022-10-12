@@ -101,7 +101,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     public TimeControlFragment() {
     }
 
-    public static TimeControlFragment newInstance(Boolean editMode) {
+    public static TimeControlFragment newInstance(boolean editMode) {
 
         Bundle args = new Bundle();
         args.putBoolean(ARG_EDIT_MODE, editMode);
@@ -472,21 +472,21 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             return builder
-                    .setTitle(getString(R.string.exit_dialog_title))
-                    .setMessage(getString(R.string.exit_dialog_message))
-                    .setNegativeButton(getString(R.string.exit_dialog_cancel), (arg0, arg1) -> {
-                        Fragment target = getTargetFragment();
-                        if (target != null) {
-                            target.requireActivity().getSupportFragmentManager().popBackStack();
-                        }
-                    })
-                    .setPositiveButton(getString(R.string.exit_dialog_ok), (arg0, arg1) -> {
-                        Fragment target = getTargetFragment();
-                        if (target != null) {
-                            ((TimeControlFragment) target).saveTimeControl();
-                        }
-                    })
-                    .create();
+                .setTitle(getString(R.string.exit_dialog_title))
+                .setMessage(getString(R.string.exit_dialog_message))
+                .setNegativeButton(getString(R.string.exit_dialog_cancel), (arg0, arg1) -> {
+                    Fragment target = getTargetFragment();
+                    if (target != null) {
+                        target.requireActivity().getSupportFragmentManager().popBackStack();
+                    }
+                })
+                .setPositiveButton(getString(R.string.exit_dialog_ok), (arg0, arg1) -> {
+                    Fragment target = getTargetFragment();
+                    if (target != null) {
+                        ((TimeControlFragment) target).saveTimeControl();
+                    }
+                })
+                .create();
         }
     }
 }

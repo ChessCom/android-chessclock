@@ -32,7 +32,7 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
         return R.color.black_40;
     }
 
-    public static AdjustTimeDialogFragment newInstance(Long time, Boolean firstPlayer) {
+    public static AdjustTimeDialogFragment newInstance(Long time, boolean firstPlayer) {
 
         Bundle args = new Bundle();
         args.putBoolean(ARG_FIRST_PLAYER_KEY, firstPlayer);
@@ -89,6 +89,6 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
     }
 
     public interface TimeAdjustmentsListener {
-        void onTimeAdjustmentsConfirmed(long timeMs, Boolean firstPlayer);
+        void onTimeAdjustmentsConfirmed(long timeMs, boolean firstPlayer);
     }
 }
