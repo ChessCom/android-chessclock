@@ -87,13 +87,6 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
         // Perform initialization of all fragments and loaders.
         super.onCreate(savedInstanceState);
 
-        boolean isFullScreen = appData.getClockFullScreen();
-        if (isFullScreen) {
-            showStatusBar();
-        } else {
-            hideStatusBar();
-        }
-
         setContentView(R.layout.activity_timer_settings);
 
         if (savedInstanceState == null) {
