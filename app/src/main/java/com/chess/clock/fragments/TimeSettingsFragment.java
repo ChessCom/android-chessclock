@@ -126,8 +126,8 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings_test, container, false);
-        initListViewAndInflateHeaders(inflater, view);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        initListViewAndHeaders(inflater, view);
         startBtn = view.findViewById(R.id.startBtn);
         setupListViewAdapter(savedInstanceState);
         return view;
@@ -227,10 +227,12 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     }
 
     @SuppressLint("InflateParams")
-    private void initListViewAndInflateHeaders(LayoutInflater inflater, View view) {
+    private void initListViewAndHeaders(LayoutInflater inflater, View view) {
         timesListView = view.findViewById(R.id.list_time_controls);
-        View headerPresets = inflater.inflate(R.layout.header_presets, null);
-        View headerLogo = inflater.inflate(R.layout.header_logo, null);
+        plusImg = view.findViewById(R.id.plusImg);
+        View headerLogo = view.findViewById(R.id.logo);
+        View headerTimeBtn = view.findViewById(R.id.timeBtn);
+
         headerLogo.setOnClickListener(v -> {
             final String appPackageName = "com.chess";
             try {
@@ -239,8 +241,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
             }
         });
-        View headerTimeBtn = inflater.inflate(R.layout.header_time_button, null);
-        plusImg = headerTimeBtn.findViewById(R.id.plusImg);
+
         headerTimeBtn
                 .findViewById(R.id.timeBtn)
                 .setOnClickListener(v -> {
@@ -248,10 +249,6 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
                     startBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
                             HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
                 });
-
-        timesListView.addHeaderView(headerLogo, null, false);
-        timesListView.addHeaderView(headerTimeBtn, null, false);
-        timesListView.addHeaderView(headerPresets, null, false);
     }
 
     /**
