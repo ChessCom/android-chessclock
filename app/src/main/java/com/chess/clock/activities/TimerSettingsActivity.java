@@ -192,7 +192,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      * FRAGMENT TRANSACTIONS
      */
 
-    public void loadTimeControlFragment(boolean edit) {
+    private void loadTimeControlFragment(boolean edit) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, TimeControlFragment.newInstance(edit), TAG_TIME_CONTROL_FRAGMENT)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
