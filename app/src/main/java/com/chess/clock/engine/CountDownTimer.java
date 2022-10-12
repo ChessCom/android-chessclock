@@ -179,11 +179,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
      */
     public void setTime(long time) {
         // Avoid setting negative times.
-        if (time >= 0) {
-            mTime = time;
-        } else {
-            mTime = 0;
-        }
+        mTime = Math.max(0, time);
     }
 
     public int getTotalMoveCount() {
