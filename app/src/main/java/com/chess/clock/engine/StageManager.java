@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 /**
@@ -103,23 +105,44 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
         if (!canAddStage()) return;
 
         Stage newStage;
+        TimeIncrement increment = TimeIncrement.defaultIncrement();
         switch (getTotalStages()) {
             case 0:
-                newStage = new Stage(Stage.STAGE_ONE_ID, Stage.STAGE_DURATION_5_MIN);
+                newStage = new Stage(
+                        Stage.STAGE_ONE_ID,
+                        Stage.STAGE_DURATION_5_MIN,
+                        increment
+                );
                 break;
             case 1:
                 Stage existingStage = mStages.get(Stage.STAGE_ONE_ID);
                 existingStage.setStageType(Stage.StageType.MOVES);
                 existingStage.setMoves(Stage.DEFAULT_STAGE_MOVES);
 
-                newStage = new Stage(Stage.STAGE_TWO_ID, Stage.STAGE_DURATION_5_MIN);
+                try {
+                    increment = (TimeIncrement) existingStage.getTimeIncrement().clone();
+                } catch (CloneNotSupportedException e) {
+                    // no-op, will use default one
+                }
+
+                newStage = new Stage(
+                        Stage.STAGE_TWO_ID,
+                        Stage.STAGE_DURATION_5_MIN,
+                        increment
+                );
                 break;
             case 2:
                 Stage lastExistingStage = mStages.get(Stage.STAGE_TWO_ID);
                 lastExistingStage.setStageType(Stage.StageType.MOVES);
                 lastExistingStage.setMoves(Stage.DEFAULT_STAGE_MOVES);
 
-                newStage = new Stage(Stage.STAGE_THREE_ID, Stage.STAGE_DURATION_5_MIN);
+                try {
+                    increment = (TimeIncrement) lastExistingStage.getTimeIncrement().clone();
+                } catch (CloneNotSupportedException e) {
+                    // no-op, will use default one
+                }
+
+                newStage = new Stage(Stage.STAGE_THREE_ID, Stage.STAGE_DURATION_5_MIN, increment);
                 break;
             default:
                 throw new IllegalStateException("Unexpected stages state: " + getTotalStages());
@@ -286,6 +309,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
         }
     }
 
+    @NonNull
     @Override
     protected Object clone() throws CloneNotSupportedException {
         StageManager clone = (StageManager) super.clone();

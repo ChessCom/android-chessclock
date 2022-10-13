@@ -3,6 +3,8 @@ package com.chess.clock.engine;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.chess.clock.util.Args;
 
 /**
@@ -43,7 +45,7 @@ public class TimeControl implements Parcelable, Cloneable, StageManager.StageMan
             return new TimeControl[size];
         }
     };
-    private static final String TAG = TimeControl.class.getName();
+
     /**
      * TimeControl identifier.
      */
@@ -53,11 +55,6 @@ public class TimeControl implements Parcelable, Cloneable, StageManager.StageMan
      * Stage Manager associated with Time Control.
      */
     private StageManager mStageManager;
-
-    /**
-     * Time increment associated with Time Control.
-     */
-    private TimeIncrement mTimeIncrement;
 
     /**
      * Listener used to dispatch time control update events.
@@ -71,15 +68,12 @@ public class TimeControl implements Parcelable, Cloneable, StageManager.StageMan
      *
      * @param name   Name identifier.
      * @param stages stages of the TimeControl.
-     * @param time   TimeIncrement object associated with the TimeControl.
      * @throws java.lang.NullPointerException if StageManager or TimeIncrement are not provided.
      */
-    public TimeControl(String name, Stage[] stages, TimeIncrement time) {
+    public TimeControl(String name, Stage[] stages) {
         Args.checkForNull(stages);
-        Args.checkForNull(time);
 
         mName = name;
-        mTimeIncrement = time;
         mStageManager = new StageManager(stages);
 
         // Set up listener for Stage Manager.
@@ -101,9 +95,7 @@ public class TimeControl implements Parcelable, Cloneable, StageManager.StageMan
         boolean equalNames = (mName == null && tc.getName() == null) ||
                 mName.equals(tc.getName());
 
-        return (equalNames
-                && mStageManager.isEqual(tc.getStageManager())
-                && mTimeIncrement.isEqual(tc.getTimeIncrement()));
+        return (equalNames && mStageManager.isEqual(tc.getStageManager()));
     }
 
     /**
@@ -135,15 +127,6 @@ public class TimeControl implements Parcelable, Cloneable, StageManager.StageMan
     }
 
     /**
-     * Gets the time increment associated with this time control.
-     *
-     * @return TimeIncrement associated with this TimeControl.
-     */
-    public TimeIncrement getTimeIncrement() {
-        return mTimeIncrement;
-    }
-
-    /**
      * Gets the Stage manager associated with this time control.
      *
      * @return Stage manager associated with this time control.
@@ -156,14 +139,12 @@ public class TimeControl implements Parcelable, Cloneable, StageManager.StageMan
         mName = parcel.readString();
         mStageManager = parcel.readParcelable(StageManager.class.getClassLoader());
         mStageManager.setStageManagerListener(this);
-        mTimeIncrement = parcel.readParcelable(TimeIncrement.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(mName);
         parcel.writeParcelable(mStageManager, flags);
-        parcel.writeParcelable(mTimeIncrement, flags);
     }
 
     @Override
@@ -195,6 +176,7 @@ public class TimeControl implements Parcelable, Cloneable, StageManager.StageMan
         }
     }
 
+    @NonNull
     @Override
     public Object clone() throws CloneNotSupportedException {
         TimeControl clone = (TimeControl) super.clone();
@@ -202,9 +184,6 @@ public class TimeControl implements Parcelable, Cloneable, StageManager.StageMan
         // Clone StageManager object and set this clone as his listener.
         clone.mStageManager = (StageManager) mStageManager.clone();
         clone.mStageManager.setStageManagerListener(clone);
-
-        // Clone TimeIncrement object
-        clone.mTimeIncrement = (TimeIncrement) mTimeIncrement.clone();
 
         clone.mTimeControlListener = null;
         return clone;

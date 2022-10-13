@@ -46,6 +46,10 @@ public class TimeIncrement implements Parcelable, Cloneable {
         this.readFromParcel(parcel);
     }
 
+    public static TimeIncrement defaultIncrement() {
+        return new TimeIncrement(TimeIncrement.Type.FISCHER, 0);
+    }
+
     /**
      * @return The increment type.
      */

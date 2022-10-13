@@ -170,10 +170,9 @@ public class TimeControlManager {
         isNewEditableTimeControl = true;
 
         // Set default stage and time increment
-        Stage stage1 = new Stage(0, 2 * 60 * 60 * 1000L, 40);
-        Stage stage2 = new Stage(1, 60 * 60 * 1000L);
-        TimeIncrement timeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, 0);
-        TimeControl blank = new TimeControl(null, new Stage[]{stage1, stage2}, timeIncrement);
+        Stage stage1 = new Stage(0, 2 * 60 * 60 * 1000L, 40, TimeIncrement.defaultIncrement());
+        Stage stage2 = new Stage(1, 60 * 60 * 1000L, TimeIncrement.defaultIncrement());
+        TimeControl blank = new TimeControl(null, new Stage[]{stage1, stage2});
 
         // Set current editable time control with a new "blank" time control
         try {

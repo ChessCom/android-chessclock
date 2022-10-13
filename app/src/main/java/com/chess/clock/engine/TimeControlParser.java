@@ -1,9 +1,12 @@
 package com.chess.clock.engine;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.chess.clock.service.ChessClockLocalService;
 
@@ -70,6 +73,7 @@ public class TimeControlParser {
     /**
      * Store TimeControl Array in shared preferences as json String.
      */
+    @SuppressLint("ApplySharedPref")
     public static void saveTimeControls(Context context, ArrayList<TimeControlWrapper> timeControls) {
 
         if (timeControls == null) {
@@ -88,34 +92,15 @@ public class TimeControlParser {
 
                 // Save Stages
                 for (Stage stage : tc.getTimeControlPlayerOne().getStageManager().getStages()) {
-                    JSONObject stageJSONObject = new JSONObject();
-                    stageJSONObject.put(TC_JSON_ID, stage.getId());
-                    stageJSONObject.put(TC_JSON_DURATION, stage.getDuration());
-                    stageJSONObject.put(TC_JSON_MOVES, stage.getTotalMoves());
-                    timeControlStagesJSONArray.put(stageJSONObject);
+                    timeControlStagesJSONArray.put(stageToJsonObject(stage));
                 }
 
                 for (Stage stage : tc.getTimeControlPlayerTwo().getStageManager().getStages()) {
-                    JSONObject stageJSONObject = new JSONObject();
-                    stageJSONObject.put(TC_JSON_ID, stage.getId());
-                    stageJSONObject.put(TC_JSON_DURATION, stage.getDuration());
-                    stageJSONObject.put(TC_JSON_MOVES, stage.getTotalMoves());
-                    timeControlStagesPlayerTwoJSONArray.put(stageJSONObject);
+                    timeControlStagesPlayerTwoJSONArray.put(stageToJsonObject(stage));
                 }
-
-                // Save TimeIncrement
-                JSONObject timeIncrementJSONObject = new JSONObject();
-                timeIncrementJSONObject.put(TC_JSON_VALUE, tc.getTimeControlPlayerOne().getTimeIncrement().getValue());
-                timeIncrementJSONObject.put(TC_JSON_TYPE, tc.getTimeControlPlayerOne().getTimeIncrement().getType().getValue());
-
-                JSONObject timeIncrementPlayerTwoJSONObject = new JSONObject();
-                timeIncrementPlayerTwoJSONObject.put(TC_JSON_VALUE, tc.getTimeControlPlayerTwo().getTimeIncrement().getValue());
-                timeIncrementPlayerTwoJSONObject.put(TC_JSON_TYPE, tc.getTimeControlPlayerTwo().getTimeIncrement().getType().getValue());
 
                 // Add name, stages and time increment to TimeControl json object.
                 timeControlJSONObject.put(TC_JSON_NAME, tc.getTimeControlPlayerOne().getName());
-                timeControlJSONObject.put(TC_JSON_TIME_INCREMENT, timeIncrementJSONObject);
-                timeControlJSONObject.put(TC_JSON_TIME_INCREMENT_PLAYER_TWO, timeIncrementPlayerTwoJSONObject);
                 timeControlJSONObject.put(TC_JSON_STAGES, timeControlStagesJSONArray);
                 timeControlJSONObject.put(TC_JSON_STAGES_PLAYER_TWO, timeControlStagesPlayerTwoJSONArray);
 
@@ -142,11 +127,26 @@ public class TimeControlParser {
         spe.commit();
     }
 
+    @NonNull
+    private static JSONObject stageToJsonObject(Stage stage) throws JSONException {
+        JSONObject stageJSONObject = new JSONObject();
+        stageJSONObject.put(TC_JSON_ID, stage.getId());
+        stageJSONObject.put(TC_JSON_DURATION, stage.getDuration());
+        stageJSONObject.put(TC_JSON_MOVES, stage.getTotalMoves());
+
+        JSONObject timeIncrementJSONObject = new JSONObject();
+        timeIncrementJSONObject.put(TC_JSON_VALUE, stage.getTimeIncrement().getValue());
+        timeIncrementJSONObject.put(TC_JSON_TYPE, stage.getTimeIncrement().getType().getValue());
+        stageJSONObject.put(TC_JSON_TIME_INCREMENT, timeIncrementJSONObject);
+        return stageJSONObject;
+    }
+
     /**
      * Stores the selected time control position in the time control list.
      *
      * @param idx list index.
      */
+    @SuppressLint("ApplySharedPref")
     public static void saveTimeControlCheckIndex(Context context, int idx) {
         SharedPreferences sp = getSharedPreferences(context);
         SharedPreferences.Editor spe = sp.edit();
@@ -190,28 +190,28 @@ public class TimeControlParser {
             JSONArray timeControlsJSONArray = json.getJSONArray(TC_JSON_TIME_CONTROLS);
             for (int i = 0; i < timeControlsJSONArray.length(); i++) {
                 JSONObject timeControlJSON = timeControlsJSONArray.getJSONObject(i);
-                JSONObject timeIncrementPlayerTwoJSONOBject = null;
-                JSONArray timeControlStagesPlayerTwoJSON = null;
 
-                JSONObject timeIncrementJSONOBject = timeControlJSON.getJSONObject(TC_JSON_TIME_INCREMENT);
+                JSONArray timeControlStagesPlayerTwoJSON = null;
                 JSONArray timeControlStagesJSON = timeControlJSON.getJSONArray(TC_JSON_STAGES);
 
-                if (timeControlJSON.has(TC_JSON_TIME_INCREMENT_PLAYER_TWO) && timeControlJSON.has(TC_JSON_STAGES_PLAYER_TWO)) {
-                    timeIncrementPlayerTwoJSONOBject = timeControlJSON.getJSONObject(TC_JSON_TIME_INCREMENT_PLAYER_TWO);
+                if (timeControlJSON.has(TC_JSON_STAGES_PLAYER_TWO)) {
                     timeControlStagesPlayerTwoJSON = timeControlJSON.getJSONArray(TC_JSON_STAGES_PLAYER_TWO);
                 }
 
                 String name = timeControlJSON.getString(TC_JSON_NAME);
-                Stage[] stages = getStages(timeControlStagesJSON);
-                Stage[] stagesPlayerTwo = timeControlStagesPlayerTwoJSON == null ? stages : getStages(timeControlStagesPlayerTwoJSON);
-                TimeIncrement timeIncrement = getTimeIncrement(timeIncrementJSONOBject);
-                TimeIncrement timeIncrementPlayerTwo = timeIncrementPlayerTwoJSONOBject == null ? timeIncrement : getTimeIncrement(timeIncrementPlayerTwoJSONOBject);
+
+                // old model will be migrated automatically to new one
+                JSONObject playerOneOldTimeIncrement = getOldTimeIncrementJsonOrNull(timeControlJSON, TC_JSON_TIME_INCREMENT);
+                JSONObject playerTwoOldTimeIncrement = getOldTimeIncrementJsonOrNull(timeControlJSON, TC_JSON_TIME_INCREMENT_PLAYER_TWO);
+
+                Stage[] stages = getStages(timeControlStagesJSON, playerOneOldTimeIncrement);
+                Stage[] stagesPlayerTwo = timeControlStagesPlayerTwoJSON == null ? stages : getStages(timeControlStagesPlayerTwoJSON, playerTwoOldTimeIncrement);
 
                 boolean isSameAsPlayerOne = !timeControlJSON.has(TC_JSON_SAME_AS_PLAYER_ONE) ||
                         timeControlJSON.getBoolean(TC_JSON_SAME_AS_PLAYER_ONE);
 
-                TimeControl timeControl = new TimeControl(name, stages, timeIncrement);
-                TimeControl timeControlPlayerTwo = new TimeControl(name, stagesPlayerTwo, timeIncrementPlayerTwo);
+                TimeControl timeControl = new TimeControl(name, stages);
+                TimeControl timeControlPlayerTwo = new TimeControl(name, stagesPlayerTwo);
                 TimeControlWrapper wrapper = new TimeControlWrapper(timeControl, timeControlPlayerTwo);
                 wrapper.setSameAsPlayerOne(isSameAsPlayerOne);
                 timeControls.add(wrapper);
@@ -225,6 +225,14 @@ public class TimeControlParser {
 
         Log.i(TAG, "Retrieving " + timeControls.size() + " time controls.");
         return timeControls;
+    }
+
+    private static JSONObject getOldTimeIncrementJsonOrNull(JSONObject timeControlJSON, String key) throws JSONException {
+        JSONObject oldTimeIncrementObject = null;
+        if (timeControlJSON.has(key)) {
+            oldTimeIncrementObject = timeControlJSON.getJSONObject(key);
+        }
+        return oldTimeIncrementObject;
     }
 
     /**
@@ -257,12 +265,12 @@ public class TimeControlParser {
         }
     }
 
-    private static Stage[] getStages(JSONArray stagesJSONArray) {
+    private static Stage[] getStages(JSONArray stagesJSONArray, JSONObject oldTimeControlObject) {
         try {
             Stage[] stages = new Stage[stagesJSONArray.length()];
             for (int i = 0; i < stagesJSONArray.length(); i++) {
                 JSONObject stageJSONObject = stagesJSONArray.getJSONObject(i);
-                Stage stage = getStage(stageJSONObject);
+                Stage stage = getStage(stageJSONObject, oldTimeControlObject);
                 stages[i] = stage;
             }
             return stages;
@@ -273,15 +281,23 @@ public class TimeControlParser {
         }
     }
 
-    private static Stage getStage(JSONObject stageJSONObject) {
+    private static Stage getStage(JSONObject stageJSONObject, JSONObject oldTimeControlJson) {
         try {
             int id = stageJSONObject.getInt(TC_JSON_ID);
             long duration = stageJSONObject.getLong(TC_JSON_DURATION);
             int moves = stageJSONObject.getInt(TC_JSON_MOVES);
-            if (moves > 0) {
-                return new Stage(id, duration, moves);
+
+            TimeIncrement increment;
+            if (oldTimeControlJson != null) {
+                increment = getTimeIncrement(oldTimeControlJson);
             } else {
-                return new Stage(id, duration);
+                increment = getTimeIncrement(stageJSONObject.getJSONObject(TC_JSON_TIME_INCREMENT));
+            }
+
+            if (moves > 0) {
+                return new Stage(id, duration, moves, increment);
+            } else {
+                return new Stage(id, duration, increment);
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
