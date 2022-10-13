@@ -13,12 +13,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Keep;
 import androidx.core.content.ContextCompat;
 
 import com.chess.clock.R;
 import com.chess.clock.entities.AppTheme;
 import com.chess.clock.entities.ClockTime;
 
+@Keep
 public class ClockButton extends FrameLayout {
 
     private final TextView timeTv;
@@ -122,6 +124,7 @@ public class ClockButton extends FrameLayout {
         IDLE, LOCKED, RUNNING, FINISHED
     }
 
+    @Keep
     public interface ClockClickListener {
         void onClickClock();
 
