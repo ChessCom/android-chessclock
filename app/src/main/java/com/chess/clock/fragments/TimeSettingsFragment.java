@@ -147,7 +147,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
             TimerSettingsActivity activity = (TimerSettingsActivity) requireActivity();
 
             // Check if current time control selected is the same as the the list selected
-            if (activity.isSameTimeControlLoaded()) {
+            if (activity.showResetWarning()) {
                 ResetClockDialogFragment resetClockDialog = new ResetClockDialogFragment();
                 resetClockDialog.setTargetFragment(TimeSettingsFragment.this, 0);
                 resetClockDialog.show(activity.getSupportFragmentManager(), TAG_RESET_DIALOG_FRAGMENT);

@@ -180,19 +180,10 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     }
 
     /**
-     * @return True if Time Control set up in Clock Timers Activity is the same
+     * @return True if clock was started before settings changes
      */
-    public boolean isSameTimeControlLoaded() {
-        int index = timeControlManager.getEditableTimeControlCheckIndex();
-        if (index > 0 && index < timeControlManager.getTimeControls().size()) {
-            TimeControl tc = timeControlManager.getTimeControls().get(index).getTimeControlPlayerOne();
-            String title = tc.getName();
-            return mBound && mService.getNameOfTimeControlRunning().equals(title);
-        } else {
-            Log.e(TAG, "isSameTimeControlLoaded got index out of bounds. index: "
-                    + index + " array size: " + timeControlManager.getTimeControls().size());
-            return false;
-        }
+    public boolean showResetWarning() {
+        return mBound && mService.isClockStarted();
     }
 
     /**

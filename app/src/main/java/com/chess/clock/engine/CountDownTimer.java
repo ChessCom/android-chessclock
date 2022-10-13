@@ -240,7 +240,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
             Log.d(TAG, "#" + this.hashCode() + " stopped at " + formatTime(getTime()) + ".");
 
             // Only stops the clock if currently running or paused
-            if (mTimerState == TimerState.RUNNING || mTimerState == TimerState.PAUSED) {
+            if (isStarted()) {
 
                 switch (mTimeControl.getTimeIncrement().getType()) {
                     case FISCHER:
@@ -383,7 +383,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
      */
     private void forceStopAndIncrementFull(long increment) {
         // Only forceStop if currently running or paused.
-        if (mTimerState == TimerState.RUNNING || mTimerState == TimerState.PAUSED) {
+        if (isStarted()) {
             addIncrement(increment);
             forceStop();
         }
@@ -397,7 +397,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
      */
     private void forceStopAndIncrementAtMost(long increment) {
         // Only stops if currently running or paused.
-        if (mTimerState == TimerState.RUNNING || mTimerState == TimerState.PAUSED) {
+        if (isStarted()) {
             long elapsedTime = mStopTime - mTime;
             Log.d(TAG, "#" + this.hashCode() + " time since last stop: " + formatTime(elapsedTime));
             addIncrement(Math.min(elapsedTime, increment));
@@ -410,7 +410,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
      */
     private void forceStop() {
         // Do not increment if timer was already stopped.
-        if (mTimerState == TimerState.RUNNING || mTimerState == TimerState.PAUSED) {
+        if (isStarted()) {
             handler.removeCallbacks(downCounter);
 
             // Force finish on zero if it went negative.
@@ -512,6 +512,10 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
         if (mCallback != null) {
             mCallback.onMoveCountUpdate(moveCount);
         }
+    }
+
+    public boolean isStarted() {
+        return mTimerState == TimerState.RUNNING || mTimerState == TimerState.PAUSED;
     }
 
     /**
