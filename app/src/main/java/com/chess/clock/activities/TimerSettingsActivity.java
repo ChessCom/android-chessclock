@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.chess.clock.R;
-import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlManager;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.fragments.TimeControlFragment;
