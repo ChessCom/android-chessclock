@@ -5,6 +5,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.chess.clock.entities.ClockTime;
 
 /**
@@ -33,14 +35,10 @@ public class Stage implements Parcelable, Cloneable {
         }
     };
 
-    /**
-     * Game Stage Type
-     */
+
     private StageType mStageType;
-    /**
-     * Game Stage State
-     */
     private StageState mStageState;
+    private TimeIncrement timeIncrement;
     /**
      * Registered Id used to identify the game stage after completion.
      *
@@ -70,20 +68,22 @@ public class Stage implements Parcelable, Cloneable {
      * @param moves    Limited number of moves for the stage. If zero provided, Stage type will be GAME.
      * @throws java.lang.IllegalArgumentException if duration is not positive or moves is not positive.
      */
-    public Stage(int id, long duration, int moves) {
-        this(id, duration);
+    public Stage(int id, long duration, int moves, TimeIncrement timeIncrement) {
+        this(id, duration, timeIncrement);
         this.mMoves = moves;
         this.mStageType = StageType.MOVES;
     }
 
     /**
-     * @param id       Game stage identifier.
-     * @param duration Stage duration in milliseconds.
+     * @param id            Game stage identifier.
+     * @param duration      Stage duration in milliseconds.
+     * @param timeIncrement TimeIncrement for this stage.
      */
-    public Stage(int id, long duration) {
+    public Stage(int id, long duration, TimeIncrement timeIncrement) {
         this.mId = id;
         this.mDuration = duration;
         this.mStageType = StageType.GAME;
+        this.timeIncrement = timeIncrement;
         reset();
     }
 
@@ -101,10 +101,11 @@ public class Stage implements Parcelable, Cloneable {
     /**
      * Set the id of the stage.
      *
-     * @param id
+     * @param id stage id, one of values [0,1,2]
      */
     public void setId(int id) {
-        if (id < 0 || id >= MAX_ALLOWED_STAGES_COUNT) throw new AssertionError("stage id out of range");
+        if (id < 0 || id >= MAX_ALLOWED_STAGES_COUNT)
+            throw new AssertionError("stage id out of range");
         mId = id;
     }
 
@@ -117,8 +118,6 @@ public class Stage implements Parcelable, Cloneable {
 
     /**
      * Set stage duration
-     *
-     * @param duration
      */
     public void setDuration(long duration) {
         mDuration = duration;
@@ -129,13 +128,6 @@ public class Stage implements Parcelable, Cloneable {
      */
     public int getTotalMoves() {
         return mMoves;
-    }
-
-    /**
-     * @return The current number of moves played in this stage.
-     */
-    public int getStageMoveCount() {
-        return mStageMoveCount;
     }
 
     /**
@@ -151,7 +143,6 @@ public class Stage implements Parcelable, Cloneable {
      * Check if Stage object is equal to this one.
      *
      * @param stage Stage Object.
-     * @return
      */
     public boolean isEqual(Stage stage) {
         // ID
@@ -163,6 +154,11 @@ public class Stage implements Parcelable, Cloneable {
         else if (mStageType.getValue() != stage.getStageType().getValue()) {
             Log.i(TAG, "StageType not equal. " + mStageType.getValue()
                     + " - " + stage.getStageType().getValue());
+            return false;
+        }
+        // TimeIncrement
+        else if (!timeIncrement.isEqual(stage.timeIncrement)) {
+            Log.i(TAG, "TimeIncrement not equal. " + timeIncrement + " != " + stage.getTimeIncrement());
             return false;
         }
         // Duration
@@ -185,6 +181,22 @@ public class Stage implements Parcelable, Cloneable {
         } else {
             return true;
         }
+    }
+
+    /**
+     * @return [TimeIncrement] of this stage
+     */
+    public TimeIncrement getTimeIncrement() {
+        return timeIncrement;
+    }
+
+    /**
+     * Set the TimeIncrement of this stage.
+     *
+     * @param increment [TimeIncrement] for this stage.
+     */
+    public void setTimeIncrement(TimeIncrement increment) {
+        timeIncrement = increment;
     }
 
     /**
@@ -220,7 +232,7 @@ public class Stage implements Parcelable, Cloneable {
     /**
      * Performs a chess addMove in this game stage.
      *
-     * @throws GameStageException
+     * @throws GameStageException if stage is finished
      */
     public void addMove() throws GameStageException {
 
@@ -302,6 +314,7 @@ public class Stage implements Parcelable, Cloneable {
         mStageMoveCount = parcel.readInt();
         mStageState = StageState.fromInteger(parcel.readInt());
         mStageType = StageType.fromInteger(parcel.readInt());
+        timeIncrement = parcel.readParcelable(TimeIncrement.class.getClassLoader());
     }
 
     @Override
@@ -312,6 +325,7 @@ public class Stage implements Parcelable, Cloneable {
         parcel.writeInt(mStageMoveCount);
         parcel.writeInt(mStageState.getValue());
         parcel.writeInt(mStageType.getValue());
+        parcel.writeParcelable(timeIncrement, flags);
     }
 
     @Override
@@ -319,12 +333,14 @@ public class Stage implements Parcelable, Cloneable {
         return 0;
     }
 
+    @NonNull
     @Override
     public Object clone() throws CloneNotSupportedException {
         Stage clone = (Stage) super.clone();
         clone.mStageState = StageState.fromInteger(mStageState.getValue());
         clone.mStageType = StageType.fromInteger(mStageType.getValue());
         clone.mOnStageEndListener = null;
+        clone.timeIncrement = (TimeIncrement) timeIncrement.clone();
         return clone;
     }
 
