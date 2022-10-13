@@ -497,7 +497,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
             builder.setMessage(R.string.dialog_clock_running_reset)
                     .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
                         TimeSettingsFragment f = (TimeSettingsFragment) getTargetFragment();
@@ -507,6 +507,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
                     })
                     .setNegativeButton(R.string.dialog_no, (dialog, id) -> ((TimerSettingsActivity) requireActivity()).dismiss());
             Dialog dialog = builder.create();
+            ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
             dialog.setCanceledOnTouchOutside(false);
             return dialog;
         }
