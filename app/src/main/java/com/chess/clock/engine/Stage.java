@@ -104,9 +104,8 @@ public class Stage implements Parcelable, Cloneable {
      * @param id
      */
     public void setId(int id) {
-        if (id >= 0 && id < MAX_ALLOWED_STAGES_COUNT) {
-            mId = id;
-        }
+        if (id < 0 || id >= MAX_ALLOWED_STAGES_COUNT) throw new AssertionError("stage id out of range");
+        mId = id;
     }
 
     /**
