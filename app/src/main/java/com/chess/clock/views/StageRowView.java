@@ -12,7 +12,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.Stage;
-import com.chess.clock.engine.TimeIncrement;
 
 public class StageRowView extends ConstraintLayout {
 

@@ -344,7 +344,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
                 }
 
                 TimeIncrement timeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, incrementMs);
-                Stage stage = new Stage(0, gameDurationMs,timeIncrement);
+                Stage stage = new Stage(0, gameDurationMs, timeIncrement);
                 TimeControl simpleControl = new TimeControl(newControlName, new Stage[]{stage});
                 timeControlWrapper.setTimeControlPlayerOne(simpleControl);
                 timeControlWrapper.setTimeControlPlayerTwo(simpleControl);
