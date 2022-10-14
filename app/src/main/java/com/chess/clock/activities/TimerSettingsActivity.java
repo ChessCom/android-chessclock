@@ -23,6 +23,7 @@ import com.chess.clock.fragments.TimeSettingsFragment;
 import com.chess.clock.service.ChessClockLocalService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Activity that manages TimeControl list in the Settings and also TimeControl form.
@@ -197,7 +198,9 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      */
     @Override
     public ArrayList<TimeControlWrapper> getCurrentTimeControls() {
-        return timeControlManager.getTimeControls();
+        ArrayList<TimeControlWrapper> timeControls = timeControlManager.getTimeControls();
+        Collections.sort(timeControls, (o1, o2) -> Integer.compare(o1.getOrder(), o2.getOrder()));
+        return timeControls;
     }
 
     /**
