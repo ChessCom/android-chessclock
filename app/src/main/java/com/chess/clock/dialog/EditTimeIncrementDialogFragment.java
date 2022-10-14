@@ -84,7 +84,7 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
 
         if (savedInstanceState == null) {
             ClockTime clockTime = timeIncrement.getDuration();
-            minutesEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.minutes));
+            minutesEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.totalMinutes()));
             secondsEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.seconds));
         }
 

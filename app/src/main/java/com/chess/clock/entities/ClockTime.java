@@ -28,8 +28,12 @@ public final class ClockTime {
         }
     }
 
+    public int totalMinutes() {
+        return hours * 60 + minutes;
+    }
+
     public String toMinutesFormat() {
-        return String.format(CLOCK_FORMAT_MINUTES, hours * 60 + minutes, seconds);
+        return String.format(CLOCK_FORMAT_MINUTES, totalMinutes(), seconds);
     }
 
     public boolean atLeaseOneHourLeft() {
