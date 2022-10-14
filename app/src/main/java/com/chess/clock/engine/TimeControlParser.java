@@ -28,6 +28,7 @@ public class TimeControlParser {
     private static final String TIME_CONTROL_SELECTED_PREF_IDX = "timeControlIdx";
     private static final String TIME_CONTROLS_PREF_FIELD_NAME = "json";
     private static final String TC_JSON_ID = "id";
+    private static final String TC_JSON_ORDER = "order";
     private static final String TC_JSON_DURATION = "duration";
     private static final String TC_JSON_MOVES = "moves";
     private static final String TC_JSON_VALUE = "value";
@@ -104,8 +105,10 @@ public class TimeControlParser {
                 timeControlJSONObject.put(TC_JSON_STAGES, timeControlStagesJSONArray);
                 timeControlJSONObject.put(TC_JSON_STAGES_PLAYER_TWO, timeControlStagesPlayerTwoJSONArray);
 
-                // Add same as player one boolean
+                // Add wrapper params
                 timeControlJSONObject.put(TC_JSON_SAME_AS_PLAYER_ONE, tc.isSameAsPlayerOne());
+                timeControlJSONObject.put(TC_JSON_ID, tc.getId());
+                timeControlJSONObject.put(TC_JSON_ORDER, tc.getOrder());
 
                 // Add TimeControl json object to JSONArray
                 timeControlJSONArray.put(timeControlJSONObject);
@@ -210,9 +213,14 @@ public class TimeControlParser {
                 boolean isSameAsPlayerOne = !timeControlJSON.has(TC_JSON_SAME_AS_PLAYER_ONE) ||
                         timeControlJSON.getBoolean(TC_JSON_SAME_AS_PLAYER_ONE);
 
+                // ids and order simply migrated from old model
+                long id = timeControlJSON.has(TC_JSON_ID) ? timeControlJSON.getInt(TC_JSON_ID) : i;
+                int order = timeControlJSON.has(TC_JSON_ORDER) ? timeControlJSON.getInt(TC_JSON_ORDER) : i;
+
                 TimeControl timeControl = new TimeControl(name, stages);
                 TimeControl timeControlPlayerTwo = new TimeControl(name, stagesPlayerTwo);
-                TimeControlWrapper wrapper = new TimeControlWrapper(timeControl, timeControlPlayerTwo);
+
+                TimeControlWrapper wrapper = new TimeControlWrapper(id, order, timeControl, timeControlPlayerTwo);
                 wrapper.setSameAsPlayerOne(isSameAsPlayerOne);
                 timeControls.add(wrapper);
             }

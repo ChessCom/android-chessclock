@@ -175,8 +175,9 @@ public class TimeControlManager {
         TimeControl blank = new TimeControl(null, new Stage[]{stage1, stage2});
 
         // Set current editable time control with a new "blank" time control
+        int newIdx = mTimeControls.size();
         try {
-            mEditableTimeControl = new TimeControlWrapper(blank, (TimeControl) blank.clone());
+            mEditableTimeControl = new TimeControlWrapper(newIdx, newIdx, blank, (TimeControl) blank.clone());
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not create Editable time control with blank time control.");

@@ -37,8 +37,9 @@ public class TimeControlDefaults {
     public static ArrayList<TimeControlWrapper> buildDefaultTimeControlsList(Context context) {
 
         ArrayList<TimeControlWrapper> timeControls = new ArrayList<>();
-        for (TimePreset timePreset : PRESETS) {
-            timeControls.add(timePreset.toTimeControl(context));
+        for (int i = 0, presetsSize = PRESETS.size(); i < presetsSize; i++) {
+            TimePreset timePreset = PRESETS.get(i);
+            timeControls.add(timePreset.toTimeControl(context, i));
         }
 
         // Saving default time controls
@@ -69,11 +70,11 @@ public class TimeControlDefaults {
             }
         }
 
-        TimeControlWrapper toTimeControl(Context context) {
+        TimeControlWrapper toTimeControl(Context context, int defaultIndex) {
             TimeIncrement timeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, incrementSeconds * 1000L);
             Stage stage = new Stage(0, minutes * 60 * 1000L, timeIncrement);
             TimeControl timeControl = new TimeControl(getName(context), new Stage[]{stage});
-            return new TimeControlWrapper(timeControl, timeControl);
+            return new TimeControlWrapper(defaultIndex, defaultIndex, timeControl, timeControl);
         }
     }
 
