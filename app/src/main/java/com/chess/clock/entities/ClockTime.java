@@ -28,6 +28,10 @@ public final class ClockTime {
         }
     }
 
+    public String toMinutesFormat() {
+        return String.format(CLOCK_FORMAT_MINUTES, hours * 60 + minutes, seconds);
+    }
+
     public boolean atLeaseOneHourLeft() {
         return remainingTimeMs >= HOUR_MILLIS;
     }
