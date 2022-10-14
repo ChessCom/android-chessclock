@@ -70,9 +70,9 @@ public class TimeControlDefaults {
         }
 
         TimeControlWrapper toTimeControl(Context context) {
-            Stage stage = new Stage(0, minutes * 60 * 1000L);
             TimeIncrement timeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, incrementSeconds * 1000L);
-            TimeControl timeControl = new TimeControl(getName(context), new Stage[]{stage}, timeIncrement);
+            Stage stage = new Stage(0, minutes * 60 * 1000L,timeIncrement);
+            TimeControl timeControl = new TimeControl(getName(context), new Stage[]{stage});
             return new TimeControlWrapper(timeControl, timeControl);
         }
     }

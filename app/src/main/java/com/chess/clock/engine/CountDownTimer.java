@@ -216,19 +216,21 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
 
             // Only starts the clock if currently stopped (ignores state Finished)
             if (mTimerState == CountDownTimer.TimerState.STOPPED) {
-                switch (mTimeControl.getTimeIncrement().getType()) {
-                    case DELAY:
-                        forceStartDelayed(mTimeControl.getTimeIncrement().getValue());
-                        break;
-                    default:
-                        forceStart();
-                        break;
+                TimeIncrement increment = currentTimeIncrement();
+                if (increment.getType() == TimeIncrement.Type.DELAY) {
+                    forceStartDelayed(increment.getValue());
+                } else {
+                    forceStart();
                 }
             }
         } else {
             Log.w(TAG, "Dropped start request due to time control not set."
                     + "returning null by default.");
         }
+    }
+
+    private TimeIncrement currentTimeIncrement() {
+        return mTimeControl.getStageManager().getCurrentStage().getTimeIncrement();
     }
 
     /**
@@ -241,13 +243,13 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
 
             // Only stops the clock if currently running or paused
             if (isStarted()) {
-
-                switch (mTimeControl.getTimeIncrement().getType()) {
+                TimeIncrement increment = currentTimeIncrement();
+                switch (increment.getType()) {
                     case FISCHER:
-                        forceStopAndIncrementFull(mTimeControl.getTimeIncrement().getValue());
+                        forceStopAndIncrementFull(increment.getValue());
                         break;
                     case BRONSTEIN:
-                        forceStopAndIncrementAtMost(mTimeControl.getTimeIncrement().getValue());
+                        forceStopAndIncrementAtMost(increment.getValue());
                         break;
                     default:
                         forceStop();
@@ -276,14 +278,14 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
 
             // Reset last tick time
             mLastTickTime = 0;
-
-            if (mTimeControl.getTimeIncrement().getType() == TimeIncrement.Type.DELAY) {
+            TimeIncrement increment = currentTimeIncrement();
+            if (increment.getType() == TimeIncrement.Type.DELAY) {
 
                 // Pausing in the middle of a delay?
                 long elapsedTime = System.currentTimeMillis() - lastStartDelayTime;
-                if (elapsedTime < mTimeControl.getTimeIncrement().getValue()) {
+                if (elapsedTime < increment.getValue()) {
 
-                    mPendingDelayOnResume = mTimeControl.getTimeIncrement().getValue() - elapsedTime;
+                    mPendingDelayOnResume = increment.getValue() - elapsedTime;
                     Log.i(TAG, "Pausing in the middle of delay, next resume will have delay: " + mPendingDelayOnResume);
 
                 } else {
