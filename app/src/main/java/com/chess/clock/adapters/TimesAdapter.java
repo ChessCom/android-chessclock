@@ -13,8 +13,9 @@ import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.entities.AppTheme;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemViewHolder> {
+public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemViewHolder> implements TimeRowMoveCallback.TimeItemTouchCallback {
 
     ArrayList<TimeControlWrapper> data;
     AppTheme theme;
@@ -39,6 +40,20 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    @Override
+    public void onTimeItemMoved(int from, int to) {
+        if (from < to) {
+            for (int i = from; i < to; i++) {
+                Collections.swap(data, i, i + 1);
+            }
+        } else {
+            for (int i = from; i > to; i--) {
+                Collections.swap(data, i, i - 1);
+            }
+        }
+        notifyItemMoved(from, to);
     }
 
     public static class TimeItemViewHolder extends RecyclerView.ViewHolder {

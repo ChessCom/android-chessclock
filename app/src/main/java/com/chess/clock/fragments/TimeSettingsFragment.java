@@ -1,7 +1,6 @@
 package com.chess.clock.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -9,8 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -27,18 +23,16 @@ import androidx.appcompat.view.ActionMode;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chess.clock.R;
 import com.chess.clock.activities.AppSettingsActivity;
 import com.chess.clock.activities.TimerSettingsActivity;
-import com.chess.clock.adapters.TimeControlAdapter;
-import com.chess.clock.adapters.TimeControlCABAdapter;
+import com.chess.clock.adapters.TimeRowMoveCallback;
 import com.chess.clock.adapters.TimesAdapter;
-import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.entities.AppTheme;
-import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.util.MultiSelectionUtil;
 import com.chess.clock.views.StyledButton;
 import com.chess.clock.views.ViewUtils;
@@ -283,8 +277,12 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
         adapter = new TimesAdapter(mListener.getCurrentTimeControls(), loadedTheme);
 //            timesRecyclerView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         timesRecyclerView.setAdapter(adapter);
+
+        ItemTouchHelper.Callback callback = new TimeRowMoveCallback(adapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(timesRecyclerView);
 //    }
-}
+    }
 
     /**
      * Change context action mode: time control list set to multi choice mode enabling to delete items.
@@ -477,31 +475,31 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     }
 
 
-/**
- * Reset dialog to be displayed when user presses the Reset widget.
- */
-public static class ResetClockDialogFragment extends DialogFragment {
+    /**
+     * Reset dialog to be displayed when user presses the Reset widget.
+     */
+    public static class ResetClockDialogFragment extends DialogFragment {
 
-    public ResetClockDialogFragment() {
-        super();
-    }
+        public ResetClockDialogFragment() {
+            super();
+        }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
-        builder.setMessage(R.string.dialog_clock_running_reset)
-                .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
-                    TimeSettingsFragment f = (TimeSettingsFragment) getTargetFragment();
-                    if (f != null) {
-                        f.startNewClock();
-                    }
-                })
-                .setNegativeButton(R.string.dialog_no, (dialog, id) -> ((TimerSettingsActivity) requireActivity()).dismiss());
-        Dialog dialog = builder.create();
-        ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
-        dialog.setCanceledOnTouchOutside(false);
-        return dialog;
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
+            builder.setMessage(R.string.dialog_clock_running_reset)
+                    .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
+                        TimeSettingsFragment f = (TimeSettingsFragment) getTargetFragment();
+                        if (f != null) {
+                            f.startNewClock();
+                        }
+                    })
+                    .setNegativeButton(R.string.dialog_no, (dialog, id) -> ((TimerSettingsActivity) requireActivity()).dismiss());
+            Dialog dialog = builder.create();
+            ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
+            dialog.setCanceledOnTouchOutside(false);
+            return dialog;
+        }
     }
-}
 }
