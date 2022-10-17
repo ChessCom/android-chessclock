@@ -79,13 +79,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ListView
-        android:id="@+id/list_time_controls"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/timesRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="92dp"
-        android:divider="@null"
         android:nestedScrollingEnabled="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toTopOf="@id/startBtn"
         app:layout_constraintEnd_toEndOf="parent"
