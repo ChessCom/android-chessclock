@@ -51,22 +51,22 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
 
         ArrayList<TimeControlWrapper> getCurrentTimeControls();
 
-        int getCheckedTimeControlIndex();
+        long getCheckedTimeControlId();
 
-        void setCheckedTimeControlIndex(int position);
+        void setCheckedTimeControlId(long id);
 
         void loadTimeControl(int position);
 
         void addTimeControl();
 
-        void removeTimeControl(int[] positions);
+        void removeTimeControl(ArrayList<Long> ids);
     }
 
     /**
      * Constants
      */
     private static final String KEY_ACTION_MODE = "action_mode";
-    private static final String KEY_ITEM_SELECTED = "item_selected";
+    private static final String KEY_ITEM_SELECTED = "selected_item_id_key";
     private static final String TAG_RESET_DIALOG_FRAGMENT = "ResetDialogFragment";
 
     /**
@@ -77,14 +77,9 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     /**
      * State
      */
-    private int mItemChecked = -1;
+    private long selectedItemId = -1;
     private int mTotalItemChecked;
     private boolean isMultiSelectionActive;
-
-    /**
-     * Util
-     */
-    private boolean multiSelectionFinishedByOnDestroyView;
 
     /**
      * Activity attached.
@@ -112,7 +107,6 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
         }
 
         setHasOptionsMenu(true);
-        multiSelectionFinishedByOnDestroyView = false;
     }
 
     @Override
@@ -127,13 +121,6 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        AdapterView.OnItemClickListener itemClickListener = (parent, view1, position, id) -> {
-//            if (mListener != null && timesRecyclerView != null) {
-//                mItemChecked = position - timesRecyclerView.getHeaderViewsCount();
-//                mListener.setCheckedTimeControlIndex(mItemChecked);
-//            }
-//        };
-//        timesRecyclerView.setOnItemClickListener(itemClickListener);
         startBtn.setOnClickListener(v -> {
             TimerSettingsActivity activity = (TimerSettingsActivity) requireActivity();
 
@@ -161,7 +148,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     void loadTheme(AppTheme theme) {
         startBtn.setCardBackgroundColor(ContextCompat.getColor(requireContext(), theme.primaryColorRes));
         if (adapter != null) {
-//            adapter.updateTheme(theme);
+            adapter.updateTheme(theme);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             plusImg.setImageTintList(theme.primaryColorAsStateList(getContext()));
@@ -205,7 +192,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_ACTION_MODE, isMultiSelectionActive);
-        outState.putInt(KEY_ITEM_SELECTED, mItemChecked);
+        outState.putLong(KEY_ITEM_SELECTED, selectedItemId);
 
 //        if (mMultiSelectionController != null) {
 //            mMultiSelectionController.saveInstanceState(outState);
@@ -244,15 +231,15 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
      */
     private void setupListViewAdapter(Bundle savedInstanceState) {
 
-//        if (savedInstanceState != null) {
-//            // Restore list selection mode.
-//            isMultiSelectionActive = savedInstanceState.getBoolean(KEY_ACTION_MODE);
-//            // Restore last list item check position
-//            mItemChecked = savedInstanceState.getInt(KEY_ITEM_SELECTED, 0);
-//        } else {
-//            isMultiSelectionActive = false;
-//            mItemChecked = mListener.getCheckedTimeControlIndex();
-//        }
+        if (savedInstanceState != null) {
+            // Restore list selection mode.
+            isMultiSelectionActive = savedInstanceState.getBoolean(KEY_ACTION_MODE);
+            // Restore last list item check position
+            selectedItemId = savedInstanceState.getInt(KEY_ITEM_SELECTED, 0);
+        } else {
+            isMultiSelectionActive = false;
+            selectedItemId = mListener.getCheckedTimeControlId();
+        }
 
         // Init the CAB helper
 //        mMultiSelectionController = MultiSelectionUtil.attachMultiSelectionController(
@@ -274,7 +261,13 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
 //
 //        } else {
 //            adapter = new TimeControlAdapter(getActivity(), mListener.getCurrentTimeControls(), loadedTheme);
-        adapter = new TimesAdapter(mListener.getCurrentTimeControls(), loadedTheme);
+        adapter = new TimesAdapter(
+                mListener.getCurrentTimeControls(),
+                loadedTheme,
+                itemId -> {
+                    selectedItemId = itemId;
+                    mListener.setCheckedTimeControlId(itemId);
+                });
 //            timesRecyclerView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         timesRecyclerView.setAdapter(adapter);
 
@@ -319,13 +312,13 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
 //            mMultiSelectionController.finish();
 //        }
 
-        mItemChecked = position;
-        mListener.setCheckedTimeControlIndex(mItemChecked);
-
-        timesRecyclerView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
-                HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-
-        mListener.loadTimeControl(mItemChecked);
+//        checkedItemId = position;
+//        mListener.setCheckedTimeControlIndex(checkedItemId);
+//
+//        timesRecyclerView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
+//                HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+//
+//        mListener.loadTimeControl(checkedItemId);
     }
 
     @Override

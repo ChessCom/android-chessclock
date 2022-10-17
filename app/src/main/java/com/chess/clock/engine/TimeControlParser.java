@@ -25,7 +25,7 @@ public class TimeControlParser {
     private static final String TAG = TimeControlParser.class.getName();
 
     private static final String TIME_CONTROLS_PREF_NAME = "timeControls";
-    private static final String TIME_CONTROL_SELECTED_PREF_IDX = "timeControlIdx";
+    private static final String TIME_CONTROL_SELECTED_PREF_ID = "timeControlId";
     private static final String TIME_CONTROLS_PREF_FIELD_NAME = "json";
     private static final String TC_JSON_ID = "id";
     private static final String TC_JSON_ORDER = "order";
@@ -145,15 +145,15 @@ public class TimeControlParser {
     }
 
     /**
-     * Stores the selected time control position in the time control list.
+     * Stores the selected time control id.
      *
-     * @param idx list index.
+     * @param id selected item id.
      */
     @SuppressLint("ApplySharedPref")
-    public static void saveTimeControlCheckIndex(Context context, int idx) {
+    public static void saveTimeControlCheckIndex(Context context, long id) {
         SharedPreferences sp = getSharedPreferences(context);
         SharedPreferences.Editor spe = sp.edit();
-        spe.putInt(TIME_CONTROL_SELECTED_PREF_IDX, idx);
+        spe.putLong(TIME_CONTROL_SELECTED_PREF_ID, id);
         spe.commit();
     }
 
@@ -165,7 +165,7 @@ public class TimeControlParser {
      */
     public static int getLastTimeControlCheckIndex(Context context) {
         SharedPreferences sp = getSharedPreferences(context);
-        int idx = sp.getInt(TIME_CONTROL_SELECTED_PREF_IDX, TimeControlDefaults.DEFAULT_TIME_INDEX);
+        int idx = sp.getInt(TIME_CONTROL_SELECTED_PREF_ID, TimeControlDefaults.DEFAULT_TIME_INDEX);
         return Math.max(idx, 0);
     }
 

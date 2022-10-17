@@ -2,7 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
     android:orientation="horizontal">
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/editCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:visibility="gone" />
 
     <androidx.appcompat.widget.AppCompatCheckedTextView
         android:id="@+id/nameTv"
@@ -15,4 +25,13 @@
         android:singleLine="true"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_large" />
+
+    <ImageButton
+        android:id="@+id/editBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_edit"
+        android:contentDescription="@string/action_edit"
+        android:padding="@dimen/margin_small"
+        android:visibility="gone" />
 </LinearLayout>

@@ -209,18 +209,18 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      * @return Current checked position of TimeControl in the list.
      */
     @Override
-    public int getCheckedTimeControlIndex() {
-        return timeControlManager.getEditableTimeControlCheckIndex();
+    public long getCheckedTimeControlId() {
+        return timeControlManager.getEditableTimeControlCheckId();
     }
 
     /**
      * Used as communication gateway by SettingsFragment.
      *
-     * @param idx time control list position.
+     * @param id time control wrapper id.
      */
     @Override
-    public void setCheckedTimeControlIndex(int idx) {
-        timeControlManager.setEditableTimeControlCheckIndex(idx);
+    public void setCheckedTimeControlId(long id) {
+        timeControlManager.setEditableTimeControlCheckId(id);
     }
 
     /**
@@ -250,8 +250,8 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      * Used as communication gateway by SettingsFragment.
      */
     @Override
-    public void removeTimeControl(int[] positions) {
-        timeControlManager.removeTimeControls(getApplicationContext(), positions);
+    public void removeTimeControl(ArrayList<Long> ids) {
+        timeControlManager.removeTimeControls(getApplicationContext(), ids);
     }
 
     /**
