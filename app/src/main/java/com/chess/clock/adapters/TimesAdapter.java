@@ -33,9 +33,9 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
 
     long selectedItemId;
     boolean editMode = false;
-    Set<Long> removeIds = new HashSet<>();
 
-    private final SelectedItemListener selectedItemListener;
+    private final Set<Long> removeIds = new HashSet<>();
+    private final SelectedItemListener itemsListener;
 
     public TimesAdapter(
             ArrayList<TimeControlWrapper> data,
@@ -44,7 +44,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
         this.data = data;
         this.selectedItemId = selectedItemId;
         this.theme = theme;
-        this.selectedItemListener = listener;
+        this.itemsListener = listener;
     }
 
     @NonNull
@@ -66,9 +66,10 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
                 } else {
                     removeIds.add(id);
                 }
+                itemsListener.onMarkItemToRemove(removeIds.size());
             } else {
                 selectedItemId = id;
-                selectedItemListener.onSelectedItemChange(selectedItemId);
+                itemsListener.onSelectedItemChange(selectedItemId);
             }
             notifyDataSetChanged();
         });
@@ -109,7 +110,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
         notifyDataSetChanged();
     }
 
-    public boolean isEditMode() {
+    public boolean inEditMode() {
         return editMode;
     }
 
@@ -126,9 +127,14 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
     public void restoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState == null) return;
         editMode = savedInstanceState.getBoolean(KEY_EDIT_MODE);
+        removeIds.clear();
         for (long id : savedInstanceState.getLongArray(KEY_IDS_TO_REMOVE)) {
             removeIds.add(id);
         }
+    }
+
+    public void clearRemoveIds() {
+        removeIds.clear();
     }
 
     public static class TimeItemViewHolder extends RecyclerView.ViewHolder {
@@ -170,5 +176,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
 
     public interface SelectedItemListener {
         void onSelectedItemChange(long itemId);
+
+        void onMarkItemToRemove(int removeItemsCount);
     }
 }

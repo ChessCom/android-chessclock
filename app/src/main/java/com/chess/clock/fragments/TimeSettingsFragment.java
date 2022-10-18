@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
@@ -33,7 +35,6 @@ import com.chess.clock.adapters.TimeRowMoveCallback;
 import com.chess.clock.adapters.TimesAdapter;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.entities.AppTheme;
-import com.chess.clock.util.MultiSelectionUtil;
 import com.chess.clock.views.StyledButton;
 import com.chess.clock.views.ViewUtils;
 
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 
-public class TimeSettingsFragment extends BaseFragment implements MultiSelectionUtil.MultiChoiceModeListener {
+public class TimeSettingsFragment extends BaseFragment implements ActionMode.Callback {
 
     private static final String TAG = TimeSettingsFragment.class.getName();
 
@@ -89,7 +90,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     private RecyclerView timesRecyclerView;
     private StyledButton startBtn;
     private ImageView plusImg;
-    private ActionMode mActionMode;
+    private ActionMode actionMode;
 
     public TimeSettingsFragment() {
     }
@@ -110,7 +111,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        initListViewAndHeaders(inflater, view);
+        initListViewAndHeaders(view);
         startBtn = view.findViewById(R.id.startBtn);
         setupRecyclerView(savedInstanceState);
         return view;
@@ -178,16 +179,17 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
                 activity.overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
                 return true;
             case R.id.action_edit:
-                adapter.setEditMode(true);
-                // todo start action mode
-                // ttt add custom bar when others changes merged
-                getActivity().getActionBar().hide();
+                runEditMode();
                 startBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
                         HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void runEditMode() {
+        ((AppCompatActivity) requireActivity()).startSupportActionMode(this);
     }
 
     @Override
@@ -197,8 +199,8 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     }
 
     @SuppressLint("InflateParams")
-    private void initListViewAndHeaders(LayoutInflater inflater, View view) {
-        timesRecyclerView = view.findViewById(R.id.list_time_controls);
+    private void initListViewAndHeaders(View view) {
+        timesRecyclerView = view.findViewById(R.id.timesRecycler);
         plusImg = view.findViewById(R.id.plusImg);
         View headerLogo = view.findViewById(R.id.logo);
         View headerTimeBtn = view.findViewById(R.id.timeBtn);
@@ -229,10 +231,25 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
                 mListener.getCurrentTimeControls(),
                 mListener.getCheckedTimeControlId(),
                 loadedTheme,
-                itemId -> mListener.setCheckedTimeControlId(itemId));
+                new TimesAdapter.SelectedItemListener() {
+                    @Override
+                    public void onSelectedItemChange(long itemId) {
+                        mListener.setCheckedTimeControlId(itemId);
+                    }
+
+                    @Override
+                    public void onMarkItemToRemove(int removeItemsCount) {
+                        updateEditModeTitle(actionMode, removeItemsCount);
+                    }
+                });
         adapter.restoreInstanceState(savedInstanceState);
 
-        ViewUtils.showView(startBtn, !adapter.isEditMode());
+        boolean editMode = adapter.inEditMode();
+        if (editMode) {
+            runEditMode();
+        }
+
+        ViewUtils.showView(startBtn, !editMode);
         timesRecyclerView.setAdapter(adapter);
 
         ItemTouchHelper.Callback callback = new TimeRowMoveCallback(adapter);
@@ -266,14 +283,21 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
         // Inflate a menu resource providing context menu items
         MenuInflater inflater = actionMode.getMenuInflater();
         inflater.inflate(R.menu.settings_cab_actions, menu);
+        this.actionMode = actionMode;
         adapter.setEditMode(true);
         return true;
     }
 
     @Override
     public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-        actionMode.setTitle(mTotalItemChecked + " " + requireActivity().getString(R.string.settings_cab_title_time_controls_selected));
-        return false; // Return false if nothing is done
+        updateEditModeTitle(actionMode, adapter.getIdsToRemove().size());
+        return false;
+    }
+
+    private void updateEditModeTitle(ActionMode actionMode, int removeItemsCount) {
+        if (actionMode == null) return;
+        String title = getResources().getQuantityString(R.plurals.x_selected, removeItemsCount, removeItemsCount);
+        actionMode.setTitle(title);
     }
 
     @Override
@@ -290,20 +314,10 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
     @Override
     public void onDestroyActionMode(ActionMode actionMode) {
         adapter.setEditMode(false);
+        this.actionMode = null;
     }
 
-    @Override
-    public void onItemCheckedStateChanged(ActionMode mode, int position, boolean checked) {
-
-        if (checked) {
-            mTotalItemChecked++;
-        } else {
-            mTotalItemChecked--;
-        }
-        mode.setTitle(mTotalItemChecked + " " + getString(R.string.settings_cab_title_time_controls_selected));
-    }
-
-    private void deleteTimeControls(ActionMode actionMode) {
+    private void deleteTimeControls(ActionMode mode) {
         Log.d(TAG, "Requested to delete " + mTotalItemChecked + " time controls.");
 
         Set<Long> idsToRemove = adapter.getIdsToRemove();
@@ -315,7 +329,8 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
                     .setMessage(R.string.delete_custom_time)
                     .setPositiveButton(R.string.action_delete, (dialog, id) -> {
                         mListener.removeTimeControl(idsToRemove);
-                        actionMode.finish();
+                        adapter.clearRemoveIds();
+                        mode.finish();
                     })
                     .setNegativeButton(R.string.action_keep, (dialog, id) -> {
                         // Resume the clock
@@ -324,7 +339,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
             ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
             dialog.show();
         } else {
-            actionMode.finish();
+            mode.finish();
         }
     }
 

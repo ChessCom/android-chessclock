@@ -16,8 +16,9 @@
 
     <androidx.appcompat.widget.AppCompatCheckedTextView
         android:id="@+id/nameTv"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/time_item_height"
+        android:layout_weight="1"
         android:checkMark="@drawable/list_radio_button_selector"
         android:ellipsize="end"
         android:gravity="center_vertical"
