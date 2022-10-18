@@ -6,7 +6,7 @@ import android.media.MediaPlayer;
 import com.chess.clock.R;
 
 enum ClockSound {
-    PLAYER_ONE_MOVE, PLAYER_TWO_MOVE, GAME_FINISHED
+    PLAYER_ONE_MOVE, PLAYER_TWO_MOVE, GAME_FINISHED, RESET_CLOCK
 }
 
 interface ClockSoundManager {
@@ -26,12 +26,14 @@ class ClockSoundManagerImpl implements ClockSoundManager {
     private MediaPlayer playerOneMoveSound;
     private MediaPlayer playerTwoMoveSound;
     private MediaPlayer clockFinished;
+    private MediaPlayer clockReset;
 
     @Override
     public void init(Context context) {
         playerOneMoveSound = MediaPlayer.create(context, R.raw.chess_clock_switch1);
         playerTwoMoveSound = MediaPlayer.create(context, R.raw.chess_clock_switch2);
         clockFinished = MediaPlayer.create(context, R.raw.chess_clock_time_ended);
+        clockReset = MediaPlayer.create(context, R.raw.chess_clock_reset);
     }
 
     @Override
@@ -56,6 +58,9 @@ class ClockSoundManagerImpl implements ClockSoundManager {
                 break;
             case GAME_FINISHED:
                 clockFinished.start();
+                break;
+            case RESET_CLOCK:
+                clockReset.start();
                 break;
         }
     }

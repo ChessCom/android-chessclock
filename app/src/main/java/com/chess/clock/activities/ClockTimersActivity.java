@@ -416,6 +416,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
             mTimersStatePreviousToPause = TimersState.PAUSED;
         }
         updateUIState();
+        soundManager.playSound(ClockSound.RESET_CLOCK);
     }
 
     /**
@@ -467,8 +468,8 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         public void onClickOptions() {
             long time = firstPlayer ? mService.firstPlayerTime() : mService.secondPlayerTime();
             AdjustTimeDialogFragment
-                .newInstance(time, firstPlayer)
-                .show(getSupportFragmentManager(), AdjustTimeDialogFragment.TAG);
+                    .newInstance(time, firstPlayer)
+                    .show(getSupportFragmentManager(), AdjustTimeDialogFragment.TAG);
         }
     }
 
@@ -574,8 +575,8 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
             if (mBound) {
                 // First or continuation move
                 if ((mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) ||
-                    (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == playerTimerRunning) ||
-                    mTimersState == playerTimerRunning) {
+                        (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == playerTimerRunning) ||
+                        mTimersState == playerTimerRunning) {
                     if (firstPlayer) mService.pressPlayerOneClock();
                     else mService.pressPlayerTwoClock();
                     mTimersState = otherPlayerTimerRunning;
@@ -590,7 +591,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
                 updateUIState();
             }
         } else if (mTimersState == playerTimerFinished ||
-            mTimersState == otherPlayerTimerFinished) {
+                mTimersState == otherPlayerTimerFinished) {
             showResetClockDialog();
         }
     }
