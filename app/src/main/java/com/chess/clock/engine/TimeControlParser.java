@@ -59,12 +59,17 @@ public class TimeControlParser {
             timeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
         }
 
-        int index = getLastTimeControlCheckIndex(context);
-        index = Math.max(index, 0);
-        index = Math.min(index, timeControls.size() - 1);
+        long id = getLastTimeControlCheckId(context);
+        TimeControlWrapper selectedControl = timeControls.get(0);
+        for (TimeControlWrapper tc : timeControls) {
+            if (tc.getId() == id) {
+                selectedControl = tc;
+                break;
+            }
+        }
 
-        TimeControl playerOne = timeControls.get(index).getTimeControlPlayerOne();
-        TimeControl playerTwo = timeControls.get(index).getTimeControlPlayerTwo();
+        TimeControl playerOne = selectedControl.getTimeControlPlayerOne();
+        TimeControl playerTwo = selectedControl.getTimeControlPlayerTwo();
 
         Intent startServiceIntent =
                 ChessClockLocalService.getChessClockServiceIntent(context, playerOne, playerTwo);
@@ -163,10 +168,9 @@ public class TimeControlParser {
      *
      * @return position of the last selected time control in the list.
      */
-    public static int getLastTimeControlCheckIndex(Context context) {
+    public static long getLastTimeControlCheckId(Context context) {
         SharedPreferences sp = getSharedPreferences(context);
-        int idx = sp.getInt(TIME_CONTROL_SELECTED_PREF_ID, TimeControlDefaults.DEFAULT_TIME_INDEX);
-        return Math.max(idx, 0);
+        return sp.getLong(TIME_CONTROL_SELECTED_PREF_ID, TimeControlDefaults.DEFAULT_TIME_ID);
     }
 
     /**

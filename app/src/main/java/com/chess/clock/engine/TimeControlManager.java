@@ -46,7 +46,7 @@ public class TimeControlManager {
             isNewEditableTimeControl = savedInstanceState.getBoolean(KEY_EDITABLE_STAGE_NEW_FLAG, true);
         } else {
             // First launch, fetch last check position.
-            editableTimeControlCheckId = TimeControlParser.getLastTimeControlCheckIndex(context);
+            editableTimeControlCheckId = TimeControlParser.getLastTimeControlCheckId(context);
             isNewEditableTimeControl = true;
         }
 

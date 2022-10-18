@@ -27,7 +27,7 @@ public class TimeControlDefaults {
     /**
      * index of `10 min` preset
      */
-    public static int DEFAULT_TIME_INDEX = 7;
+    public static long DEFAULT_TIME_ID = 7L;
 
     /**
      * Creates default TimeControl list, saves it on shared preferences.
