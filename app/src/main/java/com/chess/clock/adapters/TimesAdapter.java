@@ -84,6 +84,10 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
         notifyItemMoved(from, to);
     }
 
+    public Set<Long> getIdsToRemove(){
+        return removeIds;
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     public void updateTheme(AppTheme theme) {
         this.theme = theme;

@@ -24,6 +24,7 @@ import com.chess.clock.service.ChessClockLocalService;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * Activity that manages TimeControl list in the Settings and also TimeControl form.
@@ -248,9 +249,10 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
 
     /**
      * Used as communication gateway by SettingsFragment.
+     * @param ids
      */
     @Override
-    public void removeTimeControl(ArrayList<Long> ids) {
+    public void removeTimeControl(Set<Long> ids) {
         timeControlManager.removeTimeControls(getApplicationContext(), ids);
     }
 

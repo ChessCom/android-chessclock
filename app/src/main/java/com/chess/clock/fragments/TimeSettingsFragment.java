@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,6 +39,7 @@ import com.chess.clock.views.StyledButton;
 import com.chess.clock.views.ViewUtils;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 
 public class TimeSettingsFragment extends BaseFragment implements MultiSelectionUtil.MultiChoiceModeListener {
@@ -59,7 +61,7 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
 
         void addTimeControl();
 
-        void removeTimeControl(ArrayList<Long> ids);
+        void removeTimeControl(Set<Long> ids);
     }
 
     /**
@@ -395,57 +397,32 @@ public class TimeSettingsFragment extends BaseFragment implements MultiSelection
 //        timesRecyclerView.setItemChecked(itemChecked, true);
     }
 
-//    private void deleteTimeControls(ActionMode actionMode) {
-//        Log.d(TAG, "Requested to delete " + mTotalItemChecked + " time controls.");
-//
-//        boolean updateList = false;
-//        int[] positions = new int[mTotalItemChecked];
-//        SparseBooleanArray checked = timesRecyclerView.getCheckedItemPositions();
-//
-//        int tmpItemChecked = mItemChecked;
-//
-//        // Get position of checked items
-//        int k = 0;
-//        for (int i = 0; i < checked.size(); i++) {
-//            // If checked
-//            if (checked.valueAt(i)) {
-//                int position = checked.keyAt(i) - timesRecyclerView.getHeaderViewsCount();
-//                Log.d(TAG, "Marking time control " + position + " to remove.");
-//                positions[k] = position;
-//                k++;
-//                updateList = true;
-//
-//                // Update position of check item
-//                if (position < mItemChecked) {
-//                    tmpItemChecked--;
-//                } else if (position == mItemChecked) {
-//                    tmpItemChecked = 0;
-//                }
-//            }
-//        }
-//
-//        mItemChecked = tmpItemChecked;
-//
-//        // If checked items found request their removal.
-//        if (updateList) {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
-//            builder
-//                    .setMessage(R.string.delete_custom_time)
-//                    .setPositiveButton(R.string.action_delete, (dialog, id) -> {
-//                        mListener.removeTimeControl(positions);
-//                        actionMode.finish();
-//                    })
-//                    .setNegativeButton(R.string.action_keep, (dialog, id) -> {
-//                        // Resume the clock
-//                    });
-//            Dialog dialog = builder.create();
-//            ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
-//            dialog.show();
-//            // Note: No need to notifyDataSetChanged as mListView will have adapters swap.
-//        } else {
-//            actionMode.finish();
-//        }
-//    }
+    private void deleteTimeControls(ActionMode actionMode) {
+        Log.d(TAG, "Requested to delete " + mTotalItemChecked + " time controls.");
+
+        int[] positions = new int[mTotalItemChecked];
+        Set<Long> idsToRemove =  adapter.getIdsToRemove();
+
+        // If checked items found request their removal.
+        if (!idsToRemove.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
+            builder
+                    .setMessage(R.string.delete_custom_time)
+                    .setPositiveButton(R.string.action_delete, (dialog, id) -> {
+                        mListener.removeTimeControl(idsToRemove);
+                        actionMode.finish();
+                    })
+                    .setNegativeButton(R.string.action_keep, (dialog, id) -> {
+                        // Resume the clock
+                    });
+            Dialog dialog = builder.create();
+            ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
+            dialog.show();
+            // Note: No need to notifyDataSetChanged as mListView will have adapters swap.
+        } else {
+            actionMode.finish();
+        }
+    }
 
     public void startNewClock() {
 //        int position = mItemChecked + timesRecyclerView.getHeaderViewsCount();

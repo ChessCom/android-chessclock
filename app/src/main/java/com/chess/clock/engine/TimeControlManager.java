@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Helper for TimeControl list management.
@@ -131,7 +132,7 @@ public class TimeControlManager {
      *
      * @param ids ids of objects to remove.
      */
-    public void removeTimeControls(Context context, ArrayList<Long> ids) {
+    public void removeTimeControls(Context context, Set<Long> ids) {
         Log.v(TAG, "Received time controls remove request");
         ArrayList<TimeControlWrapper> objectBatchToDelete = new ArrayList<>();
         for (TimeControlWrapper tc : mTimeControls) {
