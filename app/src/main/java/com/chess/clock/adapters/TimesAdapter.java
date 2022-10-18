@@ -2,6 +2,7 @@ package com.chess.clock.adapters;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,16 +25,24 @@ import java.util.Set;
 
 public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemViewHolder> implements TimeRowMoveCallback.TimeItemTouchCallback {
 
+    private static final String KEY_EDIT_MODE = "times_adapter_edit_mode";
+    private static final String KEY_IDS_TO_REMOVE = "times_adapter_ids_to_remove_key";
+
     ArrayList<TimeControlWrapper> data;
     AppTheme theme;
+
+    long selectedItemId;
     boolean editMode = false;
-    long selectedItemId = -1;
     Set<Long> removeIds = new HashSet<>();
 
     private final SelectedItemListener selectedItemListener;
 
-    public TimesAdapter(ArrayList<TimeControlWrapper> data, AppTheme theme, SelectedItemListener listener) {
+    public TimesAdapter(
+            ArrayList<TimeControlWrapper> data,
+            long selectedItemId,
+            AppTheme theme, SelectedItemListener listener) {
         this.data = data;
+        this.selectedItemId = selectedItemId;
         this.theme = theme;
         this.selectedItemListener = listener;
     }
@@ -48,7 +57,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
     @Override
     public void onBindViewHolder(@NonNull TimeItemViewHolder holder, int position) {
         TimeControlWrapper timeControlWrapper = data.get(position);
-        holder.setUpView(timeControlWrapper, theme, editMode, selectedItemId);
+        holder.setUpView(timeControlWrapper, theme, editMode, selectedItemId, removeIds);
         long id = timeControlWrapper.getId();
         holder.itemView.setOnClickListener(v -> {
             if (editMode) {
@@ -84,7 +93,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
         notifyItemMoved(from, to);
     }
 
-    public Set<Long> getIdsToRemove(){
+    public Set<Long> getIdsToRemove() {
         return removeIds;
     }
 
@@ -92,6 +101,34 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
     public void updateTheme(AppTheme theme) {
         this.theme = theme;
         notifyDataSetChanged();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setEditMode(Boolean editMode) {
+        this.editMode = editMode;
+        notifyDataSetChanged();
+    }
+
+    public boolean isEditMode() {
+        return editMode;
+    }
+
+    public void saveInstanceState(Bundle outState) {
+        outState.putBoolean(KEY_EDIT_MODE, editMode);
+        long[] removeIdsArray = new long[removeIds.size()];
+        int idx = 0;
+        for (long id : removeIds) {
+            removeIdsArray[idx++] = id;
+        }
+        outState.putLongArray(KEY_IDS_TO_REMOVE, removeIdsArray);
+    }
+
+    public void restoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) return;
+        editMode = savedInstanceState.getBoolean(KEY_EDIT_MODE);
+        for (long id : savedInstanceState.getLongArray(KEY_IDS_TO_REMOVE)) {
+            removeIds.add(id);
+        }
     }
 
     public static class TimeItemViewHolder extends RecyclerView.ViewHolder {
@@ -107,9 +144,15 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
             editButton = itemView.findViewById(R.id.editBtn);
         }
 
-        public void setUpView(TimeControlWrapper timeControlWrapper, AppTheme theme, boolean editMode, long selectedItemId) {
+        public void setUpView(
+                TimeControlWrapper timeControlWrapper,
+                AppTheme theme,
+                boolean editMode,
+                long selectedItemId,
+                Set<Long> removeIds) {
             nameTv.setText(timeControlWrapper.getTimeControlPlayerOne().getName());
             if (editMode) {
+                checkBox.setChecked(removeIds.contains(timeControlWrapper.getId()));
                 nameTv.setCheckMarkDrawable(null);
                 CompoundButtonCompat.setButtonTintList(checkBox, theme.colorStateListChecked(nameTv.getContext()));
             } else {
