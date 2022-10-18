@@ -86,12 +86,7 @@
         android:layout_marginBottom="92dp"
         android:nestedScrollingEnabled="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintBottom_toTopOf="@id/startBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_max="@dimen/max_content_width" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.chess.clock.views.StyledButton
         android:id="@+id/startBtn"

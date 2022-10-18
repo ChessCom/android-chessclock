@@ -75,11 +75,6 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     private TimesAdapter adapter;
 
     /**
-     * State
-     */
-    private int mTotalItemChecked;
-
-    /**
      * Activity attached.
      */
     private OnSettingsListener mListener;
@@ -251,6 +246,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
         ViewUtils.showView(startBtn, !editMode);
         timesRecyclerView.setAdapter(adapter);
+        timesRecyclerView.setHasFixedSize(true);
 
         ItemTouchHelper.Callback callback = new TimeRowMoveCallback(adapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
@@ -318,9 +314,9 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     }
 
     private void deleteTimeControls(ActionMode mode) {
-        Log.d(TAG, "Requested to delete " + mTotalItemChecked + " time controls.");
 
         Set<Long> idsToRemove = adapter.getIdsToRemove();
+        Log.d(TAG, "Requested to delete " + idsToRemove.size() + " time controls.");
 
         // If checked items found request their removal.
         if (!idsToRemove.isEmpty()) {
