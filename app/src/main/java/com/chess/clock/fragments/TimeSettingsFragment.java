@@ -1,6 +1,7 @@
 package com.chess.clock.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -33,15 +34,18 @@ import com.chess.clock.activities.AppSettingsActivity;
 import com.chess.clock.activities.TimerSettingsActivity;
 import com.chess.clock.adapters.TimeRowMoveCallback;
 import com.chess.clock.adapters.TimesAdapter;
+import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.entities.AppTheme;
+import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.views.StyledButton;
 import com.chess.clock.views.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.Set;
 
-
+// todo update order on remove item
+// update ids logic (millis?)
 public class TimeSettingsFragment extends BaseFragment implements ActionMode.Callback {
 
     private static final String TAG = TimeSettingsFragment.class.getName();
@@ -340,23 +344,22 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     }
 
     public void startNewClock() {
-//        int position = mItemChecked + timesRecyclerView.getHeaderViewsCount();
-//        Log.d(TAG, "Starting new clock on list position: " + position);
-//
-//        TimeControlWrapper timeControlWrapper = (TimeControlWrapper) timesRecyclerView.getAdapter().getItem(position);
-//        if (timeControlWrapper != null) {
-//            TimeControl playerOne = timeControlWrapper.getTimeControlPlayerOne();
-//            TimeControl playerTwo = timeControlWrapper.getTimeControlPlayerTwo();
-//            FragmentActivity activity = requireActivity();
-//            Intent startServiceIntent = ChessClockLocalService.getChessClockServiceIntent(activity.getApplicationContext(), playerOne, playerTwo);
-//            activity.startService(startServiceIntent);
-//            activity.setResult(Activity.RESULT_OK);
-//            activity.finish();
-//            activity.overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
-//        } else {
-//            Log.w(TAG, "time control not available, ignoring start new clock");
-//            Thread.dumpStack();
-//        }
+
+        TimeControlWrapper wrapper = adapter.getSelectedTimeControlWrapper();
+        Log.d(TAG, "Starting new clock: " + wrapper);
+        if (wrapper != null) {
+            TimeControl playerOne = wrapper.getTimeControlPlayerOne();
+            TimeControl playerTwo = wrapper.getTimeControlPlayerTwo();
+            FragmentActivity activity = requireActivity();
+            Intent startServiceIntent = ChessClockLocalService.getChessClockServiceIntent(activity.getApplicationContext(), playerOne, playerTwo);
+            activity.startService(startServiceIntent);
+            activity.setResult(Activity.RESULT_OK);
+            activity.finish();
+            activity.overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
+        } else {
+            Log.w(TAG, "time control not available, ignoring start new clock");
+            Thread.dumpStack();
+        }
     }
 
 

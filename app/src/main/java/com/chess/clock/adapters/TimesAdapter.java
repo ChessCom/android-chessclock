@@ -137,6 +137,15 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
         removeIds.clear();
     }
 
+    public TimeControlWrapper getSelectedTimeControlWrapper() {
+        for (TimeControlWrapper wrapper : data) {
+            if (wrapper.getId() == selectedItemId) {
+                return wrapper;
+            }
+        }
+        return null;
+    }
+
     public static class TimeItemViewHolder extends RecyclerView.ViewHolder {
 
         AppCompatCheckedTextView nameTv;
