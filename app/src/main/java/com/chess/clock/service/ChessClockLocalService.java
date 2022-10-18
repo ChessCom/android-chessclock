@@ -434,6 +434,10 @@ public class ChessClockLocalService extends Service {
         mPlayerTwoTimer.setTime(timeMs);
     }
 
+    public boolean isClockStarted() {
+        return mPlayerOneTimer.isStarted() || mPlayerTwoTimer.isStarted();
+    }
+
     /**
      * Class used for the Service client Binder. Because we know this is a local service
      * (runs in the same process as its clients) we don't need to deal with IPC.

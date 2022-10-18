@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.chess.clock.R;
-import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlManager;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.fragments.TimeControlFragment;
@@ -173,19 +172,10 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     }
 
     /**
-     * @return True if Time Control set up in Clock Timers Activity is the same
+     * @return True if clock was started before settings changes
      */
-    public boolean isSameTimeControlLoaded() {
-        int index = timeControlManager.getEditableTimeControlCheckIndex();
-        if (index > 0 && index < timeControlManager.getTimeControls().size()) {
-            TimeControl tc = timeControlManager.getTimeControls().get(index).getTimeControlPlayerOne();
-            String title = tc.getName();
-            return mBound && mService.getNameOfTimeControlRunning().equals(title);
-        } else {
-            Log.e(TAG, "isSameTimeControlLoaded got index out of bounds. index: "
-                    + index + " array size: " + timeControlManager.getTimeControls().size());
-            return false;
-        }
+    public boolean showResetWarning() {
+        return mBound && mService.isClockStarted();
     }
 
     /**
