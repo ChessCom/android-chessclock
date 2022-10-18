@@ -87,13 +87,6 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
         // Perform initialization of all fragments and loaders.
         super.onCreate(savedInstanceState);
 
-        boolean isFullScreen = appData.getClockFullScreen();
-        if (isFullScreen) {
-            showStatusBar();
-        } else {
-            hideStatusBar();
-        }
-
         setContentView(R.layout.activity_timer_settings);
 
         if (savedInstanceState == null) {
@@ -199,19 +192,12 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      * FRAGMENT TRANSACTIONS
      */
 
-    public void loadTimeControlFragment(boolean edit) {
-        loadFragment(TimeControlFragment.newInstance(edit), TAG_TIME_CONTROL_FRAGMENT);
-    }
-
-    private void loadFragment(Fragment fragment, String tag) {
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment, tag);
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        transaction.addToBackStack(null);
-
-        // Commit the transaction
-        transaction.commit();
+    private void loadTimeControlFragment(boolean edit) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, TimeControlFragment.newInstance(edit), TAG_TIME_CONTROL_FRAGMENT)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .addToBackStack(null)
+                .commit();
     }
 
     /**

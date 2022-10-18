@@ -197,9 +197,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
             if (i < stages.length) {
                 Stage stage = stages[i];
                 row.updateData(i + 1, stage, selectedTimeControl.getTimeIncrement());
-                row.setOnClickListener(v -> {
-                    showStageEditorDialog(stage, selectedTimeControl.getTimeIncrement());
-                });
+                row.setOnClickListener(v -> showStageEditorDialog(stage, selectedTimeControl.getTimeIncrement()));
                 row.setVisibility(View.VISIBLE);
             } else {
                 row.setOnClickListener(null);
