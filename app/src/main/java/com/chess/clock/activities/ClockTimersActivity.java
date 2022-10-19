@@ -416,6 +416,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
             mTimersStatePreviousToPause = TimersState.PAUSED;
         }
         updateUIState();
+        soundManager.playSound(ClockSound.RESET_CLOCK);
     }
 
     /**
