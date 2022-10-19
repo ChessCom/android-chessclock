@@ -266,7 +266,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
                     @Override
                     public void onItemsReordered(int from, int to) {
-                        mListener.upDateOrderOnItemMove(from,to);
+                        mListener.upDateOrderOnItemMove(from, to);
                     }
                 });
         ItemTouchHelper.Callback callback = new TimeRowMoveCallback(adapter);
