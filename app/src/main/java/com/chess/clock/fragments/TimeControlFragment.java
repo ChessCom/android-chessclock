@@ -31,7 +31,6 @@ import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
 import com.chess.clock.dialog.EditStageDialogFragment;
-import com.chess.clock.dialog.EditTimeIncrementDialogFragment;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
@@ -44,8 +43,7 @@ import com.google.android.material.tabs.TabLayout;
 /**
  * UI fragment to create and edit a TimeControl.
  */
-public class TimeControlFragment extends BaseFragment implements EditStageDialogFragment.OnStageEditListener,
-        EditTimeIncrementDialogFragment.OnTimeIncrementEditListener {
+public class TimeControlFragment extends BaseFragment implements EditStageDialogFragment.OnStageEditListener {
 
     /**
      * Bundle/Instance state keys
@@ -196,8 +194,8 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
             StageRowView row = (StageRowView) stagesList.getChildAt(i);
             if (i < stages.length) {
                 Stage stage = stages[i];
-                row.updateData(i + 1, stage, selectedTimeControl.getTimeIncrement());
-                row.setOnClickListener(v -> showStageEditorDialog(stage, selectedTimeControl.getTimeIncrement()));
+                row.updateData(i + 1, stage);
+                row.setOnClickListener(v -> showStageEditorDialog(stage));
                 row.setVisibility(View.VISIBLE);
             } else {
                 row.setOnClickListener(null);
@@ -345,9 +343,9 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
                     return;
                 }
 
-                Stage stage = new Stage(0, gameDurationMs);
                 TimeIncrement timeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, incrementMs);
-                TimeControl simpleControl = new TimeControl(newControlName, new Stage[]{stage}, timeIncrement);
+                Stage stage = new Stage(0, gameDurationMs, timeIncrement);
+                TimeControl simpleControl = new TimeControl(newControlName, new Stage[]{stage});
                 timeControlWrapper.setTimeControlPlayerOne(simpleControl);
                 timeControlWrapper.setTimeControlPlayerTwo(simpleControl);
             }
@@ -394,8 +392,8 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         updateStagesDisplay();
     }
 
-    private void showStageEditorDialog(Stage stage, TimeIncrement timeIncrement) {
-        DialogFragment dialogFragment = EditStageDialogFragment.newInstance(stage, timeIncrement);
+    private void showStageEditorDialog(Stage stage) {
+        DialogFragment dialogFragment = EditStageDialogFragment.newInstance(stage);
         dialogFragment.show(getChildFragmentManager(), EditStageDialogFragment.TAG);
     }
 
@@ -437,15 +435,6 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         updateStagesDisplay();
     }
 
-    @Override
-    public void onTimeIncrementEditDone(TimeIncrement.Type type, long time) {
-        // Get Time Increment
-        TimeIncrement timeIncrement = selectedTimeControl.getTimeIncrement();
-
-        timeIncrement.setType(type);
-        timeIncrement.setValue(time);
-    }
-
     /**
      * This interface must be implemented by activities that contain this fragment to allow interaction.
      */
@@ -470,21 +459,21 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
             AlertDialog alertDialog = builder
-                .setTitle(getString(R.string.exit_dialog_title))
-                .setMessage(getString(R.string.exit_dialog_message))
-                .setNegativeButton(getString(R.string.exit_dialog_cancel), (arg0, arg1) -> {
-                    Fragment target = getTargetFragment();
-                    if (target != null) {
-                        target.requireActivity().getSupportFragmentManager().popBackStack();
-                    }
-                })
-                .setPositiveButton(getString(R.string.exit_dialog_ok), (arg0, arg1) -> {
-                    Fragment target = getTargetFragment();
-                    if (target != null) {
-                        ((TimeControlFragment) target).saveTimeControl();
-                    }
-                })
-                .create();
+                    .setTitle(getString(R.string.exit_dialog_title))
+                    .setMessage(getString(R.string.exit_dialog_message))
+                    .setNegativeButton(getString(R.string.exit_dialog_cancel), (arg0, arg1) -> {
+                        Fragment target = getTargetFragment();
+                        if (target != null) {
+                            target.requireActivity().getSupportFragmentManager().popBackStack();
+                        }
+                    })
+                    .setPositiveButton(getString(R.string.exit_dialog_ok), (arg0, arg1) -> {
+                        Fragment target = getTargetFragment();
+                        if (target != null) {
+                            ((TimeControlFragment) target).saveTimeControl();
+                        }
+                    })
+                    .create();
             ViewUtils.setLargePopupMessageTextSize(alertDialog, getResources());
             return alertDialog;
         }

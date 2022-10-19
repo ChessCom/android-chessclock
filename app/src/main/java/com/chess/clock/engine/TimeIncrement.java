@@ -1,9 +1,10 @@
 package com.chess.clock.engine;
 
-import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.chess.clock.entities.ClockTime;
 
@@ -46,6 +47,10 @@ public class TimeIncrement implements Parcelable, Cloneable {
         this.readFromParcel(parcel);
     }
 
+    public static TimeIncrement defaultIncrement() {
+        return new TimeIncrement(TimeIncrement.Type.FISCHER, 0);
+    }
+
     /**
      * @return The increment type.
      */
@@ -67,15 +72,6 @@ public class TimeIncrement implements Parcelable, Cloneable {
      */
     public long getValue() {
         return mValue;
-    }
-
-    /**
-     * Set the increment time value.
-     *
-     * @param value increment time in milliseconds.
-     */
-    public void setValue(long value) {
-        mValue = value;
     }
 
     /**
@@ -109,19 +105,9 @@ public class TimeIncrement implements Parcelable, Cloneable {
      *
      * @return String representing info content of TimeIncrement.
      */
+    @NonNull
     public String toString() {
-        String durationString = formatTime(getValue());
-        return mType + ", " + durationString;
-    }
-
-    /**
-     * @param time Player time in milliseconds.
-     * @return Readable String format of time.
-     */
-    @SuppressLint("DefaultLocale")
-    public String formatTime(long time) {
-        ClockTime clockTime = ClockTime.raw(time);
-        return String.format("%02d:%02d", clockTime.minutes, clockTime.seconds);
+        return mType + ", " + ClockTime.raw(mValue).toMinutesFormat();
     }
 
     /**
@@ -131,9 +117,7 @@ public class TimeIncrement implements Parcelable, Cloneable {
      * @return TimeIncrement value or zero if negative.
      */
     private long validateIncrementValue(long value) {
-        if (value < 0)
-            return 0;
-        return value;
+        return Math.max(0, value);
     }
 
     private void readFromParcel(Parcel parcel) {
@@ -152,6 +136,7 @@ public class TimeIncrement implements Parcelable, Cloneable {
         return 0;
     }
 
+    @NonNull
     @Override
     public Object clone() throws CloneNotSupportedException {
         TimeIncrement cloned = (TimeIncrement) super.clone();

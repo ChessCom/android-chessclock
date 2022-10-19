@@ -32,10 +32,8 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
 
     public static final String TAG = "EditStageDialogFragment";
     private static final String ARG_STAGE_KEY = "arg_stage_key";
-    private static final String ARG_TIME_INCREMENT_KEY = "arg_time_increment_key";
 
     private Stage stage;
-    private TimeIncrement timeIncrement;
 
     EditText hoursEt;
     EditText minutesEt;
@@ -48,11 +46,10 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
         return R.layout.dialog_fragment_edit_stage;
     }
 
-    public static EditStageDialogFragment newInstance(Stage stage, TimeIncrement timeIncrement) {
+    public static EditStageDialogFragment newInstance(Stage stage) {
 
         Bundle args = new Bundle();
         args.putParcelable(ARG_STAGE_KEY, stage);
-        args.putParcelable(ARG_TIME_INCREMENT_KEY, timeIncrement);
 
         EditStageDialogFragment fragment = new EditStageDialogFragment();
         fragment.setArguments(args);
@@ -62,11 +59,11 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        stage = requireArguments().getParcelable(ARG_STAGE_KEY);
+
         if (savedInstanceState == null) {
-            timeIncrement = requireArguments().getParcelable(ARG_TIME_INCREMENT_KEY);
+            stage = requireArguments().getParcelable(ARG_STAGE_KEY);
         } else {
-            timeIncrement = savedInstanceState.getParcelable(ARG_TIME_INCREMENT_KEY);
+            stage = savedInstanceState.getParcelable(ARG_STAGE_KEY);
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -84,10 +81,10 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
         );
 
         timeIncrementDetailsTv = view.findViewById(R.id.incrementDetailsTv);
-        timeIncrementDetailsTv.setText(timeIncrement.toString());
+        timeIncrementDetailsTv.setText(stage.getTimeIncrement().toString());
 
         view.findViewById(R.id.incrementLay).setOnClickListener(v -> {
-            DialogFragment dialogFragment = EditTimeIncrementDialogFragment.newInstance(timeIncrement);
+            DialogFragment dialogFragment = EditTimeIncrementDialogFragment.newInstance(stage.getTimeIncrement());
             dialogFragment.show(getChildFragmentManager(), EditTimeIncrementDialogFragment.TAG);
         });
 
@@ -164,18 +161,15 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
 
     @Override
     public void onTimeIncrementEditDone(TimeIncrement.Type type, long time) {
-        ((EditTimeIncrementDialogFragment.OnTimeIncrementEditListener) requireParentFragment())
-                .onTimeIncrementEditDone(type, time);
-
-        timeIncrement.setType(type);
-        timeIncrement.setValue(time);
-        timeIncrementDetailsTv.setText(timeIncrement.toString());
+        TimeIncrement increment = new TimeIncrement(type, time);
+        stage.setTimeIncrement(increment);
+        timeIncrementDetailsTv.setText(increment.toString());
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(ARG_TIME_INCREMENT_KEY, timeIncrement);
+        outState.putParcelable(ARG_STAGE_KEY, stage);
     }
 
     /**
