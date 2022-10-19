@@ -46,7 +46,6 @@ import java.util.Set;
 
 // todo update order on remove/add item
 // order logic on position updates
-// edit mode setup simplification
 
 public class TimeSettingsFragment extends BaseFragment implements ActionMode.Callback {
 
@@ -76,11 +75,6 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     private static final String TAG_RESET_DIALOG_FRAGMENT = "ResetDialogFragment";
 
     /**
-     * Time Controls List Adapters.
-     */
-    private TimesAdapter adapter;
-
-    /**
      * Activity attached.
      */
     private OnSettingsListener mListener;
@@ -92,6 +86,12 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     private StyledButton startBtn;
     private ImageView plusImg;
     private ActionMode actionMode;
+
+    /**
+     * UI management
+     */
+    private TimesAdapter adapter;
+    ItemTouchHelper touchHelper;
 
     public TimeSettingsFragment() {
     }
@@ -127,8 +127,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
             // Check if current time control selected is the same as the the list selected
             if (activity.showResetWarning()) {
                 ResetClockDialogFragment resetClockDialog = new ResetClockDialogFragment();
-                resetClockDialog.setTargetFragment(TimeSettingsFragment.this, 0);
-                resetClockDialog.show(activity.getSupportFragmentManager(), TAG_RESET_DIALOG_FRAGMENT);
+                resetClockDialog.show(getChildFragmentManager(), TAG_RESET_DIALOG_FRAGMENT);
             } else {
                 startNewClock();
             }
@@ -179,6 +178,18 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
     private void runEditMode() {
         ((AppCompatActivity) requireActivity()).startSupportActionMode(this);
+    }
+
+    private void editModeUiSetup(Boolean editMode) {
+        ViewUtils.showView(startBtn, !editMode);
+        adapter.setEditMode(editMode);
+
+        if (touchHelper == null) return;
+        if (editMode) {
+            touchHelper.attachToRecyclerView(timesRecyclerView);
+        } else {
+            touchHelper.attachToRecyclerView(null);
+        }
     }
 
     @Override
@@ -237,6 +248,9 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
                         loadTimeControlToEdit(wrapper);
                     }
                 });
+        ItemTouchHelper.Callback callback = new TimeRowMoveCallback(adapter);
+        touchHelper = new ItemTouchHelper(callback);
+
         adapter.restoreInstanceState(savedInstanceState);
 
         boolean editMode = adapter.inEditMode();
@@ -246,10 +260,6 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
         ViewUtils.showView(startBtn, !editMode);
         timesRecyclerView.setAdapter(adapter);
-
-        ItemTouchHelper.Callback callback = new TimeRowMoveCallback(adapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(timesRecyclerView);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -279,8 +289,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         MenuInflater inflater = actionMode.getMenuInflater();
         inflater.inflate(R.menu.settings_cab_actions, menu);
         this.actionMode = actionMode;
-        adapter.setEditMode(true);
-        ViewUtils.showView(startBtn, false);
+        editModeUiSetup(true);
         return true;
     }
 
@@ -309,8 +318,8 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
     @Override
     public void onDestroyActionMode(ActionMode actionMode) {
-        adapter.setEditMode(false);
         this.actionMode = null;
+        editModeUiSetup(false);
         ViewUtils.showView(startBtn, true);
     }
 
@@ -375,7 +384,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
             builder.setMessage(R.string.dialog_clock_running_reset)
                     .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
-                        TimeSettingsFragment f = (TimeSettingsFragment) getTargetFragment();
+                        TimeSettingsFragment f = (TimeSettingsFragment) getParentFragment();
                         if (f != null) {
                             f.startNewClock();
                         }
