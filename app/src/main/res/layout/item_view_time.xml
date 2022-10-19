@@ -28,26 +28,26 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_large" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/editBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_standard"
-        android:background="@drawable/ic_edit"
+        android:layout_marginHorizontal="@dimen/margin_small"
+        android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/action_edit"
-        android:foreground="?selectableItemBackgroundBorderless"
         android:padding="@dimen/margin_small"
+        android:src="@drawable/ic_edit"
         android:visibility="gone" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/reorderBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_standard"
         android:layout_marginRight="@dimen/margin_standard"
-        android:background="@drawable/ic_reorder_icon"
-        android:foreground="?selectableItemBackgroundBorderless"
+        android:background="?selectableItemBackgroundBorderless"
         android:importantForAccessibility="no"
         android:padding="@dimen/margin_small"
+        android:src="@drawable/ic_reorder_icon"
         android:visibility="gone" />
 </LinearLayout>
