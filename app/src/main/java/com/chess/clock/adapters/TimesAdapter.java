@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckedTextView;
-import androidx.core.widget.CompoundButtonCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chess.clock.R;
@@ -77,15 +76,27 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
                     removeIds.add(id);
                 }
                 itemsListener.onMarkItemToRemove(removeIds.size());
+                notifyItemChanged(position);
             } else {
+                int oldSelectedItemPosition = getSelectedItemPosition();
                 selectedItemId = id;
                 itemsListener.onSelectedItemChange(selectedItemId);
+                notifyItemChanged(position);
+                notifyItemChanged(oldSelectedItemPosition);
             }
-            notifyDataSetChanged();
         });
         holder.editButton.setOnClickListener(v -> {
             itemsListener.onClickEdit(timeControlWrapper);
         });
+    }
+
+    private int getSelectedItemPosition() {
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getId() == selectedItemId) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
