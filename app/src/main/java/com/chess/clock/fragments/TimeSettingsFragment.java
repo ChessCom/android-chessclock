@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 // todo update order on remove item
-// update ids logic (millis?)
+
 public class TimeSettingsFragment extends BaseFragment implements ActionMode.Callback {
 
     private static final String TAG = TimeSettingsFragment.class.getName();
@@ -61,7 +61,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
         void setCheckedTimeControlId(long id);
 
-        void loadTimeControl(int position);
+        void loadTimeControl(TimeControlWrapper wrapper);
 
         void addTimeControl();
 
@@ -240,6 +240,11 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
                     public void onMarkItemToRemove(int removeItemsCount) {
                         updateEditModeTitle(actionMode, removeItemsCount);
                     }
+
+                    @Override
+                    public void onClickEdit(TimeControlWrapper wrapper) {
+                        loadTimeControlToEdit(wrapper);
+                    }
                 });
         adapter.restoreInstanceState(savedInstanceState);
 
@@ -263,19 +268,18 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         }
     }
 
-    public void loadTimeControl(int position) {
+    public void loadTimeControlToEdit(TimeControlWrapper controlWrapper) {
 
-//        if (adapter.isEditMode()) {
-//            mMultiSelectionController.finish();
-//        }
+        if (adapter.inEditMode() && actionMode != null) {
+            actionMode.finish();
+        }
 
-//        checkedItemId = position;
-//        mListener.setCheckedTimeControlIndex(checkedItemId);
-//
-//        timesRecyclerView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
-//                HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-//
-//        mListener.loadTimeControl(checkedItemId);
+        mListener.setCheckedTimeControlId(controlWrapper.getId());
+
+        timesRecyclerView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
+                HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+
+        mListener.loadTimeControl(controlWrapper);
     }
 
     @Override
@@ -285,6 +289,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         inflater.inflate(R.menu.settings_cab_actions, menu);
         this.actionMode = actionMode;
         adapter.setEditMode(true);
+        ViewUtils.showView(startBtn, false);
         return true;
     }
 
@@ -315,6 +320,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     public void onDestroyActionMode(ActionMode actionMode) {
         adapter.setEditMode(false);
         this.actionMode = null;
+        ViewUtils.showView(startBtn, true);
     }
 
     private void deleteTimeControls(ActionMode mode) {

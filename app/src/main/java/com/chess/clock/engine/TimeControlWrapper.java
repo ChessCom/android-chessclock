@@ -91,11 +91,8 @@ public class TimeControlWrapper implements Parcelable, Cloneable {
         clone.mTimeControlPlayerOne = (TimeControl) mTimeControlPlayerOne.clone();
         clone.mTimeControlPlayerTwo = (TimeControl) mTimeControlPlayerTwo.clone();
         clone.mSameAsPlayerOne = mSameAsPlayerOne;
-
-        Random random = new Random(500);
-        clone.order = random.nextInt();
-        clone.id = random.nextLong();
-
+        clone.order = order;
+        clone.id = id;
         return clone;
     }
 

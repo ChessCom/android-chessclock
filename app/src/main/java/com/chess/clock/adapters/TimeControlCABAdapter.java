@@ -80,7 +80,7 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
             holder.editImgBtn.setFocusable(false);
             holder.editImgBtn.setOnClickListener(v -> {
                 int position1 = (Integer) holder.editImgBtn.getTag();
-                ((TimeSettingsFragment) mTargetFragment).loadTimeControl(position1);
+//                ((TimeSettingsFragment) mTargetFragment).loadTimeControlToEdit(position1);
             });
 
             row.setTag(holder);

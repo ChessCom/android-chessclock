@@ -239,11 +239,11 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     /**
      * Used as communication gateway by SettingsFragment.
      *
-     * @param position TimeControl position in the list.
+     * @param wrapper TimeControlWrapper to edit.
      */
     @Override
-    public void loadTimeControl(int position) {
-        timeControlManager.prepareEditableTimeControl(position);
+    public void loadTimeControl(TimeControlWrapper wrapper) {
+        timeControlManager.prepareEditableTimeControl(wrapper);
         loadTimeControlFragment(true);
     }
 

@@ -157,14 +157,17 @@ public class TimeControlManager {
     }
 
     /**
-     * Produces a deep copy of the TimeControl object in position.
-     *
-     * @param position position of the TimeControl object in the list.
+     * Produces a deep copy of the TimeControlWrapper object to edit.
      */
-    public void prepareEditableTimeControl(int position) {
+    public void prepareEditableTimeControl(TimeControlWrapper wrapper) {
         isNewEditableTimeControl = false;
-        editableTimeControlCheckId = position;
-        mEditableTimeControl = buildEditableTimeControl(position);
+        editableTimeControlCheckId = wrapper.getId();
+        try {
+            mEditableTimeControl = (TimeControlWrapper) wrapper.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Could not build editable time control.");
+        }
     }
 
     /**
@@ -179,10 +182,11 @@ public class TimeControlManager {
         Stage stage2 = new Stage(1, 60 * 60 * 1000L, TimeIncrement.defaultIncrement());
         TimeControl blank = new TimeControl(null, new Stage[]{stage1, stage2});
 
-        // Set current editable time control with a new "blank" time control
-        int newIdx = mTimeControls.size();
+        long id = System.currentTimeMillis(); // supported only locally and enough unique
+        int order = mTimeControls.size();
         try {
-            mEditableTimeControl = new TimeControlWrapper(newIdx, newIdx, blank, (TimeControl) blank.clone());
+            // Set current editable time control with a new "blank" time control
+            mEditableTimeControl = new TimeControlWrapper(id, order, blank, (TimeControl) blank.clone());
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not create Editable time control with blank time control.");
@@ -204,29 +208,6 @@ public class TimeControlManager {
 
     public void setEditableTimeControlCheckId(long id) {
         editableTimeControlCheckId = id;
-    }
-
-    /**
-     * Get Editable copy of selected time control. This copy will replace the original time control
-     * if the user presses "Done" on the time control edit menu.
-     *
-     * @param position Position of time control in the list.
-     * @return Copy of TimeControl object.
-     * @throws IllegalStateException if editable time control is unable to be built
-     */
-    private TimeControlWrapper buildEditableTimeControl(int position) {
-
-        if (position >= 0 && position < mTimeControls.size()) {
-
-            TimeControlWrapper original = mTimeControls.get(position);
-            try {
-                return (TimeControlWrapper) original.clone();
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-                throw new IllegalStateException("Could not build editable time control.");
-            }
-        }
-        return null;
     }
 
     /**

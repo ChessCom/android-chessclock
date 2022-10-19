@@ -73,6 +73,9 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
             }
             notifyDataSetChanged();
         });
+        holder.editButton.setOnClickListener(v -> {
+            itemsListener.onClickEdit(timeControlWrapper);
+        });
     }
 
     @Override
@@ -187,5 +190,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
         void onSelectedItemChange(long itemId);
 
         void onMarkItemToRemove(int removeItemsCount);
+
+        void onClickEdit(TimeControlWrapper wrapper);
     }
 }
