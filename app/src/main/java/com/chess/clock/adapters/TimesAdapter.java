@@ -51,7 +51,18 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
     @Override
     public TimeItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_time, parent, false);
+        RecyclerView.LayoutManager layoutManager = ((RecyclerView) parent).getLayoutManager();
+        wrapItemsWidthIssue(itemView, layoutManager);
         return new TimeItemViewHolder(itemView);
+    }
+
+    private void wrapItemsWidthIssue(View itemView, RecyclerView.LayoutManager layoutManager) {
+        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+        if (layoutManager != null) {
+            width = layoutManager.getWidth();
+        }
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        itemView.setLayoutParams(lp);
     }
 
     @Override
@@ -149,17 +160,25 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
         return null;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateData(ArrayList<TimeControlWrapper> controls) {
+        data = controls;
+        notifyDataSetChanged();
+    }
+
     public static class TimeItemViewHolder extends RecyclerView.ViewHolder {
 
         AppCompatCheckedTextView nameTv;
         AppCompatCheckBox checkBox;
         View editButton;
+        View reorderButton;
 
         public TimeItemViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTv = itemView.findViewById(R.id.nameTv);
             checkBox = itemView.findViewById(R.id.editCheckBox);
             editButton = itemView.findViewById(R.id.editBtn);
+            reorderButton = itemView.findViewById(R.id.reorderBtn);
         }
 
         public void setUpView(
@@ -183,6 +202,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
             }
             ViewUtils.showView(checkBox, editMode);
             ViewUtils.showView(editButton, editMode);
+            ViewUtils.showView(reorderButton, editMode);
         }
     }
 

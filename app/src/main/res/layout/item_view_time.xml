@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/time_item_height"
     android:background="?selectableItemBackground"
+    android:gravity="center_vertical"
     android:orientation="horizontal">
 
     <androidx.appcompat.widget.AppCompatCheckBox
@@ -31,8 +32,22 @@
         android:id="@+id/editBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_standard"
         android:background="@drawable/ic_edit"
         android:contentDescription="@string/action_edit"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:padding="@dimen/margin_small"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/reorderBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_standard"
+        android:layout_marginRight="@dimen/margin_standard"
+        android:background="@drawable/ic_reorder_icon"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:importantForAccessibility="no"
         android:padding="@dimen/margin_small"
         android:visibility="gone" />
 </LinearLayout>

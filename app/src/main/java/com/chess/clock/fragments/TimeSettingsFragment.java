@@ -44,7 +44,9 @@ import com.chess.clock.views.ViewUtils;
 import java.util.ArrayList;
 import java.util.Set;
 
-// todo update order on remove item
+// todo update order on remove/add item
+// order logic on position updates
+// edit mode setup simplification
 
 public class TimeSettingsFragment extends BaseFragment implements ActionMode.Callback {
 
@@ -110,7 +112,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        initListViewAndHeaders(view);
+        initRecyclerViewAndHeaders(view);
         startBtn = view.findViewById(R.id.startBtn);
         setupRecyclerView(savedInstanceState);
         return view;
@@ -137,9 +139,6 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(getString(R.string.time_controls));
-        if (timesRecyclerView != null) {
-            // todo restore selected item on back ftom "new time control"
-        }
     }
 
     @Override
@@ -153,22 +152,13 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         }
     }
 
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        if (mMultiSelectionController != null && mMultiSelectionController.isActionModeActive()) {
-//            multiSelectionFinishedByOnDestroyView = true;
-//            mMultiSelectionController.finish();
-//        }
-//        mMultiSelectionController = null;
-//    }
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.settings_actions, menu);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -198,8 +188,9 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     }
 
     @SuppressLint("InflateParams")
-    private void initListViewAndHeaders(View view) {
+    private void initRecyclerViewAndHeaders(View view) {
         timesRecyclerView = view.findViewById(R.id.timesRecycler);
+        timesRecyclerView.setHasFixedSize(true);
         plusImg = view.findViewById(R.id.plusImg);
         View headerLogo = view.findViewById(R.id.logo);
         View headerTimeBtn = view.findViewById(R.id.timeBtn);
@@ -223,7 +214,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     }
 
     /**
-     * Set TimeControl ListView with proper Adapter and item(s) selection positions.
+     * Set TimeControl RecyclerView with proper Adapter and item(s) selection positions.
      */
     private void setupRecyclerView(Bundle savedInstanceState) {
         adapter = new TimesAdapter(
@@ -255,13 +246,13 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
         ViewUtils.showView(startBtn, !editMode);
         timesRecyclerView.setAdapter(adapter);
-        timesRecyclerView.setHasFixedSize(true);
 
         ItemTouchHelper.Callback callback = new TimeRowMoveCallback(adapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(timesRecyclerView);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void refreshTimeControlList() {
         if (adapter != null) {
             adapter.notifyDataSetChanged();
