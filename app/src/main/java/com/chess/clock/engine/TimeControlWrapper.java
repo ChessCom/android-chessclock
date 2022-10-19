@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.util.Random;
-
 public class TimeControlWrapper implements Parcelable, Cloneable {
     private TimeControl mTimeControlPlayerOne;
     private TimeControl mTimeControlPlayerTwo;

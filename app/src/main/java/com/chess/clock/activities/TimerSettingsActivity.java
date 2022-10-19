@@ -23,7 +23,6 @@ import com.chess.clock.fragments.TimeSettingsFragment;
 import com.chess.clock.service.ChessClockLocalService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Set;
 
 /**
