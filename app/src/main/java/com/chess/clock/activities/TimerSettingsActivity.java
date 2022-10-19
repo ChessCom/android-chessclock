@@ -249,7 +249,8 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
 
     /**
      * Used as communication gateway by SettingsFragment.
-     * @param ids
+     *
+     * @param ids ids of controls to remove
      */
     @Override
     public void removeTimeControl(Set<Long> ids) {
