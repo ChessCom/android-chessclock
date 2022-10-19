@@ -200,6 +200,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
                     nameTv.setCheckMarkTintList(theme.colorStateListChecked(nameTv.getContext()));
                 }
             }
+            reorderButton.setOnClickListener(v -> itemView.performLongClick());
             ViewUtils.showView(checkBox, editMode);
             ViewUtils.showView(editButton, editMode);
             ViewUtils.showView(reorderButton, editMode);
