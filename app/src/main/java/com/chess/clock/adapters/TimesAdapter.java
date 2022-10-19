@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatCheckedTextView;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -160,14 +160,14 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
     public static class TimeItemViewHolder extends RecyclerView.ViewHolder {
 
         AppCompatCheckedTextView nameTv;
-        AppCompatCheckBox checkBox;
+        ImageView checkBoxImg;
         View editButton;
         View reorderButton;
 
         public TimeItemViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTv = itemView.findViewById(R.id.nameTv);
-            checkBox = itemView.findViewById(R.id.editCheckBox);
+            checkBoxImg = itemView.findViewById(R.id.checkBoxImg);
             editButton = itemView.findViewById(R.id.editBtn);
             reorderButton = itemView.findViewById(R.id.reorderBtn);
         }
@@ -180,19 +180,29 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
                 Set<Long> removeIds) {
             nameTv.setText(timeControlWrapper.getTimeControlPlayerOne().getName());
             if (editMode) {
-                checkBox.setChecked(removeIds.contains(timeControlWrapper.getId()));
+
+                boolean selectedToRemove = removeIds.contains(timeControlWrapper.getId());
+                if (selectedToRemove) {
+                    checkBoxImg.setImageResource(R.drawable.ic_check_box);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        checkBoxImg.setImageTintList(theme.primaryColorAsStateList(checkBoxImg.getContext()));
+                    }
+                } else {
+                    checkBoxImg.setImageResource(R.drawable.ic_check_box_frame);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        checkBoxImg.setImageTintList(null);
+                    }
+                }
                 nameTv.setCheckMarkDrawable(null);
-                CompoundButtonCompat.setButtonTintList(checkBox, theme.colorStateListChecked(nameTv.getContext()));
             } else {
                 nameTv.setCheckMarkDrawable(R.drawable.list_radio_button_selector);
                 nameTv.setChecked(selectedItemId == timeControlWrapper.getId());
-                CompoundButtonCompat.setButtonTintList(checkBox, theme.colorStateListChecked(nameTv.getContext()));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     nameTv.setCheckMarkTintList(theme.colorStateListChecked(nameTv.getContext()));
                 }
             }
             reorderButton.setOnClickListener(v -> itemView.performLongClick());
-            ViewUtils.showView(checkBox, editMode);
+            ViewUtils.showView(checkBoxImg, editMode);
             ViewUtils.showView(editButton, editMode);
             ViewUtils.showView(reorderButton, editMode);
         }
