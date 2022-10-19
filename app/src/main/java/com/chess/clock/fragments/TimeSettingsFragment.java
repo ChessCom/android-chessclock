@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
@@ -186,10 +187,19 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
         if (touchHelper == null) return;
         if (editMode) {
+            setRecyclerBottomMargin(0);
             touchHelper.attachToRecyclerView(timesRecyclerView);
         } else {
+            int bottomMargin = getResources().getDimensionPixelSize(R.dimen.settings_margin_over_button);
+            setRecyclerBottomMargin(bottomMargin);
             touchHelper.attachToRecyclerView(null);
         }
+    }
+
+    private void setRecyclerBottomMargin(int bottomMarginPx) {
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) timesRecyclerView.getLayoutParams();
+        layoutParams.setMargins(0, 0, 0, bottomMarginPx);
+        timesRecyclerView.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -218,10 +228,17 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         headerTimeBtn
                 .findViewById(R.id.timeBtn)
                 .setOnClickListener(v -> {
+                    quitActionMode();
                     mListener.addTimeControl();
                     startBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
                             HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
                 });
+    }
+
+    private void quitActionMode() {
+        if (actionMode != null) {
+            actionMode.finish();
+        }
     }
 
     /**
@@ -271,10 +288,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
     public void loadTimeControlToEdit(TimeControlWrapper controlWrapper) {
 
-        if (adapter.inEditMode() && actionMode != null) {
-            actionMode.finish();
-        }
-
+        quitActionMode();
         mListener.setCheckedTimeControlId(controlWrapper.getId());
 
         timesRecyclerView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
@@ -320,7 +334,6 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     public void onDestroyActionMode(ActionMode actionMode) {
         this.actionMode = null;
         editModeUiSetup(false);
-        ViewUtils.showView(startBtn, true);
     }
 
     private void deleteTimeControls(ActionMode mode) {

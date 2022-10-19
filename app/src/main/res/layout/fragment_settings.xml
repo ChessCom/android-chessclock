@@ -83,7 +83,7 @@
         android:id="@+id/timesRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="@dimen/settings_margin_over_button"
         android:nestedScrollingEnabled="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
