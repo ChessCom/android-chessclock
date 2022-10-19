@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -52,6 +53,7 @@ public class TimeControlManager {
 
         // Get time controls stored on shared preferences.
         mTimeControls = TimeControlParser.restoreTimeControlsList(context);
+        Collections.sort(mTimeControls, (o1, o2) -> Integer.compare(o1.getOrder(), o2.getOrder()));
 
         // Build default List if none was restored from shared preferences.
         if (mTimeControls == null || mTimeControls.size() == 0) {
@@ -122,9 +124,7 @@ public class TimeControlManager {
             // reset editable time control object
             mEditableTimeControl = null;
         }
-
-        // Save modified time control list in shared preferences.
-        TimeControlParser.saveTimeControls(context, mTimeControls);
+        updateItemsOrderAndSave(context);
     }
 
     /**
@@ -151,8 +151,7 @@ public class TimeControlManager {
 
         } else {
             Log.v(TAG, "Requesting to save the remaining " + mTimeControls.size() + " time controls.");
-            // save modified time control list.
-            TimeControlParser.saveTimeControls(context, mTimeControls);
+            updateItemsOrderAndSave(context);
         }
     }
 
@@ -183,7 +182,7 @@ public class TimeControlManager {
         TimeControl blank = new TimeControl(null, new Stage[]{stage1, stage2});
 
         long id = System.currentTimeMillis(); // supported only locally and enough unique
-        int order = mTimeControls.size();
+        int order = -1; // add item at start, order will be updated before saving
         try {
             // Set current editable time control with a new "blank" time control
             mEditableTimeControl = new TimeControlWrapper(id, order, blank, (TimeControl) blank.clone());
@@ -208,6 +207,26 @@ public class TimeControlManager {
 
     public void setEditableTimeControlCheckId(long id) {
         editableTimeControlCheckId = id;
+    }
+
+    public void updateOrderOnItemMove(int from, int to, Context context) {
+        if (from < to) {
+            for (int i = from; i < to; i++) {
+                Collections.swap(mTimeControls, i, i + 1);
+            }
+        } else {
+            for (int i = from; i > to; i--) {
+                Collections.swap(mTimeControls, i, i - 1);
+            }
+        }
+        updateItemsOrderAndSave(context);
+    }
+
+    private void updateItemsOrderAndSave(Context context) {
+        for (int i = 0; i < mTimeControls.size(); i++) {
+            mTimeControls.get(i).setOrder(i);
+        }
+        TimeControlParser.saveTimeControls(context, mTimeControls);
     }
 
     /**

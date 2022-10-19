@@ -19,7 +19,6 @@ import com.chess.clock.entities.AppTheme;
 import com.chess.clock.views.ViewUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -96,15 +95,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
 
     @Override
     public void onTimeItemMoved(int from, int to) {
-        if (from < to) {
-            for (int i = from; i < to; i++) {
-                Collections.swap(data, i, i + 1);
-            }
-        } else {
-            for (int i = from; i > to; i--) {
-                Collections.swap(data, i, i - 1);
-            }
-        }
+        itemsListener.onItemsReordered(from, to);
         notifyItemMoved(from, to);
     }
 
@@ -213,5 +204,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
         void onMarkItemToRemove(int removeItemsCount);
 
         void onClickEdit(TimeControlWrapper wrapper);
+
+        void onItemsReordered(int from, int to);
     }
 }

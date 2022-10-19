@@ -45,9 +45,6 @@ import com.chess.clock.views.ViewUtils;
 import java.util.ArrayList;
 import java.util.Set;
 
-// todo update order on remove/add item
-// order logic on position updates
-
 public class TimeSettingsFragment extends BaseFragment implements ActionMode.Callback {
 
     private static final String TAG = TimeSettingsFragment.class.getName();
@@ -68,6 +65,8 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         void addTimeControl();
 
         void removeTimeControl(Set<Long> ids);
+
+        void upDateOrderOnItemMove(int from, int to);
     }
 
     /**
@@ -263,6 +262,11 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
                     @Override
                     public void onClickEdit(TimeControlWrapper wrapper) {
                         loadTimeControlToEdit(wrapper);
+                    }
+
+                    @Override
+                    public void onItemsReordered(int from, int to) {
+                        mListener.upDateOrderOnItemMove(from,to);
                     }
                 });
         ItemTouchHelper.Callback callback = new TimeRowMoveCallback(adapter);

@@ -124,4 +124,8 @@ public class TimeControlWrapper implements Parcelable, Cloneable {
     public int getOrder() {
         return order;
     }
+
+    public void setOrder(int newOrder) {
+        this.order = newOrder;
+    }
 }

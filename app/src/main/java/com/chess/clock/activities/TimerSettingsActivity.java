@@ -199,9 +199,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      */
     @Override
     public ArrayList<TimeControlWrapper> getCurrentTimeControls() {
-        ArrayList<TimeControlWrapper> timeControls = timeControlManager.getTimeControls();
-        Collections.sort(timeControls, (o1, o2) -> Integer.compare(o1.getOrder(), o2.getOrder()));
-        return timeControls;
+        return timeControlManager.getTimeControls();
     }
 
     /**
@@ -255,6 +253,11 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     @Override
     public void removeTimeControl(Set<Long> ids) {
         timeControlManager.removeTimeControls(getApplicationContext(), ids);
+    }
+
+    @Override
+    public void upDateOrderOnItemMove(int from, int to) {
+        timeControlManager.updateOrderOnItemMove(from, to, this);
     }
 
     /**
