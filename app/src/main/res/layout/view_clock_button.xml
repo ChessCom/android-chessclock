@@ -91,6 +91,7 @@
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
             android:duplicateParentState="false"
+            android:importantForAccessibility="no"
             android:padding="@dimen/margin_small"
             android:src="@drawable/ic_options"
             android:visibility="gone"
