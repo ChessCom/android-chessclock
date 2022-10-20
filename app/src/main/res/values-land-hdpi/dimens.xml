@@ -4,8 +4,6 @@
     <dimen name="activity_vertical_margin">26dp</dimen>
 
     <!-- Clock timer screen -->
-    <dimen name="clock_button_stock_width">1px</dimen>
-    <dimen name="clock_button_corner_radius">5dp</dimen>
     <dimen name="clock_timer_textSize_small">50sp</dimen>
     <dimen name="clock_timer_textSize_normal">75sp</dimen>
     <dimen name="clock_timer_moves_text">15sp</dimen>

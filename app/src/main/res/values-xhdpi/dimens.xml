@@ -1,8 +1,6 @@
 <resources>
 
     <!-- Clock timer screen -->
-    <dimen name="clock_button_stock_width">1px</dimen>
-    <dimen name="clock_button_corner_radius">5dp</dimen>
     <dimen name="clock_timer_textSize_small">85sp</dimen>
     <dimen name="clock_timer_textSize_normal">125sp</dimen>
     <dimen name="clock_timer_moves_text">20sp</dimen>
