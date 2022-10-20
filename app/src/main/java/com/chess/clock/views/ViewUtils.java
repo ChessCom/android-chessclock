@@ -17,6 +17,14 @@ public class ViewUtils {
         }
     }
 
+    public static void isInvisible(View v, boolean invisible) {
+        if (invisible) {
+            v.setVisibility(View.INVISIBLE);
+        } else {
+            v.setVisibility(View.VISIBLE);
+        }
+    }
+
     /**
      * call before dialog `show()`
      */

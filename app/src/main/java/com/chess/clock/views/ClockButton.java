@@ -93,9 +93,9 @@ public class ClockButton extends FrameLayout {
                 break;
         }
         setClickable(state != State.LOCKED);
-        Boolean showStageControls = state == State.IDLE;
-        ViewUtils.showView(timeOptions, showStageControls);
-        ViewUtils.showView(controlNameTv, showStageControls);
+        boolean hideStageControls = state != State.IDLE;
+        ViewUtils.isInvisible(timeOptions, hideStageControls);
+        ViewUtils.isInvisible(controlNameTv, hideStageControls);
     }
 
     private void setStageBg(View stage, Boolean active) {

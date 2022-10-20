@@ -41,7 +41,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/playerOneMovesContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -51,7 +50,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/moves_text"
             android:textColor="@color/clock_stage_gray"
             android:textSize="@dimen/text_size_default"
@@ -75,11 +74,12 @@
 
         <TextView
             android:id="@+id/clockTimeTv"
+            android:layout_marginTop="@dimen/margin_x_large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="@dimen/clock_timer_textSize_small"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/adjustTimeImg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -95,11 +95,12 @@
             android:padding="@dimen/margin_small"
             android:src="@drawable/ic_options"
             android:visibility="gone"
+            android:layout_marginBottom="@dimen/margin_small"
             app:layout_constraintBottom_toTopOf="@id/stageNameTv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/clockTimeTv"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/stageNameTv"
@@ -108,12 +109,13 @@
             android:textColor="@color/black_65"
             android:textSize="@dimen/text_size_large"
             android:visibility="gone"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/adjustTimeImg"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="5 | 5" />
+            android:layout_marginBottom="@dimen/margin_x_large"
+            tools:text="5 | 5"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </merge>
