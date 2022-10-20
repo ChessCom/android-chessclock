@@ -1,9 +1,4 @@
 <resources>
-
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">26dp</dimen>
-    <dimen name="activity_vertical_margin">26dp</dimen>
-
     <!-- Clock timer screen -->
     <dimen name="clock_timer_textSize_small">60sp</dimen>
     <dimen name="clock_timer_textSize_normal">90sp</dimen>
