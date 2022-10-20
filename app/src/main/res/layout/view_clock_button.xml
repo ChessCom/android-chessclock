@@ -74,7 +74,7 @@
 
         <TextView
             android:id="@+id/clockTimeTv"
-            android:layout_marginTop="@dimen/margin_x_large"
+            android:layout_marginTop="@dimen/clock_timer_bottom_control_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
@@ -95,11 +95,10 @@
             android:padding="@dimen/margin_small"
             android:src="@drawable/ic_options"
             android:visibility="gone"
-            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_x_small"
             app:layout_constraintBottom_toTopOf="@id/stageNameTv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
             tools:visibility="visible" />
 
         <TextView
@@ -113,7 +112,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="@dimen/margin_x_large"
+            android:layout_marginBottom="@dimen/clock_timer_bottom_control_margin"
             tools:text="5 | 5"
             tools:visibility="visible" />
 
