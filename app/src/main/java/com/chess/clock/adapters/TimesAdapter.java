@@ -85,9 +85,16 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
                 notifyItemChanged(oldSelectedItemPosition);
             }
         });
-        holder.editButton.setOnClickListener(v -> {
-            itemsListener.onClickEdit(timeControlWrapper);
-        });
+        holder.editButton.setOnClickListener(v -> itemsListener.onClickEdit(timeControlWrapper));
+        holder.itemView.setOnLongClickListener(v -> {
+                    boolean consumeLongClick = !editMode;
+                    if (consumeLongClick) {
+                        itemsListener.onItemLongClick();
+                    }
+                    return consumeLongClick;
+                }
+        );
+
     }
 
     private int getSelectedItemPosition() {
@@ -162,12 +169,6 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
         return null;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void updateData(ArrayList<TimeControlWrapper> controls) {
-        data = controls;
-        notifyDataSetChanged();
-    }
-
     public static class TimeItemViewHolder extends RecyclerView.ViewHolder {
 
         AppCompatCheckedTextView nameTv;
@@ -227,5 +228,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
         void onClickEdit(TimeControlWrapper wrapper);
 
         void onItemsReordered(int from, int to);
+
+        void onItemLongClick();
     }
 }

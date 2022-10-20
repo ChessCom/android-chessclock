@@ -167,17 +167,21 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
                 activity.overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
                 return true;
             case R.id.action_edit:
-                runEditMode();
-                startBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
-                        HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+                runEditMode(true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void runEditMode() {
+    private void runEditMode(boolean hapticFeedback) {
         ((AppCompatActivity) requireActivity()).startSupportActionMode(this);
+        if (hapticFeedback) {
+            startBtn.performHapticFeedback(
+                    HapticFeedbackConstants.LONG_PRESS,
+                    HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+            );
+        }
     }
 
     private void editModeUiSetup(Boolean editMode) {
@@ -268,6 +272,11 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
                     public void onItemsReordered(int from, int to) {
                         mListener.upDateOrderOnItemMove(from, to);
                     }
+
+                    @Override
+                    public void onItemLongClick() {
+                        runEditMode(true);
+                    }
                 });
         ItemTouchHelper.Callback callback = new TimeRowMoveCallback(adapter);
         touchHelper = new ItemTouchHelper(callback);
@@ -276,7 +285,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
         boolean editMode = adapter.inEditMode();
         if (editMode) {
-            runEditMode();
+            runEditMode(false);
         }
 
         ViewUtils.showView(startBtn, !editMode);
@@ -367,7 +376,6 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     }
 
     public void startNewClock() {
-
         TimeControlWrapper wrapper = adapter.getSelectedTimeControlWrapper();
         Log.d(TAG, "Starting new clock: " + wrapper);
         if (wrapper != null) {
