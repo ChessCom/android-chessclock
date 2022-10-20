@@ -186,25 +186,6 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         return v;
     }
 
-    private void loadStages() {
-        Stage[] stages = selectedTimeControl.getStageManager().getStages();
-        ViewUtils.showView(addStageView, stages.length < Stage.MAX_ALLOWED_STAGES_COUNT);
-        int i = 0;
-        while (i < Stage.MAX_ALLOWED_STAGES_COUNT) {
-            StageRowView row = (StageRowView) stagesList.getChildAt(i);
-            if (i < stages.length) {
-                Stage stage = stages[i];
-                row.updateData(i + 1, stage);
-                row.setOnClickListener(v -> showStageEditorDialog(stage));
-                row.setVisibility(View.VISIBLE);
-            } else {
-                row.setOnClickListener(null);
-                row.setVisibility(View.GONE);
-            }
-            i++;
-        }
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -285,11 +266,6 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         updateUi();
     }
 
-    private void updateUi() {
-        ViewUtils.showView(baseView, !advancedMode && !editMode);
-        ViewUtils.showView(advancedView, advancedMode || editMode);
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(STATE_TIME_CONTROL_SNAPSHOT_KEY, mTimeControlSnapshot);
@@ -304,13 +280,34 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         timeControlListener = null;
     }
 
+    private void loadStages() {
+        Stage[] stages = selectedTimeControl.getStageManager().getStages();
+        ViewUtils.showView(addStageView, stages.length < Stage.MAX_ALLOWED_STAGES_COUNT);
+        int i = 0;
+        while (i < Stage.MAX_ALLOWED_STAGES_COUNT) {
+            StageRowView row = (StageRowView) stagesList.getChildAt(i);
+            if (i < stages.length) {
+                Stage stage = stages[i];
+                row.updateData(i + 1, stage);
+                row.setOnClickListener(v -> showStageEditorDialog(stage));
+                row.setVisibility(View.VISIBLE);
+            } else {
+                row.setOnClickListener(null);
+                row.setVisibility(View.GONE);
+            }
+            i++;
+        }
+    }
+
+    private void updateUi() {
+        ViewUtils.showView(baseView, !advancedMode && !editMode);
+        ViewUtils.showView(advancedView, advancedMode || editMode);
+    }
+
     private void saveTimeControl() {
         if (timeControlWrapper == null) return;
 
-        // Hide soft keyboard
-        nameEt.clearFocus();
-        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(nameEt.getWindowToken(), 0);
+        hideSoftKeyboard();
 
         String newControlName = nameEt.getText().toString();
         if (newControlName.equals("")) {
@@ -354,6 +351,12 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         }
     }
 
+    private void hideSoftKeyboard() {
+        nameEt.clearFocus();
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(nameEt.getWindowToken(), 0);
+    }
+
     private void updateStagesDisplay() {
         loadStages();
     }
@@ -369,14 +372,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     }
 
     private void addNewStage() {
-
-        // Hide soft keyboard
-        nameEt.clearFocus();
-        InputMethodManager imm =
-                (InputMethodManager) requireActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(nameEt.getWindowToken(), 0);
-
-
+        hideSoftKeyboard();
         if (selectedTimeControl.getStageManager().canAddStage()) {
             selectedTimeControl.getStageManager().addNewStage();
             updateStagesDisplay();

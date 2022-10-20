@@ -1,5 +1,6 @@
 package com.chess.clock.activities;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -166,10 +169,19 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     public boolean onOptionsItemSelected(MenuItem item) {
         // Respond to the action bar's Up/Home button
         if (item.getItemId() == android.R.id.home) {
+            hideKeyboard();
             showPopupOrFinish(RESULT_CANCELED);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void hideKeyboard() {
+        final InputMethodManager inputManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View currentFocus = getCurrentFocus();
+        if (inputManager != null && currentFocus != null) {
+            inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
     }
 
     /**
