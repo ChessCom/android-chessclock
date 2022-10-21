@@ -19,10 +19,13 @@
     <dimen name="text_size_dialog_title">20sp</dimen>
 
     <!-- Clock timer screen -->
+    <dimen name="clock_timer_adjust_time_text_size">32sp</dimen>
     <dimen name="clock_timer_textSize_small">64sp</dimen>
     <dimen name="clock_timer_textSize_normal">76sp</dimen>
     <dimen name="clock_timer_stage_marker_size">10dp</dimen>
     <dimen name="clock_timer_menu_height">56dp</dimen>
     <dimen name="clock_timer_bottom_control_margin">16dp</dimen>
     <dimen name="settings_margin_over_button">92dp</dimen>
+    <dimen name="clock_timer_adjust_time_input_min_width">56dp</dimen>
+
 </resources>
