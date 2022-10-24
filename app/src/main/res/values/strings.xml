@@ -82,6 +82,7 @@
     <string name="sound">Sound</string>
     <string name="custom_time">Custom time</string>
     <string name="x_min">%d min</string>
+    <string name="x_sec">%d sec</string>
     <string name="x_min_y_sec">%d min | %2d sec</string>
     <string name="name">Name</string>
     <string name="time">Time</string>
