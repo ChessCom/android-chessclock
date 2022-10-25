@@ -1,8 +1,8 @@
 package com.chess.clock.fragments;
 
 import static android.view.View.GONE;
-import static com.chess.clock.util.ClockUtils.actionCompletedCallback;
 import static com.chess.clock.util.ClockUtils.getIntOrZero;
+import static com.chess.clock.util.ClockUtils.onTimeChangedAction;
 import static com.chess.clock.util.ClockUtils.setClockTextWatcherWithCallback;
 import static com.chess.clock.util.ClockUtils.twoDecimalPlacesFormat;
 
@@ -217,12 +217,14 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
             }
         });
 
-        actionCompletedCallback(nameEt, () -> {
-            String currentName = nameEt.getText().toString();
-            autoNamingEnabled = currentName.isEmpty() || currentName.equals(latestAutoName);
+        nameEt.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String currentName = nameEt.getText().toString();
+                autoNamingEnabled = currentName.isEmpty() || currentName.equals(latestAutoName);
+            }
         });
-        actionCompletedCallback(minutesEt, this::autoNaming);
-        actionCompletedCallback(incrementMinutesEt, this::autoNaming);
+        onTimeChangedAction(minutesEt, this::autoNaming);
+        onTimeChangedAction(incrementMinutesEt, this::autoNaming);
         setClockTextWatcherWithCallback(secondsEt, this::autoNaming);
         setClockTextWatcherWithCallback(incrementSecondsEt, this::autoNaming);
 
@@ -303,9 +305,10 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
             builder.append(getString(R.string.x_sec, seconds));
         }
         if (incrementMinutes > 0 || incrementSeconds > 0) {
-            builder.append(" | ");
+            builder.append(" |");
         }
         if (incrementMinutes > 0) {
+            builder.append(" ");
             builder.append(getString(R.string.x_min, incrementMinutes));
         }
         if (incrementSeconds > 0) {
