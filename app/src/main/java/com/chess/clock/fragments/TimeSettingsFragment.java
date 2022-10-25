@@ -157,21 +157,19 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         inflater.inflate(R.menu.settings_actions, menu);
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                FragmentActivity activity = requireActivity();
-                startActivity(new Intent(activity, AppSettingsActivity.class));
-                activity.overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
-                return true;
-            case R.id.action_edit:
-                runEditMode(true);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_settings) {
+            FragmentActivity activity = requireActivity();
+            startActivity(new Intent(activity, AppSettingsActivity.class));
+            activity.overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
+            return true;
+        } else if (itemId == R.id.action_edit) {
+            runEditMode(true);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void runEditMode(boolean hapticFeedback) {
