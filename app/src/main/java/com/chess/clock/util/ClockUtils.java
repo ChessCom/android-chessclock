@@ -18,6 +18,12 @@ public class ClockUtils {
     }
 
     public static void setClockTextWatcher(EditText editText) {
+        setClockTextWatcherWithCallback(editText, () -> {
+            // no-op
+        });
+    }
+
+    public static void setClockTextWatcherWithCallback(EditText editText, OnTimeEditCallback callback) {
         TextWatcher minutesTextWatcher = new TextWatcher() {
             final int MAX = 59;
 
@@ -39,6 +45,7 @@ public class ClockUtils {
                     s.append(twoDecimalPlacesFormat(MAX));
                 }
                 editText.addTextChangedListener(this);
+                callback.onTimeChange();
             }
         };
         editText.addTextChangedListener(minutesTextWatcher);
@@ -62,8 +69,32 @@ public class ClockUtils {
         });
     }
 
+    public static void onTimeChangedAction(EditText editText, OnTimeEditCallback callback) {
+        TextWatcher textWatcher = new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                callback.onTimeChange();
+            }
+        };
+        editText.addTextChangedListener(textWatcher);
+    }
+
+
     public static long durationMillis(int hours, int minutes, int seconds) {
         return hours * 60 * 60 * 1000L + minutes * 60 * 1000L + seconds * 1000L;
+    }
+
+    public interface OnTimeEditCallback {
+        void onTimeChange();
     }
 
 }

@@ -2,7 +2,8 @@ package com.chess.clock.fragments;
 
 import static android.view.View.GONE;
 import static com.chess.clock.util.ClockUtils.getIntOrZero;
-import static com.chess.clock.util.ClockUtils.setClockTextWatcher;
+import static com.chess.clock.util.ClockUtils.onTimeChangedAction;
+import static com.chess.clock.util.ClockUtils.setClockTextWatcherWithCallback;
 import static com.chess.clock.util.ClockUtils.twoDecimalPlacesFormat;
 
 import android.app.AlertDialog;
@@ -36,6 +37,7 @@ import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.entities.AppTheme;
+import com.chess.clock.util.AutoNameFormatter;
 import com.chess.clock.views.StageRowView;
 import com.chess.clock.views.ViewUtils;
 import com.google.android.material.tabs.TabLayout;
@@ -51,6 +53,8 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     private static final String STATE_TIME_CONTROL_SNAPSHOT_KEY = "time_control_snapshot_key";
     private static final String STATE_ADVANCED_MODE_KEY = "advanced_mode_key";
     private static final String STATE_PLAYER_ONE_KEY = "player_one_key";
+    private static final String STATE_AUTO_NAMING_KEY = "auto_naming_key";
+    private static final String STATE_LATEST_AUTO_NAME_KEY = "latest_auto_name_key";
     private static final String ARG_EDIT_MODE = "arg_edit_mode";
     /**
      * Dialog Fragment TAGS
@@ -72,6 +76,13 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     private boolean playerOneSelected = true;
     private boolean advancedMode = false;
     private boolean editMode = false;
+    private boolean autoNamingEnabled = true;
+    private String latestAutoName = "";
+
+    /**
+     * Formatters
+     */
+    private AutoNameFormatter autoNameFormatter;
 
     /**
      * This is used to check for modifications before exiting.
@@ -164,6 +175,8 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
                 mTimeControlSnapshot = savedInstanceState.getParcelable(STATE_TIME_CONTROL_SNAPSHOT_KEY);
                 advancedMode = savedInstanceState.getBoolean(STATE_ADVANCED_MODE_KEY);
                 playerOneSelected = savedInstanceState.getBoolean(STATE_PLAYER_ONE_KEY);
+                autoNamingEnabled = savedInstanceState.getBoolean(STATE_AUTO_NAMING_KEY);
+                latestAutoName = savedInstanceState.getString(STATE_LATEST_AUTO_NAME_KEY);
             } else {
                 // Save copy to check modifications before exit.
                 mTimeControlSnapshot = null;
@@ -209,8 +222,29 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
                 }
             }
         });
-        setClockTextWatcher(secondsEt);
-        setClockTextWatcher(incrementSecondsEt);
+
+        autoNameFormatter = new AutoNameFormatter(new AutoNameFormatter.NameParametersFormat() {
+            @Override
+            public String getMinutesFormatted(int minutes) {
+                return getString(R.string.x_min, minutes);
+            }
+
+            @Override
+            public String getSecondsFormatted(int seconds) {
+                return getString(R.string.x_sec, seconds);
+            }
+        });
+        nameEt.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String currentName = nameEt.getText().toString();
+                autoNamingEnabled = currentName.isEmpty() || currentName.equals(latestAutoName);
+            }
+        });
+        onTimeChangedAction(minutesEt, this::autoNaming);
+        onTimeChangedAction(incrementMinutesEt, this::autoNaming);
+        setClockTextWatcherWithCallback(secondsEt, this::autoNaming);
+        setClockTextWatcherWithCallback(incrementSecondsEt, this::autoNaming);
+
         advancedModeSwitch.setChecked(advancedMode);
         advancedModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             advancedMode = isChecked;
@@ -266,11 +300,32 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         updateUi();
     }
 
+    /**
+     * Method to set auto name only if name was not set by user and only in simple mode.
+     */
+    private void autoNaming() {
+        if (!autoNamingEnabled || advancedMode || editMode) return;
+
+        int minutes = getIntOrZero(minutesEt);
+        int seconds = getIntOrZero(secondsEt);
+        int incrementMinutes = getIntOrZero(incrementMinutesEt);
+        int incrementSeconds = getIntOrZero(incrementSecondsEt);
+
+        String newName = autoNameFormatter.prepareAutoName(minutes, seconds, incrementMinutes, incrementSeconds);
+
+        if (newName != null) {
+            latestAutoName = newName;
+            nameEt.setText(newName);
+        }
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(STATE_TIME_CONTROL_SNAPSHOT_KEY, mTimeControlSnapshot);
         outState.putBoolean(STATE_ADVANCED_MODE_KEY, advancedMode);
         outState.putBoolean(STATE_PLAYER_ONE_KEY, playerOneSelected);
+        outState.putBoolean(STATE_AUTO_NAMING_KEY, autoNamingEnabled);
+        outState.putString(STATE_LATEST_AUTO_NAME_KEY, latestAutoName);
         super.onSaveInstanceState(outState);
     }
 
