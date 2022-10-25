@@ -355,15 +355,6 @@ public class ChessClockLocalService extends Service {
         }
     }
 
-
-    public String getNameOfTimeControlRunning() {
-        // Note: this service considers that time control is always the same for both players.
-        if (mPlayerOneTimer != null) {
-            return mPlayerOneTimer.getTimeControlTitle();
-        }
-        return null;
-    }
-
     /****************************************
      * Callbacks Definition.
      ***************************************/
