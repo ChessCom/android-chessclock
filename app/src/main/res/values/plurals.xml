@@ -4,4 +4,10 @@
         <item quantity="one">%d move in %s</item>
         <item quantity="other">%d moves in %s</item>
     </plurals>
+
+    <plurals name="x_selected">
+        <item quantity="zero">%d selected</item>
+        <item quantity="one">%d selected</item>
+        <item quantity="other">%d selected</item>
+    </plurals>
 </resources>

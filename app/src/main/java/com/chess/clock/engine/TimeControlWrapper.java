@@ -3,18 +3,32 @@ package com.chess.clock.engine;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 public class TimeControlWrapper implements Parcelable, Cloneable {
     private TimeControl mTimeControlPlayerOne;
     private TimeControl mTimeControlPlayerTwo;
-    private boolean mSameAsPlayerOne;
 
-    public TimeControlWrapper(TimeControl playerOne, TimeControl playerTwo) {
+    private boolean mSameAsPlayerOne;
+    private long id;
+    private int order;
+
+    public TimeControlWrapper(
+            long id,
+            int order,
+            TimeControl playerOne,
+            TimeControl playerTwo
+    ) {
+        this.id = id;
+        this.order = order;
         mTimeControlPlayerOne = playerOne;
         mTimeControlPlayerTwo = playerTwo;
         mSameAsPlayerOne = true;
     }
 
     private TimeControlWrapper(Parcel in) {
+        id = in.readLong();
+        order = in.readInt();
         mTimeControlPlayerOne = in.readParcelable(TimeControl.class.getClassLoader());
         mTimeControlPlayerTwo = in.readParcelable(TimeControl.class.getClassLoader());
         mSameAsPlayerOne = in.readByte() != 0;
@@ -22,6 +36,8 @@ public class TimeControlWrapper implements Parcelable, Cloneable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeInt(order);
         dest.writeParcelable(mTimeControlPlayerOne, flags);
         dest.writeParcelable(mTimeControlPlayerTwo, flags);
         dest.writeByte((byte) (mSameAsPlayerOne ? 1 : 0));
@@ -64,6 +80,7 @@ public class TimeControlWrapper implements Parcelable, Cloneable {
         mSameAsPlayerOne = sameAsPlayerOne;
     }
 
+    @NonNull
     @Override
     public Object clone() throws CloneNotSupportedException {
         TimeControlWrapper clone = (TimeControlWrapper) super.clone();
@@ -72,7 +89,8 @@ public class TimeControlWrapper implements Parcelable, Cloneable {
         clone.mTimeControlPlayerOne = (TimeControl) mTimeControlPlayerOne.clone();
         clone.mTimeControlPlayerTwo = (TimeControl) mTimeControlPlayerTwo.clone();
         clone.mSameAsPlayerOne = mSameAsPlayerOne;
-
+        clone.order = order;
+        clone.id = id;
         return clone;
     }
 
@@ -84,7 +102,9 @@ public class TimeControlWrapper implements Parcelable, Cloneable {
     public boolean isEqual(TimeControlWrapper wrapper) {
         return mTimeControlPlayerOne.isEqual(wrapper.getTimeControlPlayerOne()) &&
                 mTimeControlPlayerTwo.isEqual(wrapper.getTimeControlPlayerTwo()) &&
-                mSameAsPlayerOne == wrapper.isSameAsPlayerOne();
+                mSameAsPlayerOne == wrapper.isSameAsPlayerOne() &&
+                id == wrapper.id &&
+                order == wrapper.order;
     }
 
     public boolean bothUsersHaveAtLeastOneStage() {
@@ -93,5 +113,17 @@ public class TimeControlWrapper implements Parcelable, Cloneable {
         } else {
             return mTimeControlPlayerOne.getStageManager().getTotalStages() > 0 && mTimeControlPlayerTwo.getStageManager().getTotalStages() > 0;
         }
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int newOrder) {
+        this.order = newOrder;
     }
 }

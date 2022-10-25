@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * Helper for TimeControl list management.
@@ -16,7 +18,7 @@ public class TimeControlManager {
     /**
      * Save instance state keys
      */
-    private final String KEY_EDITABLE_TIME_CONTROL_CHECK_INDEX = "key_time_control_checked";
+    private final String KEY_EDITABLE_TIME_CONTROL_CHECK_ID = "key_time_control_checked";
     private final String KEY_EDITABLE_TIME_CONTROL = "key_editable_time_control";
     private final String KEY_EDITABLE_STAGE_NEW_FLAG = "key_editable_time_control_new_flag";
     /**
@@ -24,7 +26,7 @@ public class TimeControlManager {
      */
     private ArrayList<TimeControlWrapper> mTimeControls;   // List of time control wrappers.
     private TimeControlWrapper mEditableTimeControl;       // Copy of a TimeControl for edit purpose.
-    private int mEditableTimeControlCheckIndex;     // Position of TimeControl in the list.
+    private long editableTimeControlCheckId;     // Id of TimeControl in the list.
     private boolean isNewEditableTimeControl;       // Flag to add new TimeControl in the list after edit.
     /**
      * Listener used to dispatch updates.
@@ -40,17 +42,20 @@ public class TimeControlManager {
 
         // Check for configuration change.
         if (savedInstanceState != null) {
-            mEditableTimeControlCheckIndex = savedInstanceState.getInt(KEY_EDITABLE_TIME_CONTROL_CHECK_INDEX, 1);
+            editableTimeControlCheckId = savedInstanceState.getInt(KEY_EDITABLE_TIME_CONTROL_CHECK_ID, 1);
             mEditableTimeControl = savedInstanceState.getParcelable(KEY_EDITABLE_TIME_CONTROL);
             isNewEditableTimeControl = savedInstanceState.getBoolean(KEY_EDITABLE_STAGE_NEW_FLAG, true);
         } else {
             // First launch, fetch last check position.
-            mEditableTimeControlCheckIndex = TimeControlParser.getLastTimeControlCheckIndex(context);
+            editableTimeControlCheckId = TimeControlParser.getLastTimeControlCheckId(context);
             isNewEditableTimeControl = true;
         }
 
         // Get time controls stored on shared preferences.
         mTimeControls = TimeControlParser.restoreTimeControlsList(context);
+        if (mTimeControls != null) {
+            Collections.sort(mTimeControls, (o1, o2) -> Integer.compare(o1.getOrder(), o2.getOrder()));
+        }
 
         // Build default List if none was restored from shared preferences.
         if (mTimeControls == null || mTimeControls.size() == 0) {
@@ -75,7 +80,7 @@ public class TimeControlManager {
      */
     public void onSaveInstanceState(Bundle outState) {
         if (outState != null) {
-            outState.putInt(KEY_EDITABLE_TIME_CONTROL_CHECK_INDEX, mEditableTimeControlCheckIndex);
+            outState.putLong(KEY_EDITABLE_TIME_CONTROL_CHECK_ID, editableTimeControlCheckId);
             outState.putParcelable(KEY_EDITABLE_TIME_CONTROL, mEditableTimeControl);
             outState.putBoolean(KEY_EDITABLE_STAGE_NEW_FLAG, isNewEditableTimeControl);
         }
@@ -94,7 +99,7 @@ public class TimeControlManager {
      * Save the last time control check position in the list.
      */
     public void saveTimeControlIndex(Context context) {
-        TimeControlParser.saveTimeControlCheckIndex(context, mEditableTimeControlCheckIndex);
+        TimeControlParser.saveTimeControlCheckIndex(context, editableTimeControlCheckId);
     }
 
     /**
@@ -107,35 +112,37 @@ public class TimeControlManager {
             if (isNewEditableTimeControl) {
                 // Prepend editable time control in the list.
                 mTimeControls.add(0, mEditableTimeControl);
-                setEditableTimeControlCheckIndex(0);
+                setEditableTimeControlCheckId(mEditableTimeControl.getId());
             } else {
                 // replace time control in the list with the editable time control.
-                mTimeControls.set(mEditableTimeControlCheckIndex, mEditableTimeControl);
+                for (int i = 0; i < mTimeControls.size(); i++) {
+                    TimeControlWrapper timeControlWrapper = mTimeControls.get(i);
+                    if (timeControlWrapper.getId() == mEditableTimeControl.getId()) {
+                        mTimeControls.set(i, mEditableTimeControl);
+                    }
+                }
             }
 
             // reset editable time control object
             mEditableTimeControl = null;
         }
-
-        // Save modified time control list in shared preferences.
-        TimeControlParser.saveTimeControls(context, mTimeControls);
+        updateItemsOrderAndSave(context);
     }
 
     /**
      * Remove TimeControl objects from the List.
      *
-     * @param positions array with object to remove index positions in the list.
+     * @param ids ids of objects to remove.
      */
-    public void removeTimeControls(Context context, int[] positions) {
+    public void removeTimeControls(Context context, Set<Long> ids) {
         Log.v(TAG, "Received time controls remove request");
-
         ArrayList<TimeControlWrapper> objectBatchToDelete = new ArrayList<>();
-        for (int position : positions) {
-            if (position >= 0 && position < mTimeControls.size()) {
-                Log.v(TAG, "Removing time control (" + position + "): " + mTimeControls.get(position).getTimeControlPlayerOne().getName());
-                objectBatchToDelete.add(mTimeControls.get(position));
+        for (TimeControlWrapper tc : mTimeControls) {
+            if (ids.contains(tc.getId())) {
+                objectBatchToDelete.add(tc);
             }
         }
+
         mTimeControls.removeAll(objectBatchToDelete);
 
         if (mTimeControls.size() == 0) {
@@ -146,20 +153,22 @@ public class TimeControlManager {
 
         } else {
             Log.v(TAG, "Requesting to save the remaining " + mTimeControls.size() + " time controls.");
-            // save modified time control list.
-            TimeControlParser.saveTimeControls(context, mTimeControls);
+            updateItemsOrderAndSave(context);
         }
     }
 
     /**
-     * Produces a deep copy of the TimeControl object in position.
-     *
-     * @param position position of the TimeControl object in the list.
+     * Produces a deep copy of the TimeControlWrapper object to edit.
      */
-    public void prepareEditableTimeControl(int position) {
+    public void prepareEditableTimeControl(TimeControlWrapper wrapper) {
         isNewEditableTimeControl = false;
-        mEditableTimeControlCheckIndex = position;
-        mEditableTimeControl = buildEditableTimeControl(position);
+        editableTimeControlCheckId = wrapper.getId();
+        try {
+            mEditableTimeControl = (TimeControlWrapper) wrapper.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Could not build editable time control.");
+        }
     }
 
     /**
@@ -174,9 +183,11 @@ public class TimeControlManager {
         Stage stage2 = new Stage(1, 60 * 60 * 1000L, TimeIncrement.defaultIncrement());
         TimeControl blank = new TimeControl(null, new Stage[]{stage1, stage2});
 
-        // Set current editable time control with a new "blank" time control
+        long id = System.currentTimeMillis(); // supported locally, unique enough
+        int order = -1; // add item at start, order will be updated before saving
         try {
-            mEditableTimeControl = new TimeControlWrapper(blank, (TimeControl) blank.clone());
+            // Set current editable time control with a new "blank" time control
+            mEditableTimeControl = new TimeControlWrapper(id, order, blank, (TimeControl) blank.clone());
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not create Editable time control with blank time control.");
@@ -192,45 +203,32 @@ public class TimeControlManager {
         return mEditableTimeControl;
     }
 
-    /**
-     * Get current checked position of TimeControl in the list.
-     *
-     * @return current checked position of TimeControl in the list.
-     */
-    public int getEditableTimeControlCheckIndex() {
-        return mEditableTimeControlCheckIndex;
+    public long getEditableTimeControlCheckId() {
+        return editableTimeControlCheckId;
     }
 
-    /**
-     * Get current checked position of TimeControl in the list.
-     *
-     * @param idx current checked position of TimeControl in the list.
-     */
-    public void setEditableTimeControlCheckIndex(int idx) {
-        mEditableTimeControlCheckIndex = idx;
+    public void setEditableTimeControlCheckId(long id) {
+        editableTimeControlCheckId = id;
     }
 
-    /**
-     * Get Editable copy of selected time control. This copy will replace the original time control
-     * if the user presses "Done" on the time control edit menu.
-     *
-     * @param position Position of time control in the list.
-     * @return Copy of TimeControl object.
-     * @throws IllegalStateException if editable time control is unable to be built
-     */
-    private TimeControlWrapper buildEditableTimeControl(int position) {
-
-        if (position >= 0 && position < mTimeControls.size()) {
-
-            TimeControlWrapper original = mTimeControls.get(position);
-            try {
-                return (TimeControlWrapper) original.clone();
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-                throw new IllegalStateException("Could not build editable time control.");
+    public void updateOrderOnItemMove(int from, int to, Context context) {
+        if (from < to) {
+            for (int i = from; i < to; i++) {
+                Collections.swap(mTimeControls, i, i + 1);
+            }
+        } else {
+            for (int i = from; i > to; i--) {
+                Collections.swap(mTimeControls, i, i - 1);
             }
         }
-        return null;
+        updateItemsOrderAndSave(context);
+    }
+
+    private void updateItemsOrderAndSave(Context context) {
+        for (int i = 0; i < mTimeControls.size(); i++) {
+            mTimeControls.get(i).setOrder(i);
+        }
+        TimeControlParser.saveTimeControls(context, mTimeControls);
     }
 
     /**

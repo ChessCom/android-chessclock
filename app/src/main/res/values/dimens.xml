@@ -34,6 +34,7 @@
     <!-- Settings screen -->
     <dimen name="list_item_text_size">18sp</dimen>
     <dimen name="times_edit_text_padding">6dp</dimen>
+    <dimen name="settings_margin_over_button">92dp</dimen>
 
     <!-- Time Increment Dialog -->
     <dimen name="increments_text_size">10sp</dimen>

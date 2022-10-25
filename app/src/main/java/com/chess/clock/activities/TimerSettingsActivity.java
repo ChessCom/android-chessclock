@@ -1,5 +1,6 @@
 package com.chess.clock.activities;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +26,7 @@ import com.chess.clock.fragments.TimeSettingsFragment;
 import com.chess.clock.service.ChessClockLocalService;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Activity that manages TimeControl list in the Settings and also TimeControl form.
@@ -165,10 +169,19 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     public boolean onOptionsItemSelected(MenuItem item) {
         // Respond to the action bar's Up/Home button
         if (item.getItemId() == android.R.id.home) {
+            hideKeyboard();
             showPopupOrFinish(RESULT_CANCELED);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void hideKeyboard() {
+        final InputMethodManager inputManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View currentFocus = getCurrentFocus();
+        if (inputManager != null && currentFocus != null) {
+            inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
     }
 
     /**
@@ -206,18 +219,18 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      * @return Current checked position of TimeControl in the list.
      */
     @Override
-    public int getCheckedTimeControlIndex() {
-        return timeControlManager.getEditableTimeControlCheckIndex();
+    public long getCheckedTimeControlId() {
+        return timeControlManager.getEditableTimeControlCheckId();
     }
 
     /**
      * Used as communication gateway by SettingsFragment.
      *
-     * @param idx time control list position.
+     * @param id time control wrapper id.
      */
     @Override
-    public void setCheckedTimeControlIndex(int idx) {
-        timeControlManager.setEditableTimeControlCheckIndex(idx);
+    public void setCheckedTimeControlId(long id) {
+        timeControlManager.setEditableTimeControlCheckId(id);
     }
 
     /**
@@ -235,20 +248,27 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     /**
      * Used as communication gateway by SettingsFragment.
      *
-     * @param position TimeControl position in the list.
+     * @param wrapper TimeControlWrapper to edit.
      */
     @Override
-    public void loadTimeControl(int position) {
-        timeControlManager.prepareEditableTimeControl(position);
+    public void loadTimeControl(TimeControlWrapper wrapper) {
+        timeControlManager.prepareEditableTimeControl(wrapper);
         loadTimeControlFragment(true);
     }
 
     /**
      * Used as communication gateway by SettingsFragment.
+     *
+     * @param ids ids of controls to remove
      */
     @Override
-    public void removeTimeControl(int[] positions) {
-        timeControlManager.removeTimeControls(getApplicationContext(), positions);
+    public void removeTimeControl(Set<Long> ids) {
+        timeControlManager.removeTimeControls(getApplicationContext(), ids);
+    }
+
+    @Override
+    public void upDateOrderOnItemMove(int from, int to) {
+        timeControlManager.updateOrderOnItemMove(from, to, this);
     }
 
     /**

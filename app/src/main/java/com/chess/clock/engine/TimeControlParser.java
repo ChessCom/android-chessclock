@@ -25,9 +25,10 @@ public class TimeControlParser {
     private static final String TAG = TimeControlParser.class.getName();
 
     private static final String TIME_CONTROLS_PREF_NAME = "timeControls";
-    private static final String TIME_CONTROL_SELECTED_PREF_IDX = "timeControlIdx";
+    private static final String TIME_CONTROL_SELECTED_PREF_ID = "timeControlId";
     private static final String TIME_CONTROLS_PREF_FIELD_NAME = "json";
     private static final String TC_JSON_ID = "id";
+    private static final String TC_JSON_ORDER = "order";
     private static final String TC_JSON_DURATION = "duration";
     private static final String TC_JSON_MOVES = "moves";
     private static final String TC_JSON_VALUE = "value";
@@ -58,12 +59,17 @@ public class TimeControlParser {
             timeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
         }
 
-        int index = getLastTimeControlCheckIndex(context);
-        index = Math.max(index, 0);
-        index = Math.min(index, timeControls.size() - 1);
+        long id = getLastTimeControlCheckId(context);
+        TimeControlWrapper selectedControl = timeControls.get(0);
+        for (TimeControlWrapper tc : timeControls) {
+            if (tc.getId() == id) {
+                selectedControl = tc;
+                break;
+            }
+        }
 
-        TimeControl playerOne = timeControls.get(index).getTimeControlPlayerOne();
-        TimeControl playerTwo = timeControls.get(index).getTimeControlPlayerTwo();
+        TimeControl playerOne = selectedControl.getTimeControlPlayerOne();
+        TimeControl playerTwo = selectedControl.getTimeControlPlayerTwo();
 
         Intent startServiceIntent =
                 ChessClockLocalService.getChessClockServiceIntent(context, playerOne, playerTwo);
@@ -104,8 +110,10 @@ public class TimeControlParser {
                 timeControlJSONObject.put(TC_JSON_STAGES, timeControlStagesJSONArray);
                 timeControlJSONObject.put(TC_JSON_STAGES_PLAYER_TWO, timeControlStagesPlayerTwoJSONArray);
 
-                // Add same as player one boolean
+                // Add wrapper params
                 timeControlJSONObject.put(TC_JSON_SAME_AS_PLAYER_ONE, tc.isSameAsPlayerOne());
+                timeControlJSONObject.put(TC_JSON_ID, tc.getId());
+                timeControlJSONObject.put(TC_JSON_ORDER, tc.getOrder());
 
                 // Add TimeControl json object to JSONArray
                 timeControlJSONArray.put(timeControlJSONObject);
@@ -142,15 +150,15 @@ public class TimeControlParser {
     }
 
     /**
-     * Stores the selected time control position in the time control list.
+     * Stores the selected time control id.
      *
-     * @param idx list index.
+     * @param id selected item id.
      */
     @SuppressLint("ApplySharedPref")
-    public static void saveTimeControlCheckIndex(Context context, int idx) {
+    public static void saveTimeControlCheckIndex(Context context, long id) {
         SharedPreferences sp = getSharedPreferences(context);
         SharedPreferences.Editor spe = sp.edit();
-        spe.putInt(TIME_CONTROL_SELECTED_PREF_IDX, idx);
+        spe.putLong(TIME_CONTROL_SELECTED_PREF_ID, id);
         spe.commit();
     }
 
@@ -160,10 +168,9 @@ public class TimeControlParser {
      *
      * @return position of the last selected time control in the list.
      */
-    public static int getLastTimeControlCheckIndex(Context context) {
+    public static long getLastTimeControlCheckId(Context context) {
         SharedPreferences sp = getSharedPreferences(context);
-        int idx = sp.getInt(TIME_CONTROL_SELECTED_PREF_IDX, TimeControlDefaults.DEFAULT_TIME_INDEX);
-        return Math.max(idx, 0);
+        return sp.getLong(TIME_CONTROL_SELECTED_PREF_ID, TimeControlDefaults.DEFAULT_TIME_ID);
     }
 
     /**
@@ -210,9 +217,14 @@ public class TimeControlParser {
                 boolean isSameAsPlayerOne = !timeControlJSON.has(TC_JSON_SAME_AS_PLAYER_ONE) ||
                         timeControlJSON.getBoolean(TC_JSON_SAME_AS_PLAYER_ONE);
 
+                // ids and order simply migrated from old model
+                long id = timeControlJSON.has(TC_JSON_ID) ? timeControlJSON.getInt(TC_JSON_ID) : i;
+                int order = timeControlJSON.has(TC_JSON_ORDER) ? timeControlJSON.getInt(TC_JSON_ORDER) : i;
+
                 TimeControl timeControl = new TimeControl(name, stages);
                 TimeControl timeControlPlayerTwo = new TimeControl(name, stagesPlayerTwo);
-                TimeControlWrapper wrapper = new TimeControlWrapper(timeControl, timeControlPlayerTwo);
+
+                TimeControlWrapper wrapper = new TimeControlWrapper(id, order, timeControl, timeControlPlayerTwo);
                 wrapper.setSameAsPlayerOne(isSameAsPlayerOne);
                 timeControls.add(wrapper);
             }
