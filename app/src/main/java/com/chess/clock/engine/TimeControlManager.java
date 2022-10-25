@@ -53,7 +53,9 @@ public class TimeControlManager {
 
         // Get time controls stored on shared preferences.
         mTimeControls = TimeControlParser.restoreTimeControlsList(context);
-        Collections.sort(mTimeControls, (o1, o2) -> Integer.compare(o1.getOrder(), o2.getOrder()));
+        if (mTimeControls != null) {
+            Collections.sort(mTimeControls, (o1, o2) -> Integer.compare(o1.getOrder(), o2.getOrder()));
+        }
 
         // Build default List if none was restored from shared preferences.
         if (mTimeControls == null || mTimeControls.size() == 0) {
@@ -181,7 +183,7 @@ public class TimeControlManager {
         Stage stage2 = new Stage(1, 60 * 60 * 1000L, TimeIncrement.defaultIncrement());
         TimeControl blank = new TimeControl(null, new Stage[]{stage1, stage2});
 
-        long id = System.currentTimeMillis(); // supported only locally and enough unique
+        long id = System.currentTimeMillis(); // supported locally, unique enough
         int order = -1; // add item at start, order will be updated before saving
         try {
             // Set current editable time control with a new "blank" time control
