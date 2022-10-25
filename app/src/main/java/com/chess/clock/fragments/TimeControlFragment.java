@@ -37,6 +37,7 @@ import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.entities.AppTheme;
+import com.chess.clock.util.AutoNameFormatter;
 import com.chess.clock.views.StageRowView;
 import com.chess.clock.views.ViewUtils;
 import com.google.android.material.tabs.TabLayout;
@@ -77,6 +78,11 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     private boolean editMode = false;
     private boolean autoNamingEnabled = true;
     private String latestAutoName = "";
+
+    /**
+     * Formatters
+     */
+    private AutoNameFormatter autoNameFormatter;
 
     /**
      * This is used to check for modifications before exiting.
@@ -217,6 +223,17 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
             }
         });
 
+        autoNameFormatter = new AutoNameFormatter(new AutoNameFormatter.NameParametersFormat() {
+            @Override
+            public String getMinutesFormatted(int minutes) {
+                return getString(R.string.x_min, minutes);
+            }
+
+            @Override
+            public String getSecondsFormatted(int seconds) {
+                return getString(R.string.x_sec, seconds);
+            }
+        });
         nameEt.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 String currentName = nameEt.getText().toString();
@@ -294,31 +311,12 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         int incrementMinutes = getIntOrZero(incrementMinutesEt);
         int incrementSeconds = getIntOrZero(incrementSecondsEt);
 
-        if (minutes == 0 && seconds == 0) return;
+        String newName = autoNameFormatter.prepareAutoName(minutes, seconds, incrementMinutes, incrementSeconds);
 
-        StringBuilder builder = new StringBuilder();
-        if (minutes > 0) {
-            builder.append(getString(R.string.x_min, minutes));
+        if (newName != null) {
+            latestAutoName = newName;
+            nameEt.setText(newName);
         }
-        if (seconds > 0) {
-            builder.append(" ");
-            builder.append(getString(R.string.x_sec, seconds));
-        }
-        if (incrementMinutes > 0 || incrementSeconds > 0) {
-            builder.append(" |");
-        }
-        if (incrementMinutes > 0) {
-            builder.append(" ");
-            builder.append(getString(R.string.x_min, incrementMinutes));
-        }
-        if (incrementSeconds > 0) {
-            builder.append(" ");
-            builder.append(getString(R.string.x_sec, incrementSeconds));
-        }
-
-        String newName = builder.toString();
-        latestAutoName = newName;
-        nameEt.setText(newName);
     }
 
     @Override
