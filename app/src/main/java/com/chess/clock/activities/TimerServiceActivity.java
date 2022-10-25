@@ -100,6 +100,23 @@ public abstract class TimerServiceActivity extends BaseActivity implements Lifec
         }
     }
 
+    protected void resumeClockSafely() {
+        if (isAtLeastOnResume()) {
+            clockService.resumeClock();
+        } else {
+            Log.d(TAG, "Resuming of clock postponed.");
+            getLifecycle().addObserver(new DefaultLifecycleObserver() {
+                @Override
+                public void onResume(@NonNull LifecycleOwner owner) {
+                    DefaultLifecycleObserver.super.onResume(owner);
+                    Log.d(TAG, "Resume clock.");
+                    clockService.resumeClock();
+                    getLifecycle().removeObserver(this);
+                }
+            });
+        }
+    }
+
     private void startServiceWithLastTimeControlInternal() {
         Context ctx = this;
         TimeControlWrapper selectedControl = TimeControlParser.getLastTimeControlOrDefault(ctx);

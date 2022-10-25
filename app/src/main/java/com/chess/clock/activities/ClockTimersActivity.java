@@ -328,7 +328,7 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
                     Log.v(TAG, "Configuration change lasted " + elapsedTime + " milliseconds.");
                     if (elapsedTime < 2000 && (mTimersState == TimersState.PLAYER_TWO_RUNNING ||
                             mTimersState == TimersState.PLAYER_ONE_RUNNING)) {
-                        clockService.resumeClock();
+                        resumeClockSafely();
                         updateUIState();
                     } else {
                         // If pause took too long, reset state to paused.
@@ -519,7 +519,7 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
                 }
                 // Resuming clock
                 else {
-                    clockService.resumeClock();
+                    resumeClockSafely();
                     mTimersState = mTimersStatePreviousToPause;
                     mTimersStatePreviousToPause = TimersState.PAUSED;
                 }
