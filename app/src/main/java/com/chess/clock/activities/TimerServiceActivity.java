@@ -7,9 +7,18 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+
+import com.chess.clock.engine.TimeControl;
+import com.chess.clock.engine.TimeControlParser;
+import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.service.ChessClockLocalService;
 
-public abstract class TimerServiceActivity extends BaseActivity {
+public abstract class TimerServiceActivity extends BaseActivity implements LifecycleObserver {
 
     private static final String TAG = TimerServiceActivity.class.getName();
 
@@ -19,7 +28,7 @@ public abstract class TimerServiceActivity extends BaseActivity {
     protected ChessClockLocalService clockService;
 
     /**
-     * True when this activity is bound to chess clock service.
+     * State
      */
     protected boolean serviceBound = false;
 
@@ -54,6 +63,7 @@ public abstract class TimerServiceActivity extends BaseActivity {
 
         // Bind to Local Chess clock Service.
         Intent intent = new Intent(this, ChessClockLocalService.class);
+
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
         Log.i(TAG, "Binding UI to Chess Clock Service.");
@@ -69,6 +79,42 @@ public abstract class TimerServiceActivity extends BaseActivity {
             serviceBound = false;
             Log.i(TAG, "Unbinding UI from Chess Clock Service.");
         }
+    }
+
+    /**
+     * Start clock service with last know time control or default one.
+     */
+    protected void startLastTimeControlSafely() {
+        if (isAtLeastOnResume()) {
+            startServiceWithLastTimeControlInternal();
+        } else {
+            Log.d(TAG, "Starting of service postponed.");
+            getLifecycle().addObserver(new DefaultLifecycleObserver() {
+                @Override
+                public void onResume(@NonNull LifecycleOwner owner) {
+                    DefaultLifecycleObserver.super.onResume(owner);
+                    startServiceWithLastTimeControlInternal();
+                    getLifecycle().removeObserver(this);
+                }
+            });
+        }
+    }
+
+    private void startServiceWithLastTimeControlInternal() {
+        Context ctx = this;
+        TimeControlWrapper selectedControl = TimeControlParser.getLastTimeControlOrDefault(ctx);
+        TimeControl playerOne = selectedControl.getTimeControlPlayerOne();
+        TimeControl playerTwo = selectedControl.getTimeControlPlayerTwo();
+
+        Intent startServiceIntent =
+                ChessClockLocalService.getChessClockServiceIntent(ctx, playerOne, playerTwo);
+        ctx.startService(startServiceIntent);
+        Log.d(TAG, "Start service.");
+    }
+
+    private boolean isAtLeastOnResume() {
+        Lifecycle.State currentState = getLifecycle().getCurrentState();
+        return currentState.isAtLeast(Lifecycle.State.RESUMED);
     }
 
     abstract void bindUiOnServiceConnected();

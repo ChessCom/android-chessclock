@@ -3,15 +3,12 @@ package com.chess.clock.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -25,8 +22,6 @@ import com.chess.clock.R;
 import com.chess.clock.dialog.AdjustTimeDialogFragment;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.Stage;
-import com.chess.clock.engine.TimeControlParser;
-import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.views.ClockButton;
 import com.chess.clock.views.ClockMenu;
 import com.chess.clock.views.ViewUtils;
@@ -308,7 +303,7 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
 			If no time control were set, start a new Service with last used Time Controls.
 			*/
         if (!clockService.isServiceStarted()) {
-            startServiceWithLastTimeControl();
+            startLastTimeControlSafely();
         } else {
 				/*
 				Service is already started. Every time this Activity goes to background, the
@@ -535,13 +530,6 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
                 mTimersState == otherPlayerTimerFinished) {
             showResetClockDialog();
         }
-    }
-
-    /**
-     * Start clock service method.
-     */
-    private void startServiceWithLastTimeControl() {
-        TimeControlParser.startClockWithLastTimeControl(this);
     }
 
     private void showResetClockDialog() {
