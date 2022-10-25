@@ -2,13 +2,10 @@ package com.chess.clock.engine;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-
-import com.chess.clock.service.ChessClockLocalService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
