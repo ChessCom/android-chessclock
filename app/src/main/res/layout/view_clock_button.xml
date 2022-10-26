@@ -54,6 +54,7 @@
             android:text="@string/moves_x"
             android:textColor="@color/black_40"
             android:textSize="@dimen/text_size_default"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/clock_timer_bottom_control_margin"
-            android:textColor="@color/black"
+            android:fontFamily="@font/roboto_mono_regular"
+            android:textColor="@color/black_70"
             android:textSize="@dimen/clock_timer_textSize_small"
             app:layout_constraintBottom_toTopOf="@id/adjustTimeImg"
             app:layout_constraintEnd_toEndOf="parent"
