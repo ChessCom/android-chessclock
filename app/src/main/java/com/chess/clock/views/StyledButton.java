@@ -15,7 +15,7 @@ public class StyledButton extends CardView {
 
     public StyledButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        float radius = getResources().getDimension(R.dimen.default_radius);
+        float radius = getResources().getDimension(R.dimen.large_radius);
         int elevation = getResources().getDimensionPixelSize(R.dimen.default_elevation);
         setRadius(radius);
         setCardElevation(elevation);

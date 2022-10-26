@@ -5,7 +5,8 @@
     <dimen name="margin_standard">16dp</dimen>
     <dimen name="margin_large">24dp</dimen>
 
-    <dimen name="default_radius">8dp</dimen>
+    <dimen name="default_radius">4dp</dimen>
+    <dimen name="large_radius">10dp</dimen>
     <dimen name="default_elevation">4dp</dimen>
     <dimen name="max_content_width">480dp</dimen>
     <dimen name="button_height">56dp</dimen>
