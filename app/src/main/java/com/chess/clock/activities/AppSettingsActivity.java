@@ -34,6 +34,7 @@ public class AppSettingsActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.app_settings);
         }
 
         RecyclerView recycler = findViewById(R.id.themesRecycler);
