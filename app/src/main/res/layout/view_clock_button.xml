@@ -78,7 +78,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:fontFamily="@font/chess_glyph_regular"
             android:textSize="@dimen/clock_timer_textSize_small"
             app:layout_constraintBottom_toTopOf="@id/adjustTimeImg"
             app:layout_constraintEnd_toEndOf="parent"
