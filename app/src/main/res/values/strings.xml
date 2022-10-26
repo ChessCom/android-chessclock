@@ -8,7 +8,6 @@
     <!-- ChessClock Activity -->
     <string name="app_name">Chess Clock</string>
     <string name="foreground_service_started">Chess clock running.</string>
-    <string name="moves_text">Moves:</string>
     <string name="dialog_reset_clock">Reset the clock?</string>
     <string name="dialog_no">No</string>
     <string name="dialog_yes">Yes</string>
@@ -106,5 +105,6 @@
     <string name="save_time">Save time</string>
     <string name="cancel">cancel</string>
     <string name="adjust_time">Adjust Time</string>
+    <string name="moves_x">Moves: %d</string>
 
 </resources>

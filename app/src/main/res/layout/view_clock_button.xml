@@ -5,78 +5,63 @@
     android:layout_height="match_parent"
     tools:parentTag="android.widget.FrameLayout">
 
-    <LinearLayout
-        android:id="@+id/stagesContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_margin="@dimen/margin_standard"
-        android:orientation="horizontal">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <View
-            android:id="@+id/stageOne"
-            android:layout_width="@dimen/clock_timer_stage_marker_size"
-            android:layout_height="@dimen/clock_timer_stage_marker_size"
-            android:background="@drawable/shape_stage_fill"
-            android:visibility="invisible" />
-
-        <View
-            android:id="@+id/stageTwo"
-            android:layout_width="@dimen/clock_timer_stage_marker_size"
-            android:layout_height="@dimen/clock_timer_stage_marker_size"
-            android:layout_marginStart="@dimen/margin_x_small"
-            android:layout_marginLeft="@dimen/margin_x_small"
-            android:background="@drawable/shape_stage_empty"
-            android:visibility="invisible" />
-
-        <View
-            android:id="@+id/stageThree"
-            android:layout_width="@dimen/clock_timer_stage_marker_size"
-            android:layout_height="@dimen/clock_timer_stage_marker_size"
-            android:layout_marginStart="@dimen/margin_x_small"
-            android:layout_marginLeft="@dimen/margin_x_small"
-            android:background="@drawable/shape_stage_empty"
-            android:visibility="invisible" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="@dimen/margin_standard"
-        android:orientation="horizontal"
-        android:visibility="visible">
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/stagesContainer"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/moves_text"
-            android:textColor="@color/clock_stage_gray"
-            android:textSize="@dimen/text_size_default"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_standard"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/movesTv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/movesTv">
+
+            <View
+                android:id="@+id/stageOne"
+                android:layout_width="@dimen/clock_timer_stage_marker_size"
+                android:layout_height="@dimen/clock_timer_stage_marker_size"
+                android:background="@drawable/shape_stage_fill"
+                android:visibility="invisible" />
+
+            <View
+                android:id="@+id/stageTwo"
+                android:layout_width="@dimen/clock_timer_stage_marker_size"
+                android:layout_height="@dimen/clock_timer_stage_marker_size"
+                android:layout_marginStart="@dimen/margin_x_small"
+                android:layout_marginLeft="@dimen/margin_x_small"
+                android:background="@drawable/shape_stage_empty"
+                android:visibility="invisible" />
+
+            <View
+                android:id="@+id/stageThree"
+                android:layout_width="@dimen/clock_timer_stage_marker_size"
+                android:layout_height="@dimen/clock_timer_stage_marker_size"
+                android:layout_marginStart="@dimen/margin_x_small"
+                android:layout_marginLeft="@dimen/margin_x_small"
+                android:background="@drawable/shape_stage_empty"
+                android:visibility="invisible" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/movesTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_x_small"
-            android:layout_marginLeft="@dimen/margin_x_small"
-            android:text="@string/default_moves_value"
-            android:textColor="@color/clock_stage_gray"
+            android:layout_margin="@dimen/margin_standard"
+            android:text="@string/moves_x"
+            android:textColor="@color/black_40"
             android:textSize="@dimen/text_size_default"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/clockTimeTv"
-            android:layout_marginTop="@dimen/clock_timer_bottom_control_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/clock_timer_bottom_control_margin"
             android:textColor="@color/black"
             android:textSize="@dimen/clock_timer_textSize_small"
             app:layout_constraintBottom_toTopOf="@id/adjustTimeImg"
@@ -89,13 +74,13 @@
             android:id="@+id/adjustTimeImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_x_small"
             android:background="?selectableItemBackgroundBorderless"
             android:duplicateParentState="false"
             android:importantForAccessibility="no"
             android:padding="@dimen/margin_small"
             android:src="@drawable/ic_options"
             android:visibility="gone"
-            android:layout_marginBottom="@dimen/margin_x_small"
             app:layout_constraintBottom_toTopOf="@id/stageNameTv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,14 +90,14 @@
             android:id="@+id/stageNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/clock_timer_bottom_control_margin"
             android:textColor="@color/black_65"
             android:textSize="@dimen/text_size_large"
-            android:visibility="gone"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="@dimen/clock_timer_bottom_control_margin"
             tools:text="5 | 5"
             tools:visibility="visible" />
 

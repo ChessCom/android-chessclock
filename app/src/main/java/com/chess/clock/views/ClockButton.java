@@ -61,11 +61,7 @@ public class ClockButton extends FrameLayout {
 
     @SuppressLint("DefaultLocale")
     public void setMoves(int moves) {
-        movesTv.setText(String.format("%2d", moves));
-    }
-
-    public CharSequence getTimeText() {
-        return timeTv.getText();
+        movesTv.setText(getContext().getString(R.string.moves_x, moves));
     }
 
     public void setClockButtonClickListener(ClockClickListener listener) {

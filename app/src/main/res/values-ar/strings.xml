@@ -4,7 +4,6 @@
     <!-- ChessClock Activity -->
     <string name="app_name">ساعة الشطرنج</string>
     <string name="foreground_service_started">بدأ احتساب الوقت.</string>
-    <string name="moves_text">النقلات:</string>
     <string name="dialog_reset_clock">إعادة ضبط الساعة</string>
     <string name="dialog_no">لا</string>
     <string name="dialog_yes">نعم</string>
