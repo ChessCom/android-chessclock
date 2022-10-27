@@ -29,10 +29,10 @@
     <!-- ActionBar styles -->
     <style name="NormalActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
         <item name="android:titleTextStyle">@style/NormalActionBarTitleText</item>
-        <item name="android:background">@color/toolbar_gray</item>
+        <item name="android:background">@color/gray_controls</item>
 
         <item name="titleTextStyle">@style/NormalActionBarTitleText</item>
-        <item name="background">@color/toolbar_gray</item>
+        <item name="background">@color/gray_controls</item>
     </style>
 
     <!-- ActionBar title text -->

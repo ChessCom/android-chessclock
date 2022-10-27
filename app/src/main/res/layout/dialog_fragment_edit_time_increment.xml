@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_marginBottom="@dimen/margin_small"
-        android:background="@color/toolbar_gray"
+        android:background="@color/gray_controls"
         android:orientation="horizontal">
 
         <ImageView

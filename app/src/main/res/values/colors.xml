@@ -23,7 +23,7 @@
     <color name="gray_light_2">#e7e6e5</color>
 
     <!-- App colors-->
-    <color name="toolbar_gray">#312e2b</color>
+    <color name="gray_controls">#312e2b</color>
     <color name="windowBackground">#262421</color>
 
     <!-- Clock timers screen -->
