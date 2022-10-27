@@ -1,13 +1,7 @@
 package com.chess.clock.activities;
 
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -23,7 +17,6 @@ import com.chess.clock.engine.TimeControlManager;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.fragments.TimeControlFragment;
 import com.chess.clock.fragments.TimeSettingsFragment;
-import com.chess.clock.service.ChessClockLocalService;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -31,48 +24,12 @@ import java.util.Set;
 /**
  * Activity that manages TimeControl list in the Settings and also TimeControl form.
  */
-public class TimerSettingsActivity extends BaseActivity implements TimeSettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback {
-
-    private static final String TAG = TimerSettingsActivity.class.getName();
-
+public class TimerSettingsActivity extends TimerServiceActivity implements TimeSettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback {
     /**
      * Fragments TAG
      */
     private final String TAG_SETTINGS_FRAGMENT = "settings";
     private final String TAG_TIME_CONTROL_FRAGMENT = "time_control";
-
-    /**
-     * Chess clock local service (clock engine).
-     */
-    ChessClockLocalService mService;
-
-    /**
-     * True when this activity is bound to chess clock service.
-     */
-    boolean mBound = false;
-
-    /**
-     * Defines callbacks for service binding, passed to bindService()
-     */
-    private final ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            ChessClockLocalService.ChessClockLocalServiceBinder binder
-                    = (ChessClockLocalService.ChessClockLocalServiceBinder) service;
-            mService = binder.getService();
-            mBound = true;
-
-            Log.i(TAG, "Service bound connected");
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-            Log.i(TAG, "Service bound disconnected");
-        }
-    };
 
     /**
      * State
@@ -105,29 +62,6 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // Bind to Local Chess clock Service.
-        Intent intent = new Intent(this, ChessClockLocalService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
-        Log.i(TAG, "Binding UI to Chess Clock Service.");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        // Unbind from the chess clock service.
-        if (mBound) {
-            unbindService(mConnection);
-            mBound = false;
-            Log.i(TAG, "Unbinding UI from Chess Clock Service.");
-        }
-    }
-
     public void dismiss() {
         setResult(RESULT_CANCELED);
         finish();
@@ -144,6 +78,11 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
     @Override
     public void onBackPressed() {
         showPopupOrFinish(null);
+    }
+
+    @Override
+    void bindUiOnServiceConnected() {
+        // no-op
     }
 
     private void showPopupOrFinish(Integer resultToSet) {
@@ -188,7 +127,7 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
      * @return True if clock was started before settings changes
      */
     public boolean showResetWarning() {
-        return mBound && mService.isClockStarted();
+        return serviceBound && clockService.isClockStarted();
     }
 
     /**

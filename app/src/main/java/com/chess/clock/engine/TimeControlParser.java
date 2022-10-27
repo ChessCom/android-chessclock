@@ -2,13 +2,10 @@ package com.chess.clock.engine;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-
-import com.chess.clock.service.ChessClockLocalService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,9 +44,10 @@ public class TimeControlParser {
     }
 
     /**
-     * Helper to fetch the last used time control and start the clock engine on app launch.
+     * Helper to fetch the last used time.
      */
-    public static void startClockWithLastTimeControl(Context context) {
+    @NonNull
+    public static TimeControlWrapper getLastTimeControlOrDefault(Context context) {
 
         ArrayList<TimeControlWrapper> timeControls = restoreTimeControlsList(context);
 
@@ -67,13 +65,7 @@ public class TimeControlParser {
                 break;
             }
         }
-
-        TimeControl playerOne = selectedControl.getTimeControlPlayerOne();
-        TimeControl playerTwo = selectedControl.getTimeControlPlayerTwo();
-
-        Intent startServiceIntent =
-                ChessClockLocalService.getChessClockServiceIntent(context, playerOne, playerTwo);
-        context.startService(startServiceIntent);
+        return selectedControl;
     }
 
     /**

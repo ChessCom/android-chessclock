@@ -3,15 +3,12 @@ package com.chess.clock.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -25,13 +22,11 @@ import com.chess.clock.R;
 import com.chess.clock.dialog.AdjustTimeDialogFragment;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.Stage;
-import com.chess.clock.engine.TimeControlParser;
-import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.views.ClockButton;
 import com.chess.clock.views.ClockMenu;
 import com.chess.clock.views.ViewUtils;
 
-public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialogFragment.TimeAdjustmentsListener {
+public class ClockTimersActivity extends TimerServiceActivity implements AdjustTimeDialogFragment.TimeAdjustmentsListener {
 
     private static final String TAG = ClockTimersActivity.class.getName();
     /**
@@ -53,15 +48,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
      * Settings Activity request code
      */
     private final int SETTINGS_REQUEST_CODE = 1;
-    /**
-     * Chess clock local service (clock engine).
-     */
-    ChessClockLocalService mService;
-
-    /**
-     * True when this activity is bound to chess clock service.
-     */
-    boolean mBound = false;
 
     private ClockSoundManager soundManager;
 
@@ -136,71 +122,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         }
     };
     private TimersState mTimersStatePreviousToPause;
-    /**
-     * Defines callbacks for chess clock service binding, passed to bindService()
-     */
-    private final ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            ChessClockLocalService.ChessClockLocalServiceBinder binder
-                    = (ChessClockLocalService.ChessClockLocalServiceBinder) service;
-            mService = binder.getService();
-            mBound = true;
-
-            mService.setPlayerOneListener(playerOneCallback);
-            mService.setPlayerTwoListener(playerTwoCallback);
-
-			/*
-            Check if Service is already started. Started Service means that Time Controls were set in the clock.
-			If no time control were set, start a new Service with last used Time Controls.
-			*/
-            if (!mService.isServiceStarted()) {
-                startServiceWithLastTimeControl();
-            } else {
-				/*
-				Service is already started. Every time this Activity goes to background, the
-				timers state are saved on shared preferences, before the clock is paused. And
-				here, they must be restored in order to resume state properly.
-				*/
-                restoreTimersState();
-
-				/*
-				Only update UI if game was finished OR in the case of configuration change the
-				game was previously running.
-				*/
-                if (mTimersState == TimersState.PLAYER_ONE_FINISHED || mTimersState == TimersState.PLAYER_TWO_FINISHED) {
-                    updateUIState();
-                } else {
-					/*
-					Only resume clock if elapsed time was less than 2 seconds since last pause.
-					This will serve to filter orientation changes only.
-					*/
-                    if (mTimeStampOnPauseActivity > 0) {
-                        long elapsedTime = System.currentTimeMillis() - mTimeStampOnPauseActivity;
-                        Log.v(TAG, "Configuration change lasted " + elapsedTime + " milliseconds.");
-                        if (elapsedTime < 2000 && (mTimersState == TimersState.PLAYER_TWO_RUNNING ||
-                                mTimersState == TimersState.PLAYER_ONE_RUNNING)) {
-                            mService.resumeClock();
-                            updateUIState();
-                        } else {
-                            // If pause took too long, reset state to paused.
-                            pauseClock();
-                        }
-                    }
-                }
-            }
-            Log.i(TAG, "Service bound connected");
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-            Log.i(TAG, "Service bound disconnected");
-        }
-    };
 
     /**
      * Update UI according to Settings Activity return code.
@@ -365,41 +286,56 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     @Override
     public void onBackPressed() {
 
-        if (mBound && (mTimersState != TimersState.PAUSED)) {
+        if (serviceBound && (mTimersState != TimersState.PAUSED)) {
             pauseClock();
         }
 
         super.onBackPressed();
     }
 
-    /**
-     * Called after onCreate — or after onRestart when the activity had been stopped,
-     * but is now again being displayed to the user. It will be followed by onResume.
-     */
     @Override
-    protected void onStart() {
-        super.onStart();
+    void bindUiOnServiceConnected() {
+        clockService.setPlayerOneListener(playerOneCallback);
+        clockService.setPlayerTwoListener(playerTwoCallback);
 
-        // Bind to Local Chess clock Service.
-        Intent intent = new Intent(this, ChessClockLocalService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+			/*
+            Check if Service is already started. Started Service means that Time Controls were set in the clock.
+			If no time control were set, start a new Service with last used Time Controls.
+			*/
+        if (!clockService.isServiceStarted()) {
+            startLastTimeControlSafely();
+        } else {
+				/*
+				Service is already started. Every time this Activity goes to background, the
+				timers state are saved on shared preferences, before the clock is paused. And
+				here, they must be restored in order to resume state properly.
+				*/
+            restoreTimersState();
 
-        Log.i(TAG, "Binding UI to Chess Clock Service.");
-    }
-
-    /**
-     * Called when you are no longer visible to the user. You will next receive either
-     * onRestart, onDestroy, or nothing, depending on later user activity.
-     */
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        // Unbind from the chess clock service.
-        if (mBound) {
-            unbindService(mConnection);
-            mBound = false;
-            Log.i(TAG, "Unbinding UI from Chess Clock Service.");
+				/*
+				Only update UI if game was finished OR in the case of configuration change the
+				game was previously running.
+				*/
+            if (mTimersState == TimersState.PLAYER_ONE_FINISHED || mTimersState == TimersState.PLAYER_TWO_FINISHED) {
+                updateUIState();
+            } else {
+					/*
+					Only resume clock if elapsed time was less than 2 seconds since last pause.
+					This will serve to filter orientation changes only.
+					*/
+                if (mTimeStampOnPauseActivity > 0) {
+                    long elapsedTime = System.currentTimeMillis() - mTimeStampOnPauseActivity;
+                    Log.v(TAG, "Configuration change lasted " + elapsedTime + " milliseconds.");
+                    if (elapsedTime < 2000 && (mTimersState == TimersState.PLAYER_TWO_RUNNING ||
+                            mTimersState == TimersState.PLAYER_ONE_RUNNING)) {
+                        resumeClockSafely();
+                        updateUIState();
+                    } else {
+                        // If pause took too long, reset state to paused.
+                        pauseClock();
+                    }
+                }
+            }
         }
     }
 
@@ -407,9 +343,9 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
      * Reset the clock.
      */
     public void resetClock() {
-        if (mBound) {
+        if (serviceBound) {
 
-            mService.resetClock();
+            clockService.resetClock();
 
             // Both states at pause means it's the beginning of the game.
             mTimersState = TimersState.PAUSED;
@@ -424,14 +360,14 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
      */
     public void pauseClock() {
 
-        if (mBound) {
+        if (serviceBound) {
             if (mTimersState == TimersState.PLAYER_ONE_RUNNING || mTimersState == TimersState.PLAYER_TWO_RUNNING) {
                 Log.i(TAG, "Clock paused.");
                 mTimersStatePreviousToPause = mTimersState;
                 mTimersState = TimersState.PAUSED;
                 Log.d(TAG, "Previous state: " + mTimersStatePreviousToPause +
                         " , current state: " + mTimersState);
-                mService.pauseClock();
+                clockService.pauseClock();
 
                 updateUIState();
             }
@@ -466,7 +402,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
 
         @Override
         public void onClickOptions() {
-            long time = firstPlayer ? mService.firstPlayerTime() : mService.secondPlayerTime();
+            long time = firstPlayer ? clockService.firstPlayerTime() : clockService.secondPlayerTime();
             AdjustTimeDialogFragment
                     .newInstance(time, firstPlayer)
                     .show(getSupportFragmentManager(), AdjustTimeDialogFragment.TAG);
@@ -572,18 +508,18 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         }
         if (mTimersState == playerTimerRunning || mTimersState == TimersState.PAUSED) {
             // If bound to clock service, press clock and update UI state.
-            if (mBound) {
+            if (serviceBound) {
                 // First or continuation move
                 if ((mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) ||
                         (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == playerTimerRunning) ||
                         mTimersState == playerTimerRunning) {
-                    if (firstPlayer) mService.pressPlayerOneClock();
-                    else mService.pressPlayerTwoClock();
+                    if (firstPlayer) clockService.pressPlayerOneClock();
+                    else clockService.pressPlayerTwoClock();
                     mTimersState = otherPlayerTimerRunning;
                 }
                 // Resuming clock
                 else {
-                    mService.resumeClock();
+                    resumeClockSafely();
                     mTimersState = mTimersStatePreviousToPause;
                     mTimersStatePreviousToPause = TimersState.PAUSED;
                 }
@@ -594,13 +530,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
                 mTimersState == otherPlayerTimerFinished) {
             showResetClockDialog();
         }
-    }
-
-    /**
-     * Start clock service method.
-     */
-    private void startServiceWithLastTimeControl() {
-        TimeControlParser.startClockWithLastTimeControl(this);
     }
 
     private void showResetClockDialog() {
@@ -640,10 +569,10 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     @Override
     public void onTimeAdjustmentsConfirmed(long timeMs, boolean firstPlayer) {
         if (firstPlayer) {
-            mService.setFirstPlayerTime(timeMs);
+            clockService.setFirstPlayerTime(timeMs);
             playerOneButton.setTime(timeMs);
         } else {
-            mService.setSecondPlayerTime(timeMs);
+            clockService.setSecondPlayerTime(timeMs);
             playerTwoButton.setTime(timeMs);
         }
     }
