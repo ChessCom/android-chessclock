@@ -14,8 +14,8 @@ import com.chess.clock.R;
 
 public class StyledButton extends FrameLayout {
 
-    private CardView topLayer;
-    private CardView bottomLayer;
+    private final CardView topLayer;
+    private final CardView bottomLayer;
 
     public StyledButton(Context context, AttributeSet attrs) {
         super(context, attrs);
