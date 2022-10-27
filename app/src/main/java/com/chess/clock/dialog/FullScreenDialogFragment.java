@@ -19,7 +19,7 @@ abstract class FullScreenDialogFragment extends DialogFragment {
     abstract int layoutRes();
 
     public int bgColorRes() {
-        return R.color.windowBackground;
+        return R.color.gray_background;
     }
 
     @Nullable

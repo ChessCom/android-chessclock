@@ -8,7 +8,7 @@
         <item name="android:actionModeCloseDrawable">@drawable/ic_action_accept_light</item>
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
         <item name="android:actionMenuTextColor">@color/white</item>
-        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowBackground">@color/gray_background</item>
 
         <item name="actionBarStyle">@style/NormalActionBar</item>
         <item name="actionModeBackground">@color/bg_settings_cab</item>

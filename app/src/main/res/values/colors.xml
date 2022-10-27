@@ -25,7 +25,7 @@
 
     <!-- App colors-->
     <color name="gray_controls">#312e2b</color>
-    <color name="windowBackground">#262421</color>
+    <color name="gray_background">#262421</color>
 
     <!-- Clock timers screen -->
     <color name="clock_timers_activity_background">#FF312e2b</color>
