@@ -38,7 +38,7 @@
             android:layout_height="32dp"
             android:layout_margin="@dimen/margin_x_standard"
             android:background="?selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_action_delete" />
+            android:src="@drawable/ic_delete" />
     </LinearLayout>
 
     <LinearLayout

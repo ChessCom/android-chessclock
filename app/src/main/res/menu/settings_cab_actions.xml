@@ -4,7 +4,7 @@
     <!-- Edit Time Control settings, should appear as action button -->
     <item
         android:id="@+id/action_delete"
-        android:icon="@drawable/ic_action_delete"
+        android:icon="@drawable/ic_delete"
         android:title="@string/action_delete"
         app:showAsAction="always" />
 
