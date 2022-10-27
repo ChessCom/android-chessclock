@@ -1,14 +1,17 @@
 package com.chess.clock.activities;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chess.clock.R;
 import com.chess.clock.adapters.ThemesAdapter;
+import com.chess.clock.entities.AppTheme;
 
 public class AppSettingsActivity extends BaseActivity {
 
@@ -29,6 +32,9 @@ public class AppSettingsActivity extends BaseActivity {
 
         soundImg = findViewById(R.id.soundImg);
         fullScreenImg = findViewById(R.id.fullscreenImg);
+        RecyclerView recycler = findViewById(R.id.themesRecycler);
+        SwitchCompat fullScreenSwitch = findViewById(R.id.fullscreenSwitch);
+        SwitchCompat soundsSwitch = findViewById(R.id.soundSwitch);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -37,15 +43,19 @@ public class AppSettingsActivity extends BaseActivity {
             actionBar.setTitle(R.string.app_settings);
         }
 
-        RecyclerView recycler = findViewById(R.id.themesRecycler);
-        adapter = new ThemesAdapter(appData.getSelectedTheme());
+        AppTheme selectedTheme = appData.getSelectedTheme();
+        adapter = new ThemesAdapter(selectedTheme, theme -> {
+            ColorStateList tintChecked = theme.colorStateListChecked(this);
+            DrawableCompat.setTintList(fullScreenSwitch.getThumbDrawable(), tintChecked);
+            DrawableCompat.setTintList(soundsSwitch.getThumbDrawable(), tintChecked);
+        });
         recycler.setAdapter(adapter);
-
-        SwitchCompat fullScreenSwitch = findViewById(R.id.fullscreenSwitch);
-        SwitchCompat soundsSwitch = findViewById(R.id.soundSwitch);
 
         fullScreenSwitch.setChecked(fullScreenMode);
         soundsSwitch.setChecked(soundsEnabled);
+        ColorStateList tintChecked = selectedTheme.colorStateListChecked(this);
+        DrawableCompat.setTintList(fullScreenSwitch.getThumbDrawable(), tintChecked);
+        DrawableCompat.setTintList(soundsSwitch.getThumbDrawable(), tintChecked);
 
         fullScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             fullScreenMode = isChecked;

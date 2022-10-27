@@ -17,10 +17,12 @@ import com.chess.clock.views.ViewUtils;
 
 public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ThemeViewHolder> {
     public AppTheme selectedTheme;
+    private final ThemeSelectListener listener;
 
-    public ThemesAdapter(AppTheme initialTheme) {
+    public ThemesAdapter(AppTheme initialTheme, ThemeSelectListener listener) {
         setHasStableIds(true);
         this.selectedTheme = initialTheme;
+        this.listener = listener;
     }
 
     @NonNull
@@ -37,6 +39,7 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ThemeViewH
         holder.bind(theme, theme == selectedTheme);
         holder.themeCard.setOnClickListener(v -> {
             selectedTheme = theme;
+            listener.onSelectTheme(selectedTheme);
             notifyDataSetChanged();
         });
     }
@@ -61,5 +64,9 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ThemeViewH
             themeCard.setCardBackgroundColor(color);
             ViewUtils.showView(checkmarkImg, selected);
         }
+    }
+
+    public interface ThemeSelectListener {
+        void onSelectTheme(AppTheme theme);
     }
 }
