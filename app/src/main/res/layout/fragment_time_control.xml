@@ -204,6 +204,13 @@
                     android:visibility="gone" />
             </LinearLayout>
 
+            <View
+                android:id="@+id/addStageDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="@dimen/margin_standard"
+                android:background="@color/gray" />
+
             <TextView
                 android:id="@+id/addStageTv"
                 android:layout_width="wrap_content"
@@ -214,7 +221,7 @@
                 android:padding="@dimen/margin_small"
                 android:text="@string/action_add_new_stage"
                 android:textColor="@color/gray_light_2"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_default"
                 app:drawableLeftCompat="@drawable/ic_plus_green"
                 app:drawableTint="@color/gray_light_2" />
 

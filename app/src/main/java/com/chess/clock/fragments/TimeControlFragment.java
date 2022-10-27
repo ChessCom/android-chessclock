@@ -103,6 +103,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     private View baseView;
     private View advancedView;
     private View addStageView;
+    private View addStageDivider;
     private View saveButton;
     private TabLayout tabLayout;
 
@@ -167,6 +168,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         incrementMinutesEt = v.findViewById(R.id.baseIncrementMinEt);
         incrementSecondsEt = v.findViewById(R.id.baseIncrementSecEt);
         addStageView = v.findViewById(R.id.addStageTv);
+        addStageDivider = v.findViewById(R.id.addStageDivider);
         tabLayout = v.findViewById(R.id.tabLayout);
         if (timeControlWrapper != null) {
             selectedTimeControl = timeControlWrapper.getTimeControlPlayerOne();
@@ -337,7 +339,9 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
 
     private void loadStages() {
         Stage[] stages = selectedTimeControl.getStageManager().getStages();
-        ViewUtils.showView(addStageView, stages.length < Stage.MAX_ALLOWED_STAGES_COUNT);
+        boolean showAddStageView = stages.length < Stage.MAX_ALLOWED_STAGES_COUNT;
+        ViewUtils.showView(addStageView, showAddStageView);
+        ViewUtils.showView(addStageDivider, showAddStageView);
         int i = 0;
         while (i < Stage.MAX_ALLOWED_STAGES_COUNT) {
             StageRowView row = (StageRowView) stagesList.getChildAt(i);
