@@ -60,7 +60,7 @@ public class AppSettingsActivity extends BaseActivity {
     }
 
     private void updateUiState() {
-        soundImg.setImageResource(soundsEnabled ? R.drawable.ic_sound : R.drawable.ic_sound_off);
+        soundImg.setImageResource(soundsEnabled ? R.drawable.ic_settings_sound_on : R.drawable.ic_settings_sound_off);
         fullScreenImg.setImageResource(fullScreenMode ? R.drawable.ic_fullscreen : R.drawable.ic_fullscreen_exit);
     }
 
