@@ -34,8 +34,9 @@
 
         <ImageView
             android:id="@+id/deleteBtn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_x_small"
             android:layout_margin="@dimen/margin_x_standard"
             android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_delete" />
