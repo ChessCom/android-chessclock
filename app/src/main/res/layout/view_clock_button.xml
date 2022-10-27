@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/clock_timer_bottom_control_margin"
-            android:fontFamily="@font/roboto_mono_regular"
+            android:textStyle="bold"
             android:textColor="@color/black_70"
             android:textSize="@dimen/clock_timer_textSize_small"
             app:layout_constraintBottom_toTopOf="@id/adjustTimeImg"
