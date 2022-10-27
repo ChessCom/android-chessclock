@@ -42,16 +42,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginVertical="@dimen/margin_large"
-            android:foreground="?selectableItemBackground"
+            android:foreground="?selectableItemBackgroundBorderless"
             app:cardCornerRadius="25dp"
             app:layout_constraintTop_toBottomOf="@id/logo">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/gray_bg_frame"
+                android:background="@drawable/add_time_button_bg"
                 android:orientation="horizontal"
-                android:padding="@dimen/margin_standard">
+                android:layout_gravity="center_vertical"
+                android:paddingVertical="@dimen/margin_x_standard"
+                android:paddingHorizontal="@dimen/margin_standard">
 
                 <ImageView
                     android:id="@+id/plusImg"
@@ -64,6 +66,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_x_small"
                     android:text="@string/new_time" />
             </LinearLayout>
 

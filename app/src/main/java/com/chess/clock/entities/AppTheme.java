@@ -39,7 +39,7 @@ public enum AppTheme {
 
         int[] colors = new int[]{
                 color(context),
-                ContextCompat.getColor(context, R.color.gray)
+                ContextCompat.getColor(context, R.color.white_20)
         };
 
         return new ColorStateList(states, colors);
