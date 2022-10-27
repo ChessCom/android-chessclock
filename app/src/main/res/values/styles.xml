@@ -4,15 +4,15 @@
     <style name="AppTheme" parent="@style/Theme.AppCompat">
         <item name="android:actionBarStyle">@style/NormalActionBar</item>
         <item name="android:actionModeStyle">@style/CABStyle</item>
-        <item name="android:actionModeBackground">@color/bg_settings_cab</item>
-        <item name="android:actionModeCloseDrawable">@drawable/ic_action_accept_light</item>
+        <item name="android:actionModeBackground">@color/gray_controls</item>
+        <item name="android:actionModeCloseDrawable">@drawable/ic_checkmark_white</item>
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="android:windowBackground">@color/gray_background</item>
 
         <item name="actionBarStyle">@style/NormalActionBar</item>
-        <item name="actionModeBackground">@color/bg_settings_cab</item>
-        <item name="actionModeCloseDrawable">@drawable/ic_action_accept_light</item>
+        <item name="actionModeBackground">@color/gray_controls</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_checkmark_white</item>
         <item name="actionModeStyle">@style/CABStyle</item>
         <item name="actionMenuTextColor">@color/white</item>
     </style>
@@ -42,10 +42,10 @@
 
     <!--<style name="CABStyle" parent="@style/Theme.Base.AppCompat.Light.DarkActionBar">-->
     <style name="CABStyle" parent="@style/Theme.AppCompat">
-        <item name="android:background">@color/bg_settings_cab</item>
+        <item name="android:background">@color/gray_controls</item>
         <item name="android:titleTextStyle">@style/CABTextStyle</item>
 
-        <item name="background">@color/bg_settings_cab</item>
+        <item name="background">@color/gray_controls</item>
         <item name="titleTextStyle">@style/CABTextStyle</item>
     </style>
 

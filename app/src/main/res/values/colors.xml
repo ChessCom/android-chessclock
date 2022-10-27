@@ -32,7 +32,4 @@
     <color name="bg_clock_setting_button_normal">#6f6862</color>
     <color name="bg_clock_setting_button_pressed">#ff59534e</color>
     <color name="clock_stage_gray">#aa312e2b</color>
-
-    <!-- Settings Contextual Action bar -->
-    <color name="bg_settings_cab">#4f7838</color>
 </resources>
