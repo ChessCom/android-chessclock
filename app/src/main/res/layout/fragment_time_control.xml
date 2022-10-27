@@ -22,7 +22,7 @@
             android:inputType="text"
             android:maxLength="100"
             android:maxLines="1"
-            android:paddingHorizontal="@dimen/margin_small"
+            android:paddingHorizontal="@dimen/margin_x_standard"
             android:textColor="@color/white"
             android:textColorHint="@color/white_50"
             android:textSize="@dimen/text_size_large" />
@@ -284,13 +284,25 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <Button
+        <androidx.cardview.widget.CardView
             android:id="@+id/saveBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/small_action_button_height"
             android:layout_margin="@dimen/margin_standard"
-            android:background="@color/green"
-            android:text="@string/action_save_time_control"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:foreground="?selectableItemBackgroundBorderless"
+            app:cardBackgroundColor="@color/green"
+            app:cardCornerRadius="@dimen/default_radius"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/action_save_time_control"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_default"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

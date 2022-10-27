@@ -29,5 +29,6 @@
     <dimen name="clock_timer_menu_height">56dp</dimen>
     <dimen name="clock_timer_bottom_control_margin">16dp</dimen>
     <dimen name="clock_timer_adjust_time_input_min_width">56dp</dimen>
+    <dimen name="small_action_button_height">40dp</dimen>
 
 </resources>

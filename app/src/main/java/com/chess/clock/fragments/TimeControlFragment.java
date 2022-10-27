@@ -26,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -104,7 +105,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     private View advancedView;
     private View addStageView;
     private View addStageDivider;
-    private View saveButton;
+    private CardView saveButton;
     private TabLayout tabLayout;
 
 
@@ -146,8 +147,9 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         ColorStateList tintChecked = theme.colorStateListChecked(requireContext());
         DrawableCompat.setTintList(advancedModeSwitch.getThumbDrawable(), tintChecked);
         DrawableCompat.setTintList(copyPLayerOneSwitch.getThumbDrawable(), tintChecked);
-        saveButton.setBackgroundResource(theme.primaryColorRes);
-        tabLayout.setSelectedTabIndicatorColor(theme.color(requireContext()));
+        int mainColor = theme.color(requireContext());
+        saveButton.setCardBackgroundColor(mainColor);
+        tabLayout.setSelectedTabIndicatorColor(mainColor);
     }
 
     @Override
