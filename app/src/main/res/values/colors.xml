@@ -2,6 +2,7 @@
 <resources>
     <!-- Common palette -->
     <color name="black">#000</color>
+    <color name="black_20">#33000000</color>
     <color name="black_40">#66000000</color>
     <color name="black_65">#A6000000</color>
     <color name="black_70">#B3000000</color>

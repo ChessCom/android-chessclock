@@ -1,18 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/text"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:fontFamily="@font/montserrat_extra_bold"
-    android:gravity="center"
-    android:minHeight="56dp"
-    android:paddingHorizontal="@dimen/margin_standard"
-    android:paddingVertical="14dp"
-    android:shadowColor="@color/black_65"
-    android:shadowDy="1"
-    android:shadowRadius="1"
-    android:textColor="@color/white"
-    android:textSize="@dimen/button_text_size"
-    tools:text="@string/start" />
+    tools:parentTag="android.widget.FrameLayout">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/bottomCard"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom"
+        app:cardBackgroundColor="@color/green"
+        android:foreground="@color/black_20"
+        app:cardCornerRadius="@dimen/large_radius" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/topCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/green"
+        android:layout_marginBottom="4dp"
+        app:cardCornerRadius="@dimen/large_radius">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:gravity="center"
+            android:minHeight="@dimen/button_height"
+            android:paddingHorizontal="@dimen/margin_standard"
+            android:paddingVertical="14dp"
+            android:shadowColor="@color/black_65"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/button_text_size"
+            tools:text="@string/start" />
+    </androidx.cardview.widget.CardView>
+</merge>

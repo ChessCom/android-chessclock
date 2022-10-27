@@ -142,7 +142,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
     @Override
     void loadTheme(AppTheme theme) {
-        startBtn.setCardBackgroundColor(ContextCompat.getColor(requireContext(), theme.primaryColorRes));
+        startBtn.setButtonBackground(ContextCompat.getColor(requireContext(), theme.primaryColorRes));
         if (adapter != null) {
             adapter.updateTheme(theme);
         }
