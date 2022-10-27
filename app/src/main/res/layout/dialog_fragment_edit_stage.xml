@@ -159,7 +159,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_margin="@dimen/margin_standard"
+        android:layout_marginHorizontal="@dimen/margin_standard"
+        android:layout_marginVertical="@dimen/margin_small"
         android:background="@color/gray" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -167,7 +168,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:padding="@dimen/margin_standard">
+        android:paddingVertical="@dimen/margin_x_standard"
+        android:paddingHorizontal="@dimen/margin_standard">
 
         <TextView
             android:id="@+id/incrementTitleTv"
