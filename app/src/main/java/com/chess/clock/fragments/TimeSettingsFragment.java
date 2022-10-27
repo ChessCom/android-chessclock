@@ -23,7 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
@@ -188,19 +187,10 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
         if (touchHelper == null) return;
         if (editMode) {
-            setRecyclerBottomMargin(0);
             touchHelper.attachToRecyclerView(timesRecyclerView);
         } else {
-            int bottomMargin = getResources().getDimensionPixelSize(R.dimen.settings_margin_over_button);
-            setRecyclerBottomMargin(bottomMargin);
             touchHelper.attachToRecyclerView(null);
         }
-    }
-
-    private void setRecyclerBottomMargin(int bottomMarginPx) {
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) timesRecyclerView.getLayoutParams();
-        layoutParams.setMargins(0, 0, 0, bottomMarginPx);
-        timesRecyclerView.setLayoutParams(layoutParams);
     }
 
     @Override

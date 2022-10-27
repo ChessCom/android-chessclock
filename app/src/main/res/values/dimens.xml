@@ -1,6 +1,7 @@
 <resources>
     <dimen name="margin_x_small">4dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_xx_standard">10dp</dimen>
     <dimen name="margin_x_standard">12dp</dimen>
     <dimen name="margin_standard">16dp</dimen>
     <dimen name="margin_large">24dp</dimen>
@@ -27,7 +28,6 @@
     <dimen name="clock_timer_stage_marker_size">12dp</dimen>
     <dimen name="clock_timer_menu_height">56dp</dimen>
     <dimen name="clock_timer_bottom_control_margin">16dp</dimen>
-    <dimen name="settings_margin_over_button">92dp</dimen>
     <dimen name="clock_timer_adjust_time_input_min_width">56dp</dimen>
 
 </resources>
