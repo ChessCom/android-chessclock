@@ -195,7 +195,9 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        adapter.saveInstanceState(outState);
+        if (adapter != null) {
+            adapter.saveInstanceState(outState);
+        }
         super.onSaveInstanceState(outState);
     }
 

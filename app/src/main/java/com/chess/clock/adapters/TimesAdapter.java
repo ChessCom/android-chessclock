@@ -139,9 +139,11 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
     public void restoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState == null) return;
         editMode = savedInstanceState.getBoolean(KEY_EDIT_MODE);
-        removeIds.clear();
-        for (long id : savedInstanceState.getLongArray(KEY_IDS_TO_REMOVE)) {
-            removeIds.add(id);
+        if (savedInstanceState.containsKey(KEY_IDS_TO_REMOVE)) {
+            removeIds.clear();
+            for (long id : savedInstanceState.getLongArray(KEY_IDS_TO_REMOVE)) {
+                removeIds.add(id);
+            }
         }
     }
 
@@ -185,7 +187,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
                 boolean selectedToRemove = removeIds.contains(timeControlWrapper.getId());
                 if (selectedToRemove) {
                     checkBoxImg.setImageResource(R.drawable.ic_check_box);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && theme != null) {
                         checkBoxImg.setImageTintList(theme.primaryColorAsStateList(checkBoxImg.getContext()));
                     }
                 } else {
@@ -198,7 +200,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
             } else {
                 nameTv.setCheckMarkDrawable(R.drawable.list_radio_button_selector);
                 nameTv.setChecked(selectedItemId == timeControlWrapper.getId());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && theme != null) {
                     nameTv.setCheckMarkTintList(theme.colorStateListChecked(nameTv.getContext()));
                 }
             }

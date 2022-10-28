@@ -1,10 +1,15 @@
 package com.chess.clock.views;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.chess.clock.R;
 
@@ -35,5 +40,11 @@ public class ViewUtils {
                 messageTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_dialog_title));
             }
         });
+    }
+
+    public static Drawable getSelectableItemBgDrawable(Context context) {
+        TypedArray a = context.getTheme().obtainStyledAttributes(R.style.AppTheme, new int[]{R.attr.selectableItemBackground});
+        int attributeResourceId = a.getResourceId(0, 0);
+        return ContextCompat.getDrawable(context, attributeResourceId);
     }
 }

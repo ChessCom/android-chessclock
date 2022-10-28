@@ -4,13 +4,13 @@ import static android.view.View.GONE;
 import static com.chess.clock.util.ClockUtils.getIntOrZero;
 import static com.chess.clock.util.ClockUtils.onTimeChangedAction;
 import static com.chess.clock.util.ClockUtils.setClockTextWatcherWithCallback;
-import static com.chess.clock.util.ClockUtils.twoDecimalPlacesFormat;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -79,6 +80,9 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     private boolean editMode = false;
     private boolean autoNamingEnabled = true;
     private String latestAutoName = "";
+
+    boolean stagesAvailable = true;
+    boolean saveBtnEnabled = false;
 
     /**
      * Formatters
@@ -206,7 +210,6 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        saveButton.setOnClickListener(v -> saveTimeControl());
         addStageView.setOnClickListener(v -> addNewStage());
         nameEt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -224,6 +227,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
                     timeControlWrapper.getTimeControlPlayerOne().setName(s.toString());
                     timeControlWrapper.getTimeControlPlayerTwo().setName(s.toString());
                 }
+                updateSaveButtonState();
             }
         });
 
@@ -244,10 +248,10 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
                 autoNamingEnabled = currentName.isEmpty() || currentName.equals(latestAutoName);
             }
         });
-        onTimeChangedAction(minutesEt, this::autoNaming);
-        onTimeChangedAction(incrementMinutesEt, this::autoNaming);
-        setClockTextWatcherWithCallback(secondsEt, this::autoNaming);
-        setClockTextWatcherWithCallback(incrementSecondsEt, this::autoNaming);
+        onTimeChangedAction(minutesEt, this::autoNamingAndSaveButtonUpdate);
+        onTimeChangedAction(incrementMinutesEt, this::autoNamingAndSaveButtonUpdate);
+        setClockTextWatcherWithCallback(secondsEt, this::autoNamingAndSaveButtonUpdate);
+        setClockTextWatcherWithCallback(incrementSecondsEt, this::autoNamingAndSaveButtonUpdate);
 
         advancedModeSwitch.setChecked(advancedMode);
         advancedModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -288,13 +292,8 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         if (editMode) {
             view.findViewById(R.id.advancedModeSwitchLay).setVisibility(View.INVISIBLE);
         }
-        if (savedInstanceState == null) {
-            String hint = twoDecimalPlacesFormat(0);
-            minutesEt.setHint(hint);
-            incrementMinutesEt.setHint(hint);
-            secondsEt.setHint(hint);
-            incrementSecondsEt.setHint(hint);
-        } else {
+
+        if (savedInstanceState != null) {
             int tabId = playerOneSelected ? 0 : 1;
             TabLayout.Tab tab = tabLayout.getTabAt(tabId);
             if (tab != null) {
@@ -304,10 +303,42 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         updateUi();
     }
 
+    void updateSaveButtonState() {
+
+        boolean nameIsSet = nameEt.getText().length() > 0;
+        boolean enabled;
+
+        if (advancedMode) {
+            enabled = nameIsSet && stagesAvailable;
+        } else {
+            int minutes = getIntOrZero(minutesEt);
+            int seconds = getIntOrZero(secondsEt);
+            boolean baseTimeIsSet = minutes > 0 || seconds > 0;
+
+            enabled = nameIsSet && baseTimeIsSet;
+        }
+
+        if (saveBtnEnabled == enabled) return;
+
+        saveButton.setClickable(enabled);
+        saveButton.setFocusable(enabled);
+        if (enabled) {
+            saveButton.setForeground(ViewUtils.getSelectableItemBgDrawable(requireContext()));
+            saveButton.setOnClickListener(v -> saveTimeControl());
+        } else {
+            saveButton.setForeground(new ColorDrawable(ContextCompat.getColor(requireContext(), R.color.black_40)));
+            saveButton.setOnClickListener(null);
+        }
+        saveBtnEnabled = enabled;
+    }
+
     /**
      * Method to set auto name only if name was not set by user and only in simple mode.
      */
-    private void autoNaming() {
+    private void autoNamingAndSaveButtonUpdate() {
+
+        updateSaveButtonState();
+
         if (!autoNamingEnabled || advancedMode || editMode) return;
 
         int minutes = getIntOrZero(minutesEt);
@@ -358,11 +389,14 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
             }
             i++;
         }
+        stagesAvailable = stages.length > 0;
+        updateSaveButtonState();
     }
 
     private void updateUi() {
         ViewUtils.showView(baseView, !advancedMode && !editMode);
         ViewUtils.showView(advancedView, advancedMode || editMode);
+        updateSaveButtonState();
     }
 
     private void saveTimeControl() {
@@ -374,7 +408,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         if (newControlName.equals("")) {
             nameEt.requestFocus();
             Toast.makeText(getActivity(), getString(R.string.toast_requesting_time_control_name), Toast.LENGTH_LONG).show();
-        } else if (!timeControlWrapper.bothUsersHaveAtLeastOneStage()) {
+        } else if (advancedMode && !timeControlWrapper.bothUsersHaveAtLeastOneStage()) {
             Toast.makeText(getActivity(), getString(R.string.toast_requesting_time_control_stage), Toast.LENGTH_LONG).show();
         } else {
             if (advancedMode || editMode) {
@@ -515,22 +549,17 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
-            AlertDialog alertDialog = builder
-                    .setTitle(getString(R.string.exit_dialog_title))
-                    .setMessage(getString(R.string.exit_dialog_message))
-                    .setNegativeButton(getString(R.string.exit_dialog_cancel), (arg0, arg1) -> {
-                        Fragment target = getTargetFragment();
-                        if (target != null) {
-                            target.requireActivity().getSupportFragmentManager().popBackStack();
-                        }
-                    })
-                    .setPositiveButton(getString(R.string.exit_dialog_ok), (arg0, arg1) -> {
-                        Fragment target = getTargetFragment();
-                        if (target != null) {
-                            ((TimeControlFragment) target).saveTimeControl();
-                        }
-                    })
-                    .create();
+            AlertDialog alertDialog = builder.setTitle(getString(R.string.exit_dialog_title)).setMessage(getString(R.string.exit_dialog_message)).setNegativeButton(getString(R.string.exit_dialog_cancel), (arg0, arg1) -> {
+                Fragment target = getTargetFragment();
+                if (target != null) {
+                    target.requireActivity().getSupportFragmentManager().popBackStack();
+                }
+            }).setPositiveButton(getString(R.string.exit_dialog_ok), (arg0, arg1) -> {
+                Fragment target = getTargetFragment();
+                if (target != null) {
+                    ((TimeControlFragment) target).saveTimeControl();
+                }
+            }).create();
             ViewUtils.setLargePopupMessageTextSize(alertDialog, getResources());
             return alertDialog;
         }

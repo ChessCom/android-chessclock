@@ -3,6 +3,7 @@
     <!-- Non translatable-->
     <string name="default_moves_value" translatable="false">0</string>
     <string name="colon" translatable="false">:</string>
+    <string name="default_time_setup_hint" translatable="false">00</string>
 
 
     <!-- ChessClock Activity -->

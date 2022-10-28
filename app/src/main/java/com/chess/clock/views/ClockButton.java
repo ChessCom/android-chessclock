@@ -4,8 +4,6 @@ import static com.chess.clock.views.ViewUtils.showView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -47,10 +45,7 @@ public class ClockButton extends FrameLayout {
         controlNameTv = view.findViewById(R.id.stageNameTv);
         timeOptions = view.findViewById(R.id.adjustTimeImg);
 
-        TypedArray a = getContext().getTheme().obtainStyledAttributes(R.style.AppTheme, new int[]{R.attr.selectableItemBackground});
-        int attributeResourceId = a.getResourceId(0, 0);
-        Drawable drawable = ContextCompat.getDrawable(getContext(), attributeResourceId);
-        setForeground(drawable);
+        setForeground(ViewUtils.getSelectableItemBgDrawable(getContext()));
 
         idleTextColor = getResources().getColor(R.color.black_70);
         runningTextColor = getResources().getColor(R.color.white);
