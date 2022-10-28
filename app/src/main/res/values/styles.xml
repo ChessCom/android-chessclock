@@ -44,13 +44,16 @@
     <style name="CABStyle" parent="@style/Theme.AppCompat">
         <item name="android:background">@color/gray_controls</item>
         <item name="android:titleTextStyle">@style/CABTextStyle</item>
+        <item name="android:height">?actionBarSize</item>
 
         <item name="background">@color/gray_controls</item>
         <item name="titleTextStyle">@style/CABTextStyle</item>
+        <item name="height">?actionBarSize</item>
     </style>
 
     <style name="CABTextStyle">
         <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
     </style>
 
     <style name="MenuTextStyle" parent="@style/Theme.AppCompat">

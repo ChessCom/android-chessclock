@@ -6,7 +6,6 @@ import static com.chess.clock.util.ClockUtils.onTimeChangedAction;
 import static com.chess.clock.util.ClockUtils.setClockTextWatcherWithCallback;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -30,7 +29,6 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import com.chess.clock.R;
 import com.chess.clock.dialog.EditStageDialogFragment;
@@ -43,6 +41,8 @@ import com.chess.clock.util.AutoNameFormatter;
 import com.chess.clock.views.StageRowView;
 import com.chess.clock.views.ViewUtils;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 /**
  * UI fragment to create and edit a TimeControl.
@@ -58,14 +58,6 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     private static final String STATE_AUTO_NAMING_KEY = "auto_naming_key";
     private static final String STATE_LATEST_AUTO_NAME_KEY = "latest_auto_name_key";
     private static final String ARG_EDIT_MODE = "arg_edit_mode";
-    /**
-     * Dialog Fragment TAGS
-     */
-    private static final String TAG_EXIT_DIALOG_FRAGMENT = "ExitDialogFragment";
-    /**
-     * DIALOG request code
-     */
-    private static final int REQUEST_EXIT_DIALOG = 3;
     /**
      * Activity attached.
      */
@@ -97,18 +89,20 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
      * UI
      */
     private LinearLayout stagesList;
-    private EditText nameEt;
+    private TextInputLayout nameInputLayout;
+    private TextInputEditText nameEt;
     private EditText minutesEt;
     private EditText secondsEt;
     private EditText incrementMinutesEt;
     private EditText incrementSecondsEt;
     private View copyPlayerOneLay;
-    private SwitchCompat copyPLayerOneSwitch;
+    private SwitchCompat copyPlayerOneSwitch;
     private SwitchCompat advancedModeSwitch;
     private View baseView;
     private View advancedView;
     private View addStageView;
     private View addStageDivider;
+    private View stagesListTitle;
     private CardView saveButton;
     private TabLayout tabLayout;
 
@@ -141,19 +135,23 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
 
     @Override
     void loadTheme(AppTheme theme) {
+        ColorStateList stateListFocused = theme.colorStateListFocused(requireContext());
+        ColorStateList stateListChecked = theme.colorStateListChecked(requireContext());
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ColorStateList tintList = theme.colorStateListFocused(requireContext());
-            minutesEt.setBackgroundTintList(tintList);
-            secondsEt.setBackgroundTintList(tintList);
-            incrementMinutesEt.setBackgroundTintList(tintList);
-            incrementSecondsEt.setBackgroundTintList(tintList);
+            minutesEt.setBackgroundTintList(stateListFocused);
+            secondsEt.setBackgroundTintList(stateListFocused);
+            incrementMinutesEt.setBackgroundTintList(stateListFocused);
+            incrementSecondsEt.setBackgroundTintList(stateListFocused);
         }
-        ColorStateList tintChecked = theme.colorStateListChecked(requireContext());
-        DrawableCompat.setTintList(advancedModeSwitch.getThumbDrawable(), tintChecked);
-        DrawableCompat.setTintList(copyPLayerOneSwitch.getThumbDrawable(), tintChecked);
+
+        DrawableCompat.setTintList(advancedModeSwitch.getThumbDrawable(), stateListChecked);
+        DrawableCompat.setTintList(copyPlayerOneSwitch.getThumbDrawable(), stateListChecked);
         int mainColor = theme.color(requireContext());
         saveButton.setCardBackgroundColor(mainColor);
         tabLayout.setSelectedTabIndicatorColor(mainColor);
+        nameInputLayout.setBoxStrokeColorStateList(stateListFocused);
+        nameInputLayout.setHintTextColor(stateListFocused);
     }
 
     @Override
@@ -166,15 +164,17 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         baseView = v.findViewById(R.id.baseLay);
         advancedView = v.findViewById(R.id.advancedLay);
         copyPlayerOneLay = v.findViewById(R.id.copyPlayerOneLay);
-        copyPLayerOneSwitch = v.findViewById(R.id.copyPlayerOneSwitch);
+        copyPlayerOneSwitch = v.findViewById(R.id.copyPlayerOneSwitch);
         saveButton = v.findViewById(R.id.saveBtn);
-        nameEt = v.findViewById(R.id.time_control_name);
+        nameEt = v.findViewById(R.id.timeControlNameEt);
+        nameInputLayout = v.findViewById(R.id.timeControlInputLay);
         minutesEt = v.findViewById(R.id.baseMinEt);
         secondsEt = v.findViewById(R.id.baseSecEt);
         incrementMinutesEt = v.findViewById(R.id.baseIncrementMinEt);
         incrementSecondsEt = v.findViewById(R.id.baseIncrementSecEt);
         addStageView = v.findViewById(R.id.addStageTv);
         addStageDivider = v.findViewById(R.id.addStageDivider);
+        stagesListTitle = v.findViewById(R.id.stagesListTitleTv);
         tabLayout = v.findViewById(R.id.tabLayout);
         if (timeControlWrapper != null) {
             selectedTimeControl = timeControlWrapper.getTimeControlPlayerOne();
@@ -196,13 +196,13 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
                 }
             }
 
-            copyPLayerOneSwitch.setChecked(timeControlWrapper.isSameAsPlayerOne());
+            copyPlayerOneSwitch.setChecked(timeControlWrapper.isSameAsPlayerOne());
 
             String name = selectedTimeControl.getName();
             if (name != null && !name.isEmpty()) {
                 nameEt.setText(name);
             }
-            loadStages();
+            reloadStages();
         }
         return v;
     }
@@ -244,7 +244,8 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         });
         nameEt.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                String currentName = nameEt.getText().toString();
+                Editable name = nameEt.getText();
+                String currentName = name == null ? "" : name.toString();
                 autoNamingEnabled = currentName.isEmpty() || currentName.equals(latestAutoName);
             }
         });
@@ -258,10 +259,12 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
             advancedMode = isChecked;
             updateUi();
         });
-        copyPLayerOneSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        copyPlayerOneSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             timeControlWrapper.setSameAsPlayerOne(isChecked);
             if (isChecked && !playerOneSelected) {
-                showPlayerOneViews();
+                copyPlayerOneStateForPlayerTwo();
+            } else {
+                reloadStages();
             }
         });
         copyPlayerOneLay.setVisibility(GONE);
@@ -269,13 +272,17 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 boolean playerOneTab = tab.getPosition() == 0;
+                boolean sameAsPlayerOne = timeControlWrapper.isSameAsPlayerOne();
+
                 ViewUtils.showView(copyPlayerOneLay, !playerOneTab);
+
                 playerOneSelected = playerOneTab;
                 selectedTimeControl = playerOneTab ? timeControlWrapper.getTimeControlPlayerOne() : timeControlWrapper.getTimeControlPlayerTwo();
-                if (!playerOneTab && timeControlWrapper.isSameAsPlayerOne()) {
-                    showPlayerOneViews();
+                boolean secondPlayerEmptyOrTheSame = sameAsPlayerOne || timeControlWrapper.getTimeControlPlayerTwo() == null;
+                if (!playerOneTab && secondPlayerEmptyOrTheSame) {
+                    copyPlayerOneStateForPlayerTwo();
                 } else {
-                    updateStagesDisplay();
+                    reloadStages();
                 }
             }
 
@@ -305,10 +312,11 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
 
     void updateSaveButtonState() {
 
-        boolean nameIsSet = nameEt.getText().length() > 0;
+        Editable name = nameEt.getText();
+        boolean nameIsSet = name != null && name.length() > 0;
         boolean enabled;
 
-        if (advancedMode) {
+        if (advancedMode || editMode) {
             enabled = nameIsSet && stagesAvailable;
         } else {
             int minutes = getIntOrZero(minutesEt);
@@ -370,11 +378,17 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         timeControlListener = null;
     }
 
-    private void loadStages() {
+    private void reloadStages() {
         Stage[] stages = selectedTimeControl.getStageManager().getStages();
-        boolean showAddStageView = stages.length < Stage.MAX_ALLOWED_STAGES_COUNT;
-        ViewUtils.showView(addStageView, showAddStageView);
-        ViewUtils.showView(addStageDivider, showAddStageView);
+
+        boolean canAddStage = stages.length < Stage.MAX_ALLOWED_STAGES_COUNT;
+        boolean showStages = playerOneSelected || !timeControlWrapper.isSameAsPlayerOne();
+
+        ViewUtils.showView(stagesList, showStages);
+        ViewUtils.showView(stagesListTitle, showStages);
+        ViewUtils.showView(addStageView, showStages && canAddStage);
+        ViewUtils.showView(addStageDivider, showStages && canAddStage);
+
         int i = 0;
         while (i < Stage.MAX_ALLOWED_STAGES_COUNT) {
             StageRowView row = (StageRowView) stagesList.getChildAt(i);
@@ -404,7 +418,9 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
 
         hideSoftKeyboard();
 
-        String newControlName = nameEt.getText().toString();
+        Editable name = nameEt.getText();
+        String newControlName = name == null ? "" : name.toString();
+
         if (newControlName.equals("")) {
             nameEt.requestFocus();
             Toast.makeText(getActivity(), getString(R.string.toast_requesting_time_control_name), Toast.LENGTH_LONG).show();
@@ -442,8 +458,12 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
                 timeControlWrapper.setTimeControlPlayerTwo(simpleControl);
             }
             timeControlListener.saveTimeControl();
-            requireActivity().getSupportFragmentManager().popBackStack();
+            backToListScreen();
         }
+    }
+
+    private void backToListScreen() {
+        requireActivity().getSupportFragmentManager().popBackStack();
     }
 
     private void hideSoftKeyboard() {
@@ -452,17 +472,18 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         imm.hideSoftInputFromWindow(nameEt.getWindowToken(), 0);
     }
 
-    private void updateStagesDisplay() {
-        loadStages();
-    }
-
     public void showConfirmGoBackDialog() {
         if (!(timeControlWrapper.isEqual(mTimeControlSnapshot))) {
-            DialogFragment newFragment = ExitConfirmationDialogFragment.newInstance();
-            newFragment.setTargetFragment(this, REQUEST_EXIT_DIALOG);
-            newFragment.show(getParentFragmentManager(), TAG_EXIT_DIALOG_FRAGMENT);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
+            AlertDialog alertDialog = builder
+                    .setMessage(getString(R.string.exit_dialog_message))
+                    .setNegativeButton(getString(R.string.dialog_no), (dialogInterface, arg1) -> dialogInterface.dismiss())
+                    .setPositiveButton(getString(R.string.dialog_yes), (arg0, arg1) -> backToListScreen())
+                    .create();
+            ViewUtils.setLargePopupMessageTextSize(alertDialog, getResources());
+            alertDialog.show();
         } else {
-            requireActivity().getSupportFragmentManager().popBackStack();
+            backToListScreen();
         }
     }
 
@@ -470,7 +491,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         hideSoftKeyboard();
         if (selectedTimeControl.getStageManager().canAddStage()) {
             selectedTimeControl.getStageManager().addNewStage();
-            updateStagesDisplay();
+            reloadStages();
         }
     }
 
@@ -480,7 +501,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         if (editDialog != null) {
             editDialog.dismissAllowingStateLoss();
         }
-        updateStagesDisplay();
+        reloadStages();
     }
 
     private void showStageEditorDialog(Stage stage) {
@@ -491,7 +512,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     /**
      * Clone the player one views if the "same as player one" switch is turned on in the player 2 tab
      */
-    private void showPlayerOneViews() {
+    private void copyPlayerOneStateForPlayerTwo() {
         TimeControl playerOneClone;
         try {
             playerOneClone = (TimeControl) timeControlWrapper.getTimeControlPlayerOne().clone();
@@ -502,7 +523,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         timeControlWrapper.setTimeControlPlayerTwo(playerOneClone);
         selectedTimeControl = playerOneSelected ? timeControlWrapper.getTimeControlPlayerOne() : timeControlWrapper.getTimeControlPlayerTwo();
 
-        updateStagesDisplay();
+        reloadStages();
     }
 
     @Override
@@ -523,7 +544,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
             stage.setDuration(timeValue);
         }
 
-        updateStagesDisplay();
+        reloadStages();
     }
 
     /**
@@ -533,35 +554,5 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         TimeControlWrapper getEditableTimeControl();
 
         void saveTimeControl();
-    }
-
-    /**
-     * DIALOG
-     */
-    public static class ExitConfirmationDialogFragment extends DialogFragment {
-
-        public static ExitConfirmationDialogFragment newInstance() {
-            return new ExitConfirmationDialogFragment();
-        }
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
-            AlertDialog alertDialog = builder.setTitle(getString(R.string.exit_dialog_title)).setMessage(getString(R.string.exit_dialog_message)).setNegativeButton(getString(R.string.exit_dialog_cancel), (arg0, arg1) -> {
-                Fragment target = getTargetFragment();
-                if (target != null) {
-                    target.requireActivity().getSupportFragmentManager().popBackStack();
-                }
-            }).setPositiveButton(getString(R.string.exit_dialog_ok), (arg0, arg1) -> {
-                Fragment target = getTargetFragment();
-                if (target != null) {
-                    ((TimeControlFragment) target).saveTimeControl();
-                }
-            }).create();
-            ViewUtils.setLargePopupMessageTextSize(alertDialog, getResources());
-            return alertDialog;
-        }
     }
 }
