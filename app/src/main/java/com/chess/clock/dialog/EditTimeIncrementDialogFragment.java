@@ -123,9 +123,13 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
         AppTheme theme = ((BaseActivity) requireActivity()).selectedTheme;
         if (theme != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ColorStateList tintList = theme.colorStateListFocused(requireContext());
-                minutesEt.setBackgroundTintList(tintList);
-                secondsEt.setBackgroundTintList(tintList);
+                ColorStateList tintFocused = theme.colorStateListFocused(requireContext());
+                ColorStateList tintChecked = theme.colorStateListChecked(requireContext());
+                minutesEt.setBackgroundTintList(tintFocused);
+                secondsEt.setBackgroundTintList(tintFocused);
+                delayTv.setCheckMarkTintList(tintChecked);
+                bronsteinTv.setCheckMarkTintList(tintChecked);
+                fischerTv.setCheckMarkTintList(tintChecked);
             }
         }
     }

@@ -1,0 +1,8 @@
+<resources>
+    <dimen name="clock_timer_adjust_time_text_size">40sp</dimen>
+    <dimen name="clock_timer_textSize_small">84sp</dimen>
+    <dimen name="clock_timer_textSize_normal">116sp</dimen>
+    <dimen name="clock_timer_menu_height">70dp</dimen>
+    <dimen name="clock_timer_bottom_control_margin">32dp</dimen>
+    <dimen name="clock_timer_adjust_time_input_min_width">68dp</dimen>
+</resources>

@@ -37,6 +37,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/margin_standard"
+        android:layout_marginTop="@dimen/margin_standard"
         android:background="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,8 +61,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/pressed_selector_light"
-            android:src="@drawable/ic_sound"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_settings_sound_on"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/settingsBtn"
@@ -70,21 +71,21 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginHorizontal="@dimen/margin_standard"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:layout_gravity="center_vertical"
             android:paddingHorizontal="@dimen/margin_standard"
             android:singleLine="true"
+            android:text="@string/sound"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_large"
-            android:text="@string/sound" />
+            android:textSize="@dimen/text_size_large" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/soundSwitch"
-            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
 
     <LinearLayout
@@ -103,7 +104,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/pressed_selector_light"
             android:src="@drawable/ic_fullscreen"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -113,20 +113,20 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginHorizontal="@dimen/margin_standard"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:layout_gravity="center_vertical"
             android:paddingHorizontal="@dimen/margin_standard"
             android:singleLine="true"
+            android:text="@string/action_full_screen"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_large"
-            android:text="@string/action_full_screen" />
+            android:textSize="@dimen/text_size_large" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/fullscreenSwitch"
             android:layout_width="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

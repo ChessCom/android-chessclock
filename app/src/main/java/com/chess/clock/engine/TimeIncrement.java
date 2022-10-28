@@ -107,7 +107,7 @@ public class TimeIncrement implements Parcelable, Cloneable {
      */
     @NonNull
     public String toString() {
-        return mType + ", " + ClockTime.raw(mValue).toMinutesFormat();
+        return mType.typeName + ", " + ClockTime.raw(mValue).toMinutesFormat();
     }
 
     /**
@@ -152,22 +152,24 @@ public class TimeIncrement implements Parcelable, Cloneable {
         /**
          * The player's clock starts after the delay period.
          */
-        DELAY(0),
+        DELAY(0,"Delay"),
 
         /**
          * Players receive the used portion of the increment at the end of each turn.
          */
-        BRONSTEIN(1),
+        BRONSTEIN(1, "Bronstein"),
 
         /**
          * Players receive a full increment at the end of each turn.
          */
-        FISCHER(2);
+        FISCHER(2, "Fischer");
 
         private final int value;
+        private final String typeName;
 
-        Type(int value) {
+        Type(int value,String typeName) {
             this.value = value;
+            this.typeName = typeName;
         }
 
         public static Type fromInteger(int type) {

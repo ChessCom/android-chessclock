@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_marginBottom="@dimen/margin_small"
-        android:background="@color/toolbar_gray"
+        android:background="@color/gray_controls"
         android:orientation="horizontal">
 
         <ImageView
@@ -90,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_standard"
-        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginVertical="@dimen/margin_small"
         android:text="@string/fischer_option_subtitle"
         android:textColor="@color/white_50"
         android:textSize="@dimen/text_size_default" />
@@ -99,14 +99,16 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_margin="@dimen/margin_standard"
+        android:layout_marginHorizontal="@dimen/margin_standard"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:layout_marginBottom="@dimen/margin_small"
         android:background="@color/gray" />
 
     <LinearLayout
         android:id="@+id/movesLay"
         android:layout_width="match_parent"
         android:layout_height="@dimen/time_item_height"
-        android:layout_marginTop="@dimen/margin_standard"
+        android:layout_marginTop="@dimen/margin_small"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/margin_standard">

@@ -8,7 +8,6 @@
     <!-- ChessClock Activity -->
     <string name="app_name">Chess Clock</string>
     <string name="foreground_service_started">Chess clock running.</string>
-    <string name="moves_text">Moves:</string>
     <string name="dialog_reset_clock">Reset the clock?</string>
     <string name="dialog_no">No</string>
     <string name="dialog_yes">Yes</string>
@@ -80,7 +79,7 @@
     <string name="app_settings">App Settings</string>
     <string name="theme_color">Theme color</string>
     <string name="sound">Sound</string>
-    <string name="custom_time">Custom time</string>
+    <string name="custom_time">Custom Time</string>
     <string name="x_min">%d min</string>
     <string name="x_sec">%d sec</string>
     <string name="x_min_y_sec">%d min | %2d sec</string>
@@ -106,5 +105,6 @@
     <string name="save_time">Save time</string>
     <string name="cancel">cancel</string>
     <string name="adjust_time">Adjust Time</string>
+    <string name="moves_x">Moves: %d</string>
 
 </resources>

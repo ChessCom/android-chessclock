@@ -1,107 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.TimerSettingsActivity">
+    android:orientation="vertical">
 
-    <!-- collapsing content container-->
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        android:fitsSystemWindows="true"
-        app:elevation="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:context=".activities.TimerSettingsActivity">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+        <!-- collapsing content container-->
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/transparent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:elevation="0dp">
 
-            <ImageView
-                android:id="@+id/logo"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="92dp"
-                android:background="?selectableItemBackground"
-                android:importantForAccessibility="no"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_logo"
-                app:layout_collapseMode="pin" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/timeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="@dimen/margin_large"
-            android:foreground="?selectableItemBackground"
-            app:cardCornerRadius="25dp"
-            app:layout_constraintTop_toBottomOf="@id/logo">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/gray_bg_frame"
-                android:orientation="horizontal"
-                android:padding="@dimen/margin_standard">
+                android:background="@color/transparent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="@color/transparent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
-                    android:id="@+id/plusImg"
+                    android:id="@+id/logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="92dp"
+                    android:background="?selectableItemBackground"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_logo"
+                    app:layout_collapseMode="pin" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/timeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="@dimen/margin_large"
+                android:foreground="?selectableItemBackgroundBorderless"
+                app:cardCornerRadius="25dp"
+                app:layout_constraintTop_toBottomOf="@id/logo">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/margin_small"
-                    android:src="@drawable/ic_plus_green" />
+                    android:background="@drawable/add_time_button_bg"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/margin_standard"
+                    android:paddingVertical="@dimen/margin_x_standard">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_time" />
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/plusImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/margin_small"
+                        android:src="@drawable/ic_plus_green" />
 
-        </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_x_small"
+                        android:text="@string/new_time" />
+                </LinearLayout>
 
-        <TextView
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/margin_standard"
+                android:text="@string/presets"
+                android:textColor="@color/white_50"
+                android:textSize="@dimen/text_size_default" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/timesRecycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/margin_standard"
-            android:text="@string/presets"
-            android:textColor="@color/white_50"
-            android:textSize="@dimen/text_size_default" />
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/timesRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/settings_margin_over_button"
-        android:nestedScrollingEnabled="true"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.chess.clock.views.StyledButton
         android:id="@+id/startBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginHorizontal="@dimen/margin_standard"
-        android:layout_marginBottom="@dimen/margin_large"
+        android:layout_marginHorizontal="@dimen/margin_xx_standard"
+        android:layout_marginVertical="@dimen/margin_standard"
+        android:layout_marginBottom="@dimen/margin_standard"
         android:foreground="?selectableItemBackground"
         android:text="@string/start"
-        app:cardBackgroundColor="@color/green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_max="@dimen/max_content_width" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

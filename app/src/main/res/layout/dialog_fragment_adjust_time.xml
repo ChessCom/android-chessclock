@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:cardBackgroundColor="@color/windowBackground"
+        app:cardBackgroundColor="@color/gray_background"
         app:cardCornerRadius="@dimen/default_radius">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +51,8 @@
                     style="@style/timeInputEditTextStyleLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/minutesEt"
                     tools:text="00" />
             </androidx.cardview.widget.CardView>
 
@@ -85,7 +86,8 @@
                     style="@style/timeInputEditTextStyleLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/secondsEt"
                     tools:text="00" />
             </androidx.cardview.widget.CardView>
 

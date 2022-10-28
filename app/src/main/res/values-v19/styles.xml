@@ -4,7 +4,7 @@
     <style name="TimersTheme" parent="ImmersiveStickyTheme" />
 
     <style name="ImmersiveTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowBackground">@color/gray_background</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowActionBarOverlay">true</item>
     </style>

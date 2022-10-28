@@ -26,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -103,7 +104,8 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     private View baseView;
     private View advancedView;
     private View addStageView;
-    private View saveButton;
+    private View addStageDivider;
+    private CardView saveButton;
     private TabLayout tabLayout;
 
 
@@ -145,8 +147,9 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         ColorStateList tintChecked = theme.colorStateListChecked(requireContext());
         DrawableCompat.setTintList(advancedModeSwitch.getThumbDrawable(), tintChecked);
         DrawableCompat.setTintList(copyPLayerOneSwitch.getThumbDrawable(), tintChecked);
-        saveButton.setBackgroundResource(theme.primaryColorRes);
-        tabLayout.setSelectedTabIndicatorColor(theme.color(requireContext()));
+        int mainColor = theme.color(requireContext());
+        saveButton.setCardBackgroundColor(mainColor);
+        tabLayout.setSelectedTabIndicatorColor(mainColor);
     }
 
     @Override
@@ -167,6 +170,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         incrementMinutesEt = v.findViewById(R.id.baseIncrementMinEt);
         incrementSecondsEt = v.findViewById(R.id.baseIncrementSecEt);
         addStageView = v.findViewById(R.id.addStageTv);
+        addStageDivider = v.findViewById(R.id.addStageDivider);
         tabLayout = v.findViewById(R.id.tabLayout);
         if (timeControlWrapper != null) {
             selectedTimeControl = timeControlWrapper.getTimeControlPlayerOne();
@@ -337,7 +341,9 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
 
     private void loadStages() {
         Stage[] stages = selectedTimeControl.getStageManager().getStages();
-        ViewUtils.showView(addStageView, stages.length < Stage.MAX_ALLOWED_STAGES_COUNT);
+        boolean showAddStageView = stages.length < Stage.MAX_ALLOWED_STAGES_COUNT;
+        ViewUtils.showView(addStageView, showAddStageView);
+        ViewUtils.showView(addStageDivider, showAddStageView);
         int i = 0;
         while (i < Stage.MAX_ALLOWED_STAGES_COUNT) {
             StageRowView row = (StageRowView) stagesList.getChildAt(i);

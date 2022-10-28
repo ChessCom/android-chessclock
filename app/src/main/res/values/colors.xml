@@ -2,8 +2,10 @@
 <resources>
     <!-- Common palette -->
     <color name="black">#000</color>
+    <color name="black_20">#33000000</color>
     <color name="black_40">#66000000</color>
     <color name="black_65">#A6000000</color>
+    <color name="black_70">#B3000000</color>
     <color name="blue">#0381b8</color>
     <color name="green">#7fa650</color>
     <color name="green_65">#A67FA650</color>
@@ -22,15 +24,12 @@
     <color name="gray_light_2">#e7e6e5</color>
 
     <!-- App colors-->
-    <color name="toolbar_gray">#312e2b</color>
-    <color name="windowBackground">#262421</color>
+    <color name="gray_controls">#312e2b</color>
+    <color name="gray_background">#262421</color>
 
     <!-- Clock timers screen -->
     <color name="clock_timers_activity_background">#FF312e2b</color>
     <color name="bg_clock_setting_button_normal">#6f6862</color>
     <color name="bg_clock_setting_button_pressed">#ff59534e</color>
     <color name="clock_stage_gray">#aa312e2b</color>
-
-    <!-- Settings Contextual Action bar -->
-    <color name="bg_settings_cab">#4f7838</color>
 </resources>

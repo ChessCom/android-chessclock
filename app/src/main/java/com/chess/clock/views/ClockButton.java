@@ -23,6 +23,10 @@ import com.chess.clock.entities.ClockTime;
 @Keep
 public class ClockButton extends FrameLayout {
 
+    private final int idleTextColor;
+    private final int runningTextColor;
+    int idleBgColor = ContextCompat.getColor(getContext(), R.color.gray_light);
+
     private final TextView timeTv;
     private final TextView movesTv;
     private final TextView controlNameTv;
@@ -47,6 +51,9 @@ public class ClockButton extends FrameLayout {
         int attributeResourceId = a.getResourceId(0, 0);
         Drawable drawable = ContextCompat.getDrawable(getContext(), attributeResourceId);
         setForeground(drawable);
+
+        idleTextColor = getResources().getColor(R.color.black_70);
+        runningTextColor = getResources().getColor(R.color.white);
     }
 
     public void setTime(long timeMillis) {
@@ -61,11 +68,7 @@ public class ClockButton extends FrameLayout {
 
     @SuppressLint("DefaultLocale")
     public void setMoves(int moves) {
-        movesTv.setText(String.format("%2d", moves));
-    }
-
-    public CharSequence getTimeText() {
-        return timeTv.getText();
+        movesTv.setText(getContext().getString(R.string.moves_x, moves));
     }
 
     public void setClockButtonClickListener(ClockClickListener listener) {
@@ -80,22 +83,22 @@ public class ClockButton extends FrameLayout {
         switch (state) {
             case IDLE:
             case LOCKED:
-                setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray_light));
-                timeTv.setTextColor(getResources().getColor(R.color.black));
+                setBackgroundColor(idleBgColor);
+                timeTv.setTextColor(idleTextColor);
                 break;
             case RUNNING:
                 setBackgroundColor(ContextCompat.getColor(getContext(), theme.primaryColorRes));
-                timeTv.setTextColor(getResources().getColor(R.color.white));
+                timeTv.setTextColor(runningTextColor);
                 break;
             case FINISHED:
                 setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red));
-                timeTv.setTextColor(getResources().getColor(R.color.black));
+                timeTv.setTextColor(idleTextColor);
                 break;
         }
         setClickable(state != State.LOCKED);
-        Boolean showStageControls = state == State.IDLE;
-        ViewUtils.showView(timeOptions, showStageControls);
-        ViewUtils.showView(controlNameTv, showStageControls);
+        boolean hideStageControls = state != State.IDLE;
+        ViewUtils.isInvisible(timeOptions, hideStageControls);
+        ViewUtils.isInvisible(controlNameTv, hideStageControls);
     }
 
     private void setStageBg(View stage, Boolean active) {

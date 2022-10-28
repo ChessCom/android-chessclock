@@ -9,16 +9,21 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_standard"
-        android:foreground="?selectableItemBackground"
+        android:layout_marginVertical="@dimen/margin_standard"
+        android:layout_marginStart="@dimen/margin_standard"
+        android:layout_marginLeft="@dimen/margin_standard"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:foreground="?selectableItemBackgroundBorderless"
         app:cardBackgroundColor="@color/green"
         app:cardCornerRadius="20dp"
-        app:cardElevation="0dp" />
+        app:cardElevation="0dp">
 
-    <ImageView
-        android:id="@+id/checkmarkImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_checkmark" />
+        <ImageView
+            android:id="@+id/checkmarkImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_checkmark" />
+    </androidx.cardview.widget.CardView>
 </FrameLayout>

@@ -73,7 +73,6 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
             secondsEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.seconds));
         }
 
-        ClockUtils.clearFocusOnActionDone(hoursEt);
         ClockUtils.setClockTextWatcher(minutesEt);
         ClockUtils.setClockTextWatcher(secondsEt);
 
