@@ -63,6 +63,7 @@
                         style="@style/timeInputEditTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:hint="@string/default_time_setup_hint"
                         android:imeOptions="actionNext"
                         android:nextFocusForward="@id/baseSecEt" />
                 </androidx.cardview.widget.CardView>
@@ -83,6 +84,7 @@
                         style="@style/timeInputEditTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:hint="@string/default_time_setup_hint"
                         android:imeOptions="actionDone" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
@@ -121,6 +123,7 @@
                         style="@style/timeInputEditTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:hint="@string/default_time_setup_hint"
                         android:imeOptions="actionNext"
                         android:nextFocusForward="@id/baseIncrementSecEt" />
                 </androidx.cardview.widget.CardView>
@@ -141,6 +144,7 @@
                         style="@style/timeInputEditTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:hint="@string/default_time_setup_hint"
                         android:imeOptions="actionDone" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
@@ -289,7 +293,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/small_action_button_height"
             android:layout_margin="@dimen/margin_standard"
-            android:foreground="?selectableItemBackgroundBorderless"
+            android:clickable="false"
+            android:focusable="false"
+            android:foreground="@color/black_40"
             app:cardBackgroundColor="@color/green"
             app:cardCornerRadius="@dimen/default_radius"
             app:layout_constraintBottom_toBottomOf="parent">

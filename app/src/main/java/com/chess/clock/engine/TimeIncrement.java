@@ -152,7 +152,7 @@ public class TimeIncrement implements Parcelable, Cloneable {
         /**
          * The player's clock starts after the delay period.
          */
-        DELAY(0,"Delay"),
+        DELAY(0, "Delay"),
 
         /**
          * Players receive the used portion of the increment at the end of each turn.
@@ -167,7 +167,7 @@ public class TimeIncrement implements Parcelable, Cloneable {
         private final int value;
         private final String typeName;
 
-        Type(int value,String typeName) {
+        Type(int value, String typeName) {
             this.value = value;
             this.typeName = typeName;
         }
