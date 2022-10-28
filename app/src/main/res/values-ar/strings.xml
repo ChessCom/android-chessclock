@@ -24,10 +24,6 @@
     <string name="action_save_time_control">حفظ</string>
     <string name="time_control">ضبط الوقت</string>
     <string name="toast_requesting_time_control_name">.يرجى إضافة اسم للحفظ</string>
-    <string name="exit_dialog_title">هل تريد الحفظ قبل الخروج؟</string>
-    <string name="exit_dialog_message">.هناك تغييرات غير محفوظة في ضبط الوقت المحدد</string>
-    <string name="exit_dialog_cancel">خروج</string>
-    <string name="exit_dialog_ok">حفظ وخروج</string>
     ​
     ​
     <!-- Time Control Manager -->

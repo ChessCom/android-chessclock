@@ -29,10 +29,6 @@
     <string name="action_save_time_control">Save</string>
     <string name="time_control">Time Control</string>
     <string name="toast_requesting_time_control_name">Please add a name to save.</string>
-    <string name="exit_dialog_title">Do you want to save before exiting?</string>
-    <string name="exit_dialog_message">There are unsaved changes in this Time Control.</string>
-    <string name="exit_dialog_cancel">Exit</string>
-    <string name="exit_dialog_ok">Save and Exit</string>
 
     <!-- Time Control Manager -->
     <string name="list_empty_toast_message">List empty. Default list loaded.</string>
@@ -107,5 +103,6 @@
     <string name="cancel">cancel</string>
     <string name="adjust_time">Adjust Time</string>
     <string name="moves_x">Moves: %d</string>
+    <string name="exit_dialog_message">Are you sure you want to discard new custom time?</string>
 
 </resources>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/time_item_height"
-    android:background="?selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -13,7 +13,10 @@
         android:layout_marginStart="@dimen/margin_standard"
         android:layout_marginLeft="@dimen/margin_standard"
         android:src="@drawable/ic_check_box"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatCheckedTextView
         android:id="@+id/nameTv"
@@ -26,7 +29,11 @@
         android:paddingHorizontal="@dimen/margin_standard"
         android:singleLine="true"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_large" />
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/editBtn"
+        app:layout_constraintStart_toEndOf="@id/checkBoxImg"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/editBtn"
@@ -37,7 +44,10 @@
         android:contentDescription="@string/action_edit"
         android:padding="@dimen/margin_small"
         android:src="@drawable/ic_edit"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/reorderBtn"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/reorderBtn"
@@ -49,5 +59,8 @@
         android:importantForAccessibility="no"
         android:padding="@dimen/margin_small"
         android:src="@drawable/ic_reorder_icon"
-        android:visibility="gone" />
-</LinearLayout>
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

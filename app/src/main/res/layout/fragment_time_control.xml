@@ -10,22 +10,39 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/time_control_name"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/timeControlInputLay"
+            style="?attr/textInputFilledStyle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/time_item_height"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_standard"
             android:layout_marginTop="@dimen/margin_large"
-            android:background="@drawable/edit_text_bg"
             android:hint="@string/name"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLength="100"
-            android:maxLines="1"
-            android:paddingHorizontal="@dimen/margin_x_standard"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white_50"
-            android:textSize="@dimen/text_size_large" />
+            android:theme="@style/Theme.MaterialComponents"
+            app:boxBackgroundColor="@color/gray_controls"
+            app:boxBackgroundMode="filled"
+            app:boxCornerRadiusTopEnd="@dimen/large_radius"
+            app:boxCornerRadiusTopStart="@dimen/large_radius"
+            app:boxStrokeColor="@color/green"
+            app:hintTextColor="@color/green">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/timeControlNameEt"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:background="@null"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="100"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/margin_standard"
+                android:paddingTop="@dimen/margin_large"
+                android:paddingBottom="@dimen/margin_small"
+                android:textColor="@color/white"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/text_size_large" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:id="@+id/baseLay"
@@ -177,6 +194,7 @@
             </com.google.android.material.tabs.TabLayout>
 
             <TextView
+                android:id="@+id/stagesListTitleTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_standard"
