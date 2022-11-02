@@ -456,6 +456,9 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
             public void soundClicked() {
                 soundManager.toggleSound();
                 updateUIState();
+                if (soundManager.areSoundsEnabled()) {
+                    soundManager.playSound(ClockSound.MENU_ACTION);
+                }
             }
         });
     }
