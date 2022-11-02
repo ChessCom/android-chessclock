@@ -124,7 +124,7 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
         if (theme != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ColorStateList tintFocused = theme.colorStateListFocused(requireContext());
-                ColorStateList tintChecked = theme.colorStateListChecked(requireContext());
+                ColorStateList tintChecked = theme.radioButtonStateList(requireContext());
                 minutesEt.setBackgroundTintList(tintFocused);
                 secondsEt.setBackgroundTintList(tintFocused);
                 delayTv.setCheckMarkTintList(tintChecked);

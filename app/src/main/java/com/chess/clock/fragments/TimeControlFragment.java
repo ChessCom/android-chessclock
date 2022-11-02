@@ -136,7 +136,7 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
     @Override
     void loadTheme(AppTheme theme) {
         ColorStateList stateListFocused = theme.colorStateListFocused(requireContext());
-        ColorStateList stateListChecked = theme.colorStateListChecked(requireContext());
+        ColorStateList stateListChecked = theme.switchColorStateList(requireContext());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             minutesEt.setBackgroundTintList(stateListFocused);
