@@ -1,6 +1,7 @@
 package com.chess.clock.activities;
 
 import android.content.res.ColorStateList;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -61,9 +62,13 @@ public class AppSettingsActivity extends BaseActivity {
             fullScreenMode = isChecked;
             updateUiState();
         });
+        MediaPlayer enableSounds = MediaPlayer.create(this, R.raw.chess_clock_pause);
         soundsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             soundsEnabled = isChecked;
             updateUiState();
+            if (isChecked) {
+                enableSounds.start();
+            }
         });
 
         updateUiState();
