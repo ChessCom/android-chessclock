@@ -201,7 +201,7 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
                 nameTv.setCheckMarkDrawable(R.drawable.list_radio_button_selector);
                 nameTv.setChecked(selectedItemId == timeControlWrapper.getId());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && theme != null) {
-                    nameTv.setCheckMarkTintList(theme.colorStateListChecked(nameTv.getContext()));
+                    nameTv.setCheckMarkTintList(theme.radioButtonStateList(nameTv.getContext()));
                 }
             }
             reorderButton.setOnClickListener(v -> itemView.performLongClick());

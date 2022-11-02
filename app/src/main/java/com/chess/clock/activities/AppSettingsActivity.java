@@ -46,7 +46,7 @@ public class AppSettingsActivity extends BaseActivity {
 
         AppTheme selectedTheme = appData.getSelectedTheme();
         adapter = new ThemesAdapter(selectedTheme, theme -> {
-            ColorStateList tintChecked = theme.colorStateListChecked(this);
+            ColorStateList tintChecked = theme.switchColorStateList(this);
             DrawableCompat.setTintList(fullScreenSwitch.getThumbDrawable(), tintChecked);
             DrawableCompat.setTintList(soundsSwitch.getThumbDrawable(), tintChecked);
         });
@@ -54,7 +54,7 @@ public class AppSettingsActivity extends BaseActivity {
 
         fullScreenSwitch.setChecked(fullScreenMode);
         soundsSwitch.setChecked(soundsEnabled);
-        ColorStateList tintChecked = selectedTheme.colorStateListChecked(this);
+        ColorStateList tintChecked = selectedTheme.switchColorStateList(this);
         DrawableCompat.setTintList(fullScreenSwitch.getThumbDrawable(), tintChecked);
         DrawableCompat.setTintList(soundsSwitch.getThumbDrawable(), tintChecked);
 

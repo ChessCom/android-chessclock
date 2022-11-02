@@ -31,7 +31,15 @@ public enum AppTheme {
         throw new AssertionError("no app theme for position: " + position);
     }
 
-    public ColorStateList colorStateListChecked(Context context) {
+    public ColorStateList switchColorStateList(Context context) {
+        return checkedStateList(context, R.color.white);
+    }
+
+    public ColorStateList radioButtonStateList(Context context) {
+        return checkedStateList(context, R.color.white_20);
+    }
+
+    private ColorStateList checkedStateList(Context context, @ColorRes int defaultColorRes) {
         int[][] states = new int[][]{
                 new int[]{android.R.attr.state_checked},
                 new int[]{-android.R.attr.state_checked}
@@ -39,7 +47,7 @@ public enum AppTheme {
 
         int[] colors = new int[]{
                 color(context),
-                ContextCompat.getColor(context, R.color.white_20)
+                ContextCompat.getColor(context, defaultColorRes)
         };
 
         return new ColorStateList(states, colors);
