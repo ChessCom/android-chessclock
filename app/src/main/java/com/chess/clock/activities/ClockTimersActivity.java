@@ -439,6 +439,7 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
                     onPlayerClockClicked(mTimersStatePreviousToPause != TimersState.PLAYER_ONE_RUNNING);
                 } else {
                     pauseClock();
+                    soundManager.playSound(ClockSound.MENU_ACTION);
                 }
             }
 
