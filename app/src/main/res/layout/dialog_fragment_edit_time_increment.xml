@@ -134,8 +134,8 @@
                 style="@style/timeInputEditTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:imeOptions="actionDone"
-                android:nextFocusForward="@id/baseIncrementSecEt" />
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@id/secondsEt" />
         </androidx.cardview.widget.CardView>
 
         <TextView style="@style/timeColonTextViewStyle" />
