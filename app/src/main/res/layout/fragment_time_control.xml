@@ -29,7 +29,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/timeControlNameEt"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="wrap_content"
                 android:background="@null"
                 android:imeOptions="actionDone"
                 android:inputType="text"
@@ -37,7 +37,7 @@
                 android:maxLines="1"
                 android:paddingHorizontal="@dimen/margin_standard"
                 android:paddingTop="@dimen/margin_large"
-                android:paddingBottom="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_standard"
                 android:textColor="@color/white"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/text_size_large" />
