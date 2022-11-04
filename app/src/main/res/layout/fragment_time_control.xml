@@ -226,6 +226,7 @@
                 android:background="@color/gray" />
 
             <TextView
+                android:layout_marginTop="@dimen/margin_standard"
                 android:id="@+id/addStageTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -236,6 +237,7 @@
                 android:text="@string/action_add_new_stage"
                 android:textColor="@color/gray_light_2"
                 android:textSize="@dimen/text_size_default"
+                android:fontFamily="@font/roboto_medium"
                 app:drawableLeftCompat="@drawable/ic_plus_green"
                 app:drawableTint="@color/gray_light_2" />
 
