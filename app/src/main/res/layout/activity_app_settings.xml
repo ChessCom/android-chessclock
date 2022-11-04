@@ -25,12 +25,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_small"
+        android:clipToPadding="false"
         android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/margin_x_small"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/themeTv"
-        app:layout_constraintWidth_max="@dimen/max_content_width" />
+        app:layout_constraintWidth_max="@dimen/max_content_width"
+        tools:listitem="@layout/item_theme" />
 
     <View
         android:id="@+id/divider"
