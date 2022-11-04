@@ -85,11 +85,7 @@
                         android:nextFocusForward="@id/baseSecEt" />
                 </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_small"
-                    android:text="@string/colon" />
+                <TextView style="@style/timeColonTextViewStyle" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
@@ -145,11 +141,7 @@
                         android:nextFocusForward="@id/baseIncrementSecEt" />
                 </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_small"
-                    android:text="@string/colon" />
+                <TextView style="@style/timeColonTextViewStyle" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"

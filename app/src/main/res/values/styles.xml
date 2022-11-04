@@ -111,6 +111,16 @@
 
     <style name="AppTheme.DialogFullScreen" />
 
+    <style name="timeColonTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">@dimen/margin_small</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:textColor">@color/white_85</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:text">@string/colon</item>
+    </style>
+
     <!-- Custom Attributes of TimePickerView compound view-->
     <declare-styleable name="TimePickerCompoundView">
         <attr name="type">
