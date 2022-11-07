@@ -5,6 +5,7 @@
     <dimen name="margin_x_standard">12dp</dimen>
     <dimen name="margin_standard">16dp</dimen>
     <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_double_standard">32dp</dimen>
 
     <dimen name="default_radius">4dp</dimen>
     <dimen name="large_radius">10dp</dimen>

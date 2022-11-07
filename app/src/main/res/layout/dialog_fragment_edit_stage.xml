@@ -26,19 +26,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_standard"
             android:layout_weight="1"
             android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:textColor="@color/white"
-            android:textSize="@dimen/button_text_size"
             tools:text="Stage" />
 
         <ImageView
             android:id="@+id/deleteBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin_x_small"
             android:layout_margin="@dimen/margin_x_standard"
             android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/margin_x_small"
             android:src="@drawable/ic_delete" />
     </LinearLayout>
 
@@ -102,6 +103,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@string/time"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_large" />
 
@@ -115,14 +117,11 @@
                 style="@style/timeInputEditTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:imeOptions="actionDone" />
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@id/minutesEt" />
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_small"
-            android:text="@string/colon" />
+        <TextView style="@style/timeColonTextViewStyle" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
@@ -134,14 +133,11 @@
                 style="@style/timeInputEditTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:imeOptions="actionDone" />
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@id/secondsEt" />
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_small"
-            android:text="@string/colon" />
+        <TextView style="@style/timeColonTextViewStyle" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
@@ -161,7 +157,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/margin_standard"
-        android:layout_marginVertical="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:layout_marginBottom="@dimen/margin_small"
         android:background="@color/gray" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -169,16 +166,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:paddingVertical="@dimen/margin_x_standard"
-        android:paddingHorizontal="@dimen/margin_standard">
+        android:paddingHorizontal="@dimen/margin_standard"
+        android:paddingVertical="@dimen/margin_x_standard">
 
         <TextView
             android:id="@+id/incrementTitleTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="@string/increment"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_large"
-            android:text="@string/increment"
             app:layout_constraintEnd_toStartOf="@id/arrowImg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

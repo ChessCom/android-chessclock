@@ -18,7 +18,7 @@
             android:layout_marginHorizontal="@dimen/margin_standard"
             android:layout_marginTop="@dimen/margin_large"
             android:hint="@string/name"
-            android:theme="@style/Theme.MaterialComponents"
+            android:theme="@style/FilledEditTextTheme"
             app:boxBackgroundColor="@color/gray_controls"
             app:boxBackgroundMode="filled"
             app:boxCornerRadiusTopEnd="@dimen/large_radius"
@@ -29,7 +29,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/timeControlNameEt"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="wrap_content"
                 android:background="@null"
                 android:imeOptions="actionDone"
                 android:inputType="text"
@@ -37,7 +37,7 @@
                 android:maxLines="1"
                 android:paddingHorizontal="@dimen/margin_standard"
                 android:paddingTop="@dimen/margin_large"
-                android:paddingBottom="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_standard"
                 android:textColor="@color/white"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/text_size_large" />
@@ -85,11 +85,7 @@
                         android:nextFocusForward="@id/baseSecEt" />
                 </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_small"
-                    android:text="@string/colon" />
+                <TextView style="@style/timeColonTextViewStyle" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
@@ -145,11 +141,7 @@
                         android:nextFocusForward="@id/baseIncrementSecEt" />
                 </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_small"
-                    android:text="@string/colon" />
+                <TextView style="@style/timeColonTextViewStyle" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
@@ -238,8 +230,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_standard"
                 android:background="?selectableItemBackground"
                 android:drawablePadding="@dimen/margin_small"
+                android:fontFamily="@font/roboto_medium"
                 android:padding="@dimen/margin_small"
                 android:text="@string/action_add_new_stage"
                 android:textColor="@color/gray_light_2"
