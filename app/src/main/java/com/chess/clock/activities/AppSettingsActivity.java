@@ -3,6 +3,7 @@ package com.chess.clock.activities;
 import android.content.res.ColorStateList;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.ActionBar;
@@ -87,5 +88,24 @@ public class AppSettingsActivity extends BaseActivity {
                 fullScreenMode,
                 soundsEnabled
         );
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            closeWithAnimation();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        closeWithAnimation();
+    }
+
+    private void closeWithAnimation() {
+        finish();
+        overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
     }
 }
