@@ -28,7 +28,8 @@
     </style>
 
     <style name="ActionModeStyle" parent="@style/Theme.AppCompat">
-        <item name="android:titleTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item>
+        <item name="android:titleTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title
+        </item>
         <item name="android:height">?actionBarSize</item>
 
         <item name="titleTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item>
@@ -87,6 +88,15 @@
     </style>
 
     <style name="AppTheme.DialogFullScreen" />
+
+    <style name="AppTheme.DialogFullScreen.Slide">
+        <item name="android:windowAnimationStyle">@style/DialogAnimations</item>
+    </style>
+
+    <style name="DialogAnimations">
+        <item name="android:windowEnterAnimation">@anim/right_to_left_full</item>
+        <item name="android:windowExitAnimation">@anim/left_to_right_full</item>
+    </style>
 
     <style name="timeColonTextViewStyle">
         <item name="android:layout_width">wrap_content</item>

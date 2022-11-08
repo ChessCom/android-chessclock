@@ -42,6 +42,11 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
         return R.layout.dialog_fragment_edit_time_increment;
     }
 
+    @Override
+    public int theme() {
+        return R.style.AppTheme_DialogFullScreen_Slide;
+    }
+
     public static EditTimeIncrementDialogFragment newInstance(TimeIncrement timeIncrement) {
 
         Bundle args = new Bundle();
