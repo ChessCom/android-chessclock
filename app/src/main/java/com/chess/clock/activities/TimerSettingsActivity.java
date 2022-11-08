@@ -64,8 +64,7 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
 
     public void dismiss() {
         setResult(RESULT_CANCELED);
-        finish();
-        overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
+        finishWithAnimation();
     }
 
     @Override
@@ -93,8 +92,7 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
             if (resultToSet != null) {
                 setResult(resultToSet);
             }
-            finish();
-            overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
+            finishWithAnimation();
         }
     }
 

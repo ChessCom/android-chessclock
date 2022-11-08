@@ -46,6 +46,11 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
         return R.layout.dialog_fragment_edit_stage;
     }
 
+    @Override
+    public int theme() {
+        return R.style.AppTheme_DialogFullScreen_Slide;
+    }
+
     public static EditStageDialogFragment newInstance(Stage stage) {
 
         Bundle args = new Bundle();

@@ -22,6 +22,10 @@ abstract class FullScreenDialogFragment extends DialogFragment {
         return R.color.gray_background;
     }
 
+    public int theme() {
+        return R.style.AppTheme_DialogFullScreen;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,7 +35,7 @@ abstract class FullScreenDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = new Dialog(requireActivity(), R.style.AppTheme_DialogFullScreen);
+        Dialog dialog = new Dialog(requireActivity(), theme());
         FrameLayout content = new FrameLayout(requireActivity());
         content.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         dialog.setContentView(content);

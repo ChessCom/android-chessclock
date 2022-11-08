@@ -29,6 +29,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.transition.TransitionInflater;
 
 import com.chess.clock.R;
 import com.chess.clock.dialog.EditStageDialogFragment;
@@ -118,6 +119,13 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         TimeControlFragment fragment = new TimeControlFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.fragment_in));
     }
 
     @Override
