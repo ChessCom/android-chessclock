@@ -93,7 +93,7 @@ public class AppSettingsActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            closeWithAnimation();
+            finishWithAnimation();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -101,11 +101,7 @@ public class AppSettingsActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        closeWithAnimation();
+        finishWithAnimation();
     }
 
-    private void closeWithAnimation() {
-        finish();
-        overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
-    }
 }

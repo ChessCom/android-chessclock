@@ -6,6 +6,7 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.chess.clock.R;
 import com.chess.clock.entities.AppTheme;
 import com.chess.clock.statics.AppData;
 
@@ -39,5 +40,10 @@ public class BaseActivity extends AppCompatActivity {
         WindowManager.LayoutParams attrs = getWindow().getAttributes();
         attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
         getWindow().setAttributes(attrs);
+    }
+
+    public void finishWithAnimation() {
+        finish();
+        overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
     }
 }
