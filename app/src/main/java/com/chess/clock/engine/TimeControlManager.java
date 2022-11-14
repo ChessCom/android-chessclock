@@ -231,7 +231,7 @@ public class TimeControlManager {
         TimeControlParser.saveTimeControls(context, mTimeControls);
     }
 
-    public void loadDefaultTimeControls(Context context) {
+    public void restoreDefaultTimeControls(Context context) {
         mTimeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
         editableTimeControlCheckId = TimeControlDefaults.DEFAULT_TIME_ID;
     }

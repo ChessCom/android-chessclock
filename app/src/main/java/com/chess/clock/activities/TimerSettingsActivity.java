@@ -210,7 +210,7 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
 
     @Override
     public void restoreDefaultTimeControls() {
-        timeControlManager.loadDefaultTimeControls(this);
+        timeControlManager.restoreDefaultTimeControls(this);
     }
 
     /**
