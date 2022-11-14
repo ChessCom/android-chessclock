@@ -185,7 +185,7 @@
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/margin_x_standard"
-                android:text="@string/cancel"
+                android:text="@string/action_cancel"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_default"

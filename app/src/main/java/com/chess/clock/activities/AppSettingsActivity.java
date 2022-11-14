@@ -1,5 +1,7 @@
 package com.chess.clock.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chess.clock.R;
 import com.chess.clock.adapters.ThemesAdapter;
 import com.chess.clock.entities.AppTheme;
+import com.chess.clock.views.ViewUtils;
 
 public class AppSettingsActivity extends BaseActivity {
 
@@ -70,6 +73,20 @@ public class AppSettingsActivity extends BaseActivity {
             if (isChecked) {
                 enableSounds.start();
             }
+        });
+
+        findViewById(R.id.restoreBtn).setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.WhiteButtonsDialogTheme);
+            builder
+                    .setTitle(R.string.dialog_are_you_sure)
+                    .setMessage(R.string.restore_default_controls_confirmation_message)
+                    .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
+                    })
+                    .setNegativeButton(R.string.dialog_no, (dialog, id) -> {
+                    });
+            Dialog dialog = builder.create();
+            ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
+            dialog.show();
         });
 
         updateUiState();
