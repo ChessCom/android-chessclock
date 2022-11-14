@@ -102,7 +102,6 @@
     <string name="moves_x">Moves: %d</string>
     <string name="exit_dialog_message">Are you sure you want to discard new custom time?</string>
     <string name="restore_default_controls">Restore Default Time Controls</string>
-    <string name="restore_default_controls_confirmation_message">This will delete any custom time controls you have.</string>
-    <string name="dialog_are_you_sure">Are you sure?</string>
-
+    <string name="restore_default_controls_confirmation_message">Are you sure? This will delete any custom time controls you have.</string>
+    <string name="action_confirm">Confirm</string>
 </resources>

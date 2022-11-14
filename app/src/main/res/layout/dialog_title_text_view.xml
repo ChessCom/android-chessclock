@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="22dp"
+    android:paddingVertical="@dimen/margin_standard"
+    android:textColor="@color/white"
+    android:textSize="@dimen/text_size_dialog_title"
+    tools:text="Test Title" />
