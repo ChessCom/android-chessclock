@@ -96,7 +96,7 @@ public class TimeControlManager {
     }
 
     /**
-     * Save the last time control check position in the list.
+     * Save the last time control id.
      */
     public void saveTimeControlIndex(Context context) {
         TimeControlParser.saveTimeControlCheckIndex(context, editableTimeControlCheckId);
@@ -229,6 +229,11 @@ public class TimeControlManager {
             mTimeControls.get(i).setOrder(i);
         }
         TimeControlParser.saveTimeControls(context, mTimeControls);
+    }
+
+    public void loadDefaultTimeControls(Context context) {
+        mTimeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
+        editableTimeControlCheckId = TimeControlDefaults.DEFAULT_TIME_ID;
     }
 
     /**

@@ -208,6 +208,11 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
         timeControlManager.updateOrderOnItemMove(from, to, this);
     }
 
+    @Override
+    public void restoreDefaultTimeControls() {
+        timeControlManager.loadDefaultTimeControls(this);
+    }
+
     /**
      * Used as communication gateway by TimeControlFragment.
      *

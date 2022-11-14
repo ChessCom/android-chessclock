@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,6 +68,8 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         void removeTimeControl(Set<Long> ids);
 
         void upDateOrderOnItemMove(int from, int to);
+
+        void restoreDefaultTimeControls();
     }
 
     /**
@@ -77,6 +81,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
      * Activity attached.
      */
     private OnSettingsListener mListener;
+    ActivityResultLauncher<Intent> startSettingsForResult;
 
     /**
      * UI
@@ -106,6 +111,18 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         }
 
         setHasOptionsMenu(true);
+        startSettingsForResult = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        restoreControls();
+                    }
+                });
+    }
+
+    private void restoreControls() {
+        mListener.restoreDefaultTimeControls();
+        adapter.updateControls(mListener.getCurrentTimeControls(), mListener.getCheckedTimeControlId());
     }
 
     @Override
@@ -160,15 +177,19 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_settings) {
-            FragmentActivity activity = requireActivity();
-            startActivity(new Intent(activity, AppSettingsActivity.class));
-            activity.overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
+            openAppSettings();
             return true;
         } else if (itemId == R.id.action_edit) {
             runEditMode(true);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openAppSettings() {
+        FragmentActivity activity = requireActivity();
+        startSettingsForResult.launch(new Intent(activity, AppSettingsActivity.class));
+        activity.overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
     }
 
     private void runEditMode(boolean hapticFeedback) {

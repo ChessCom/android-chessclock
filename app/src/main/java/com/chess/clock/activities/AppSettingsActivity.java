@@ -1,5 +1,6 @@
 package com.chess.clock.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.res.ColorStateList;
@@ -81,6 +82,9 @@ public class AppSettingsActivity extends BaseActivity {
                     .setTitle(R.string.dialog_are_you_sure)
                     .setMessage(R.string.restore_default_controls_confirmation_message)
                     .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
+                        BaseActivity activity = AppSettingsActivity.this;
+                        activity.setResult(Activity.RESULT_OK);
+                        activity.finishWithAnimation();
                     })
                     .setNegativeButton(R.string.dialog_no, (dialog, id) -> {
                     });
