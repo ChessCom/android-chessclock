@@ -71,7 +71,7 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
     protected void onDestroy() {
         super.onDestroy();
         // store last settings time control list check position on shared preferences.
-        timeControlManager.saveTimeControlSelectedId(getApplicationContext());
+        timeControlManager.saveSelectedTimeControlId(getApplicationContext());
     }
 
     @Override

@@ -18,7 +18,7 @@ public class TimeControlManager {
     /**
      * Save instance state keys
      */
-    private final String KEY_EDITABLE_TIME_CONTROL_CHECK_ID = "key_time_control_checked";
+    private final String KEY_SELECTED_TIME_CONTROL_ID = "key_time_control_checked";
     private final String KEY_EDITABLE_TIME_CONTROL = "key_editable_time_control";
     private final String KEY_EDITABLE_STAGE_NEW_FLAG = "key_editable_time_control_new_flag";
     /**
@@ -42,7 +42,7 @@ public class TimeControlManager {
 
         // Check for configuration change.
         if (savedInstanceState != null) {
-            selectedTimeControlId = savedInstanceState.getInt(KEY_EDITABLE_TIME_CONTROL_CHECK_ID, 1);
+            selectedTimeControlId = savedInstanceState.getInt(KEY_SELECTED_TIME_CONTROL_ID, 1);
             mEditableTimeControl = savedInstanceState.getParcelable(KEY_EDITABLE_TIME_CONTROL);
             isNewEditableTimeControl = savedInstanceState.getBoolean(KEY_EDITABLE_STAGE_NEW_FLAG, true);
         } else {
@@ -80,7 +80,7 @@ public class TimeControlManager {
      */
     public void onSaveInstanceState(Bundle outState) {
         if (outState != null) {
-            outState.putLong(KEY_EDITABLE_TIME_CONTROL_CHECK_ID, selectedTimeControlId);
+            outState.putLong(KEY_SELECTED_TIME_CONTROL_ID, selectedTimeControlId);
             outState.putParcelable(KEY_EDITABLE_TIME_CONTROL, mEditableTimeControl);
             outState.putBoolean(KEY_EDITABLE_STAGE_NEW_FLAG, isNewEditableTimeControl);
         }
@@ -98,7 +98,7 @@ public class TimeControlManager {
     /**
      * Save the last time control id.
      */
-    public void saveTimeControlSelectedId(Context context) {
+    public void saveSelectedTimeControlId(Context context) {
         TimeControlParser.saveSelectedTimeControlId(context, selectedTimeControlId);
     }
 
