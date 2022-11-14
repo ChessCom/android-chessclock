@@ -26,7 +26,7 @@ public class TimeControlManager {
      */
     private ArrayList<TimeControlWrapper> mTimeControls;   // List of time control wrappers.
     private TimeControlWrapper mEditableTimeControl;       // Copy of a TimeControl for edit purpose.
-    private long editableTimeControlCheckId;     // Id of TimeControl in the list.
+    private long selectedTimeControlId;     // Id of TimeControl in the list.
     private boolean isNewEditableTimeControl;       // Flag to add new TimeControl in the list after edit.
     /**
      * Listener used to dispatch updates.
@@ -42,12 +42,12 @@ public class TimeControlManager {
 
         // Check for configuration change.
         if (savedInstanceState != null) {
-            editableTimeControlCheckId = savedInstanceState.getInt(KEY_EDITABLE_TIME_CONTROL_CHECK_ID, 1);
+            selectedTimeControlId = savedInstanceState.getInt(KEY_EDITABLE_TIME_CONTROL_CHECK_ID, 1);
             mEditableTimeControl = savedInstanceState.getParcelable(KEY_EDITABLE_TIME_CONTROL);
             isNewEditableTimeControl = savedInstanceState.getBoolean(KEY_EDITABLE_STAGE_NEW_FLAG, true);
         } else {
             // First launch, fetch last check position.
-            editableTimeControlCheckId = TimeControlParser.getLastTimeControlCheckId(context);
+            selectedTimeControlId = TimeControlParser.getLastSelectedTimeControlId(context);
             isNewEditableTimeControl = true;
         }
 
@@ -80,7 +80,7 @@ public class TimeControlManager {
      */
     public void onSaveInstanceState(Bundle outState) {
         if (outState != null) {
-            outState.putLong(KEY_EDITABLE_TIME_CONTROL_CHECK_ID, editableTimeControlCheckId);
+            outState.putLong(KEY_EDITABLE_TIME_CONTROL_CHECK_ID, selectedTimeControlId);
             outState.putParcelable(KEY_EDITABLE_TIME_CONTROL, mEditableTimeControl);
             outState.putBoolean(KEY_EDITABLE_STAGE_NEW_FLAG, isNewEditableTimeControl);
         }
@@ -98,8 +98,8 @@ public class TimeControlManager {
     /**
      * Save the last time control id.
      */
-    public void saveTimeControlIndex(Context context) {
-        TimeControlParser.saveTimeControlCheckIndex(context, editableTimeControlCheckId);
+    public void saveTimeControlSelectedId(Context context) {
+        TimeControlParser.saveSelectedTimeControlId(context, selectedTimeControlId);
     }
 
     /**
@@ -112,7 +112,7 @@ public class TimeControlManager {
             if (isNewEditableTimeControl) {
                 // Prepend editable time control in the list.
                 mTimeControls.add(0, mEditableTimeControl);
-                setEditableTimeControlCheckId(mEditableTimeControl.getId());
+                setSelectedTimeControlId(mEditableTimeControl.getId());
             } else {
                 // replace time control in the list with the editable time control.
                 for (int i = 0; i < mTimeControls.size(); i++) {
@@ -162,7 +162,7 @@ public class TimeControlManager {
      */
     public void prepareEditableTimeControl(TimeControlWrapper wrapper) {
         isNewEditableTimeControl = false;
-        editableTimeControlCheckId = wrapper.getId();
+        selectedTimeControlId = wrapper.getId();
         try {
             mEditableTimeControl = (TimeControlWrapper) wrapper.clone();
         } catch (CloneNotSupportedException e) {
@@ -203,12 +203,12 @@ public class TimeControlManager {
         return mEditableTimeControl;
     }
 
-    public long getEditableTimeControlCheckId() {
-        return editableTimeControlCheckId;
+    public long getSelectedTimeControlId() {
+        return selectedTimeControlId;
     }
 
-    public void setEditableTimeControlCheckId(long id) {
-        editableTimeControlCheckId = id;
+    public void setSelectedTimeControlId(long id) {
+        selectedTimeControlId = id;
     }
 
     public void updateOrderOnItemMove(int from, int to, Context context) {
@@ -233,7 +233,7 @@ public class TimeControlManager {
 
     public void restoreDefaultTimeControls(Context context) {
         mTimeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
-        editableTimeControlCheckId = TimeControlDefaults.DEFAULT_TIME_ID;
+        selectedTimeControlId = TimeControlDefaults.DEFAULT_TIME_ID;
     }
 
     /**

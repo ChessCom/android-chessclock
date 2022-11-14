@@ -71,7 +71,7 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
     protected void onDestroy() {
         super.onDestroy();
         // store last settings time control list check position on shared preferences.
-        timeControlManager.saveTimeControlIndex(getApplicationContext());
+        timeControlManager.saveTimeControlSelectedId(getApplicationContext());
     }
 
     @Override
@@ -157,7 +157,7 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
      */
     @Override
     public long getCheckedTimeControlId() {
-        return timeControlManager.getEditableTimeControlCheckId();
+        return timeControlManager.getSelectedTimeControlId();
     }
 
     /**
@@ -167,7 +167,7 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
      */
     @Override
     public void setCheckedTimeControlId(long id) {
-        timeControlManager.setEditableTimeControlCheckId(id);
+        timeControlManager.setSelectedTimeControlId(id);
     }
 
     /**
