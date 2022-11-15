@@ -57,7 +57,7 @@ public class TimeControlParser {
             timeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
         }
 
-        long id = getLastTimeControlCheckId(context);
+        long id = getLastSelectedTimeControlId(context);
         TimeControlWrapper selectedControl = timeControls.get(0);
         for (TimeControlWrapper tc : timeControls) {
             if (tc.getId() == id) {
@@ -147,7 +147,7 @@ public class TimeControlParser {
      * @param id selected item id.
      */
     @SuppressLint("ApplySharedPref")
-    public static void saveTimeControlCheckIndex(Context context, long id) {
+    public static void saveSelectedTimeControlId(Context context, long id) {
         SharedPreferences sp = getSharedPreferences(context);
         SharedPreferences.Editor spe = sp.edit();
         spe.putLong(TIME_CONTROL_SELECTED_PREF_ID, id);
@@ -160,7 +160,7 @@ public class TimeControlParser {
      *
      * @return position of the last selected time control in the list.
      */
-    public static long getLastTimeControlCheckId(Context context) {
+    public static long getLastSelectedTimeControlId(Context context) {
         SharedPreferences sp = getSharedPreferences(context);
         return sp.getLong(TIME_CONTROL_SELECTED_PREF_ID, TimeControlDefaults.DEFAULT_TIME_ID);
     }

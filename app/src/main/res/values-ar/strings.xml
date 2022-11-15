@@ -37,12 +37,11 @@
     <!-- Stage Editor Dialog -->
     <string name="stage_editor_dialog_title">تعديل المرحلة</string>
     <string name="tstage_editor_dialog_set">ضبط</string>
-    <string name="stage_editor_dialog_cancel">إلغاء</string>
+    <string name="action_cancel">إلغاء</string>
     ​
     <!-- Time Increment Editor Dialog -->
     <string name="time_increment_editor_dialog_title">تعديل الوقت المضاف</string>
     <string name="time_increment_editor_dialog_set">ضبط</string>
-    <string name="time_increment_editor_dialog_cancel">إلغاء</string>
     <string name="radio_delay_title">تأجيل</string>
     <string name="radio_bronstein_title">برونشتاين</string>
     <string name="radio_fischer_title">فيشر</string>
@@ -50,7 +49,6 @@
     <!-- Time Picker Dialog -->
     <string name="time_picker_dialog_title">الوقت</string>
     <string name="time_picker_dialog_set">ضبط</string>
-    <string name="time_picker_dialog_cancel">إلغاء</string>
     ​
     <!-- Increment type spinner subtitles -->
     <string name="delay_option_subtitle">.يبدأ احتساب الوقت لكل لاعب بعد انتهاء فترة التأجيل</string>

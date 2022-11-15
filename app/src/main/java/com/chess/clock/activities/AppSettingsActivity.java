@@ -1,10 +1,14 @@
 package com.chess.clock.activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.res.ColorStateList;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SwitchCompat;
@@ -70,6 +74,24 @@ public class AppSettingsActivity extends BaseActivity {
             if (isChecked) {
                 enableSounds.start();
             }
+        });
+
+        findViewById(R.id.restoreBtn).setOnClickListener(v -> {
+            TextView titleView = (TextView) View.inflate(this, R.layout.dialog_title_text_view, null);
+            titleView.setText(R.string.restore_default_controls);
+            new AlertDialog.Builder(this, R.style.WhiteButtonsDialogTheme)
+                    .setMessage(R.string.restore_default_controls_confirmation_message)
+                    .setCustomTitle(titleView)
+                    .setPositiveButton(R.string.action_confirm, (dialog, id) -> {
+                        BaseActivity activity = AppSettingsActivity.this;
+                        activity.setResult(Activity.RESULT_OK);
+                        activity.finishWithAnimation();
+                    })
+                    .setNegativeButton(R.string.action_cancel, (dialog, id) -> {
+                        // dismiss
+                    })
+                    .create()
+                    .show();
         });
 
         updateUiState();

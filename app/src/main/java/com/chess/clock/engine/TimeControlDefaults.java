@@ -44,6 +44,7 @@ public class TimeControlDefaults {
 
         // Saving default time controls
         TimeControlParser.saveTimeControls(context, timeControls);
+        TimeControlParser.saveSelectedTimeControlId(context, TimeControlDefaults.DEFAULT_TIME_ID);
 
         return timeControls;
     }

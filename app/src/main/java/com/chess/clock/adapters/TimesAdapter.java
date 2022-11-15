@@ -160,6 +160,13 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
         return null;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateControls(ArrayList<TimeControlWrapper> currentTimeControls, long selectedItemId) {
+        this.data = currentTimeControls;
+        this.selectedItemId = selectedItemId;
+        notifyDataSetChanged();
+    }
+
     public static class TimeItemViewHolder extends RecyclerView.ViewHolder {
 
         AppCompatCheckedTextView nameTv;
