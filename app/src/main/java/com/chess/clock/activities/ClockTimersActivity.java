@@ -57,6 +57,8 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
     private ClockButton playerOneButton;
     private ClockButton playerTwoButton;
     private ClockMenu clockMenu;
+    private View clocksDivider;
+
     /**
      * Utils
      */
@@ -418,6 +420,7 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
         playerOneButton = findViewById(R.id.playerOneClockContainer);
         playerTwoButton = findViewById(R.id.playerTwoClockContainer);
         clockMenu = findViewById(R.id.menu_container);
+        clocksDivider = findViewById(R.id.divider);
 
         // Set listeners
         playerOneButton.setClockButtonClickListener(new ClockClickListener(true));
@@ -496,6 +499,9 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
                 break;
         }
         clockMenu.updateSoundIcon(soundManager.areSoundsEnabled());
+        if (clocksDivider != null) {
+            ViewUtils.showView(clocksDivider, mTimersState == TimersState.PAUSED);
+        }
     }
 
     private void onPlayerClockClicked(boolean firstPlayer) {
