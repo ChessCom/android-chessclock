@@ -58,9 +58,25 @@ public class TimeControlManager {
         }
 
         // Build default List if none was restored from shared preferences.
-        if (mTimeControls == null || mTimeControls.size() == 0) {
+        if (mTimeControls == null || mTimeControls.isEmpty()) {
             Log.i(TAG, "Time controls list empty. Building and saving default list.");
             mTimeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
+            selectedTimeControlId = TimeControlDefaults.DEFAULT_TIME_ID;
+        } else {
+            verifySelectedControlExists();
+        }
+    }
+
+    private void verifySelectedControlExists() {
+        boolean selectedControlExists = false;
+        for (TimeControlWrapper tc : mTimeControls) {
+            if (tc.getId() == selectedTimeControlId) {
+                selectedControlExists = true;
+                break;
+            }
+        }
+        if (!selectedControlExists) {
+            setSelectedTimeControlId(mTimeControls.get(0).getId());
         }
     }
 
@@ -153,6 +169,7 @@ public class TimeControlManager {
         } else {
             Log.v(TAG, "Requesting to save the remaining " + mTimeControls.size() + " time controls.");
             updateItemsOrderAndSave(context);
+            verifySelectedControlExists();
         }
     }
 

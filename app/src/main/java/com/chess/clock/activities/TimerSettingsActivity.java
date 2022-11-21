@@ -201,6 +201,7 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
     @Override
     public void removeTimeControl(Set<Long> ids) {
         timeControlManager.removeTimeControls(getApplicationContext(), ids);
+        refreshTimeControlsList();
     }
 
     @Override
