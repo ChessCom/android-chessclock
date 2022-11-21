@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:fitsSystemWindows="true"
+            android:minWidth="@dimen/max_content_width"
             app:elevation="0dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -73,10 +74,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_x_small"
-                        android:textSize="@dimen/text_size_large"
-                        android:textColor="@color/white_85"
                         android:fontFamily="@font/roboto_medium"
-                        android:text="@string/new_time" />
+                        android:text="@string/new_time"
+                        android:textColor="@color/white_85"
+                        android:textSize="@dimen/text_size_large" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
