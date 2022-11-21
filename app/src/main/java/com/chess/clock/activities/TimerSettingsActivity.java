@@ -205,7 +205,7 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
     }
 
     @Override
-    public void upDateOrderOnItemMove(int from, int to) {
+    public void updateOrderOnItemMove(int from, int to) {
         timeControlManager.updateOrderOnItemMove(from, to, this);
     }
 

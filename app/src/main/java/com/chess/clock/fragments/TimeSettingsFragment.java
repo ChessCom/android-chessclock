@@ -69,7 +69,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
         void removeTimeControl(Set<Long> ids);
 
-        void upDateOrderOnItemMove(int from, int to);
+        void updateOrderOnItemMove(int from, int to);
 
         void restoreDefaultTimeControls();
     }
@@ -283,7 +283,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
                     @Override
                     public void onItemsReordered(int from, int to) {
-                        mListener.upDateOrderOnItemMove(from, to);
+                        mListener.updateOrderOnItemMove(from, to);
                     }
 
                     @Override
