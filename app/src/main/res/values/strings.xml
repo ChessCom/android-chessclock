@@ -104,4 +104,7 @@
     <string name="restore_default_controls">Restore Default Time Controls</string>
     <string name="restore_default_controls_confirmation_message">Are you sure? This will delete any custom time controls you have.</string>
     <string name="action_confirm">Confirm</string>
+    <string name="action_ok">OK</string>
+    <string name="attention">Attention</string>
+    <string name="delete_all_time_controls_info">The clock requires at least one active time control. Please edit the existing time control or create a new one.</string>
 </resources>
