@@ -306,7 +306,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     @SuppressLint("NotifyDataSetChanged")
     public void refreshTimeControlList() {
         if (adapter != null) {
-            adapter.notifyDataSetChanged();
+            adapter.updateControls(mListener.getCurrentTimeControls(), mListener.getCheckedTimeControlId());
         }
     }
 

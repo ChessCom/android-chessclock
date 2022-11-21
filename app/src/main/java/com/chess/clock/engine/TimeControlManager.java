@@ -146,10 +146,9 @@ public class TimeControlManager {
         mTimeControls.removeAll(objectBatchToDelete);
 
         if (mTimeControls.size() == 0) {
-
+            restoreDefaultTimeControls(context);
             // Notifies list became empty.
-            mCallback.onTimeControlListEmpty();
-            mTimeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
+            mCallback.onEmptyTimeControlsListRestored();
 
         } else {
             Log.v(TAG, "Requesting to save the remaining " + mTimeControls.size() + " time controls.");
@@ -241,8 +240,8 @@ public class TimeControlManager {
      */
     public interface Callback {
         /**
-         * Called when Time Control list gets empty.
+         * Called when Time Control list gets empty and was restored.
          */
-        void onTimeControlListEmpty();
+        void onEmptyTimeControlsListRestored();
     }
 }

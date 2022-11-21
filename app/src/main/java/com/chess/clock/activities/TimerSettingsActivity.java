@@ -229,6 +229,10 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
     @Override
     public void saveTimeControl() {
         timeControlManager.saveTimeControl(getApplicationContext());
+        refreshTimeControlsList();
+    }
+
+    private void refreshTimeControlsList() {
         TimeSettingsFragment f = (TimeSettingsFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS_FRAGMENT);
         if (f != null) {
             f.refreshTimeControlList();
@@ -236,7 +240,8 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
     }
 
     @Override
-    public void onTimeControlListEmpty() {
+    public void onEmptyTimeControlsListRestored() {
         Toast.makeText(this, getString(R.string.list_empty_toast_message), Toast.LENGTH_LONG).show();
+        refreshTimeControlsList();
     }
 }
