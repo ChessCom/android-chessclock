@@ -38,10 +38,8 @@ import com.chess.clock.activities.AppSettingsActivity;
 import com.chess.clock.activities.TimerSettingsActivity;
 import com.chess.clock.adapters.TimeRowMoveCallback;
 import com.chess.clock.adapters.TimesAdapter;
-import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.entities.AppTheme;
-import com.chess.clock.manager.ChessClockManager;
 import com.chess.clock.views.StyledButton;
 import com.chess.clock.views.ViewUtils;
 
@@ -413,12 +411,8 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         TimeControlWrapper wrapper = adapter.getSelectedTimeControlWrapper();
         Log.d(TAG, "Starting new clock: " + wrapper);
         if (wrapper != null) {
-            TimeControl playerOne = wrapper.getTimeControlPlayerOne();
-            TimeControl playerTwo = wrapper.getTimeControlPlayerTwo();
-            FragmentActivity activity = requireActivity();
-            Intent startServiceIntent = ChessClockManager.getChessClockServiceIntent(activity.getApplicationContext(), playerOne, playerTwo);
-            activity.startService(startServiceIntent);
-            activity.setResult(Activity.RESULT_OK);
+            TimerSettingsActivity activity = (TimerSettingsActivity) requireActivity();
+            activity.getClockManager().setupClock(wrapper);
             activity.finish();
             activity.overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
         } else {
