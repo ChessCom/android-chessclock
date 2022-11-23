@@ -29,7 +29,7 @@ import com.chess.clock.views.ClockButton;
 import com.chess.clock.views.ClockMenu;
 import com.chess.clock.views.ViewUtils;
 
-public class ClockTimersActivity extends TimerManageActivity implements AdjustTimeDialogFragment.TimeAdjustmentsListener {
+public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialogFragment.TimeAdjustmentsListener {
 
     private static final String TAG = ClockTimersActivity.class.getName();
     /**
@@ -493,29 +493,16 @@ public class ClockTimersActivity extends TimerManageActivity implements AdjustTi
     }
 
     private void onPlayerClockClicked(boolean firstPlayer) {
+        ClockPlayer player = ClockPlayer.ofBoolean(firstPlayer);
         TimersState playerTimerRunning = firstPlayer ? TimersState.PLAYER_ONE_RUNNING : TimersState.PLAYER_TWO_RUNNING;
-        TimersState otherPlayerTimerRunning = firstPlayer ? TimersState.PLAYER_TWO_RUNNING : TimersState.PLAYER_ONE_RUNNING;
-        String logPlayerNumber = firstPlayer ? "one" : "two";
 
-        Log.i(TAG, "Player " + logPlayerNumber + " pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
-        // Set pause btn visibility
+        Log.i(TAG, "Player " + player.name() + " pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
         if (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) {
             clockMenu.showPause();
         }
         if (mTimersState == playerTimerRunning || mTimersState == TimersState.PAUSED) {
-            if ((mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) ||
-                    (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == playerTimerRunning) ||
-                    mTimersState == playerTimerRunning) {
-
-                getClockManager().pressClock(ClockPlayer.ofBoolean(firstPlayer));
-                mTimersState = otherPlayerTimerRunning;
-            }
-            // Resuming clock
-            else {
-                getClockManager().resumeClock();
-                mTimersState = mTimersStatePreviousToPause;
-                mTimersStatePreviousToPause = TimersState.PAUSED;
-            }
+            getClockManager().pressClock(player);
+            mTimersState = firstPlayer ? TimersState.PLAYER_TWO_RUNNING : TimersState.PLAYER_ONE_RUNNING;
             soundManager.playSound(ClockSound.PLAYER_ONE_MOVE);
             updateUIState();
         } else if (mTimersState == TimersState.PLAYER_ONE_FINISHED || mTimersState == TimersState.PLAYER_TWO_FINISHED) {

@@ -19,7 +19,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
     /**
      * True if the game is on-going. Note: pause state still counts as game running.
      */
-    private boolean mChessGameRunning;
+    private boolean chessGameRunning;
 
     /**
      * Count down timers for both players.
@@ -29,7 +29,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
 
 
     public ChessClockManagerImpl() {
-        mChessGameRunning = false;
+        chessGameRunning = false;
 
         long DEFAULT_COUNT_DOWN_INTERVAL_MS = 100;
         mPlayerOneTimer = new CountDownTimer(DEFAULT_COUNT_DOWN_INTERVAL_MS);
@@ -39,7 +39,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
             @Override
             public void onClockFinish() {
 
-                mChessGameRunning = false;
+                chessGameRunning = false;
                 mPlayerOneTimer.stop();
                 mPlayerTwoTimer.stop();
 
@@ -55,11 +55,11 @@ public class ChessClockManagerImpl implements ChessClockManager {
         Args.checkForNull(timeControlWrapper);
 
         // Finish running game
-        if (mChessGameRunning) {
+        if (chessGameRunning) {
             if (VERBOSE) Log.d(TAG, "Finishing current timers.");
             // Reset the clock to new time controls
             resetClock();
-            mChessGameRunning = false;
+            chessGameRunning = false;
         }
 
         mPlayerOneTimer.setTimeControl(timeControlWrapper.getTimeControlPlayerOne());
@@ -107,7 +107,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
     public void resetClock() {
         mPlayerOneTimer.resetTimeControl();
         mPlayerTwoTimer.resetTimeControl();
-        mChessGameRunning = false;
+        chessGameRunning = false;
     }
 
     @Override
@@ -149,7 +149,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
         if (!opponentTimer.isFinished() && !playerTimer.isFinished()) {
 
             // Game already running? stop player timer and start the opponent timer.
-            if (mChessGameRunning) {
+            if (chessGameRunning) {
                 playerTimer.stop();
                 opponentTimer.start();
 
@@ -160,7 +160,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
             // First move: do not stop player clock to avoid invalid initial time increment.
             else {
                 opponentTimer.start();
-                mChessGameRunning = true;
+                chessGameRunning = true;
 
                 if (VERBOSE) Log.i(TAG, "#" + this.hashCode() + " Game started.");
             }

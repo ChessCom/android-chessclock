@@ -24,12 +24,20 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appData = new AppData(getApplicationContext());
+        selectedTheme = appData.getSelectedTheme();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        selectedTheme = appData.getSelectedTheme();
+        AppTheme theme = appData.getSelectedTheme();
+        if (selectedTheme != theme) {
+            this.selectedTheme = theme;
+        }
+    }
+
+    public ChessClockManager getClockManager() {
+        return ClockApplication.getClockManager();
     }
 
     public void hideStatusBar() {

@@ -29,6 +29,9 @@ public interface ChessClockManager {
      */
     long getTimeForPlayer(ClockPlayer player);
 
+    /**
+     * @return true if any countdown timer is running
+     */
     boolean isClockStarted();
 
     /**

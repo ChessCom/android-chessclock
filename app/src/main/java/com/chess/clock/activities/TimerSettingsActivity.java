@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * Activity that manages TimeControl list in the Settings and also TimeControl form.
  */
-public class TimerSettingsActivity extends TimerManageActivity implements TimeSettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback {
+public class TimerSettingsActivity extends BaseActivity implements TimeSettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback {
     /**
      * Fragments TAG
      */
