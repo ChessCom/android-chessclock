@@ -17,86 +17,42 @@ public class ChessClockManagerImpl implements ChessClockManager {
     private static final boolean VERBOSE = true;
 
     /**
-     * The interval along the way for each clock tick in milliseconds.
-     */
-    private final long DEFAULT_COUNT_DOWN_INTERVAL = 100;
-
-    /**
      * True if the game is on-going. Note: pause state still counts as game running.
      */
     private boolean mChessGameRunning;
 
     /**
-     * Count down timer callback implementation to run when a timer is finished.
-     * Removes foreground status and notification since the a player's clock is stopped.
-     */
-    private final CountDownTimer.FinishCallback mFinishListener = new CountDownTimer.FinishCallback() {
-        @Override
-        public void onClockFinish() {
-
-            mChessGameRunning = false;
-            mPlayerOneTimer.stop();
-            mPlayerTwoTimer.stop();
-
-            if (VERBOSE) Log.i(TAG, "#" + this.hashCode() + " Game finished.");
-        }
-    };
-
-    /**
      * Count down timers for both players.
      */
-    private CountDownTimer mPlayerOneTimer;
-    private CountDownTimer mPlayerTwoTimer;
+    private final CountDownTimer mPlayerOneTimer;
+    private final CountDownTimer mPlayerTwoTimer;
 
 
     public ChessClockManagerImpl() {
         mChessGameRunning = false;
-        mPlayerOneTimer = new CountDownTimer(DEFAULT_COUNT_DOWN_INTERVAL);
-        mPlayerTwoTimer = new CountDownTimer(DEFAULT_COUNT_DOWN_INTERVAL);
+
+        long DEFAULT_COUNT_DOWN_INTERVAL_MS = 100;
+        mPlayerOneTimer = new CountDownTimer(DEFAULT_COUNT_DOWN_INTERVAL_MS);
+        mPlayerTwoTimer = new CountDownTimer(DEFAULT_COUNT_DOWN_INTERVAL_MS);
+
+        CountDownTimer.FinishCallback mFinishListener = new CountDownTimer.FinishCallback() {
+            @Override
+            public void onClockFinish() {
+
+                mChessGameRunning = false;
+                mPlayerOneTimer.stop();
+                mPlayerTwoTimer.stop();
+
+                if (VERBOSE) Log.i(TAG, "#" + this.hashCode() + " Game finished.");
+            }
+        };
         mPlayerOneTimer.setFinishListener(mFinishListener);
         mPlayerTwoTimer.setFinishListener(mFinishListener);
-    }
-
-    /**
-     * *************************************
-     * Bound Service public methods.
-     * /****************************************
-     * <p/>
-     * /**
-     * Registers a callback to be invoked when player One status updates.
-     *
-     * @param listener The callback that will run
-     */
-    public void setPlayerOneListener(CountDownTimer.Callback listener) {
-        if (listener != null) {
-            if (VERBOSE) Log.d(TAG, "#" + this.hashCode()
-                    + " (1) registered listener: #" + listener.hashCode() + ".");
-        }
-        mPlayerOneTimer.setClockTimerListener(listener);
-    }
-
-    /**
-     * Registers a callback to be invoked when player One status updates.
-     *
-     * @param listener The callback that will run
-     */
-    public void setPlayerTwoListener(CountDownTimer.Callback listener) {
-        if (listener != null) {
-            if (VERBOSE) Log.d(TAG, "#" + this.hashCode()
-                    + " (2) registered listener: #" + listener.hashCode() + ".");
-        }
-        mPlayerTwoTimer.setClockTimerListener(listener);
     }
 
     @Override
     public void setupClock(TimeControlWrapper timeControlWrapper) {
         Args.checkForNull(timeControlWrapper);
-
-        // Sanity check..
-        if (mPlayerOneTimer == null || mPlayerTwoTimer == null) {
-            mPlayerOneTimer = new CountDownTimer(DEFAULT_COUNT_DOWN_INTERVAL);
-            mPlayerTwoTimer = new CountDownTimer(DEFAULT_COUNT_DOWN_INTERVAL);
-        }
 
         // Finish running game
         if (mChessGameRunning) {
@@ -140,18 +96,14 @@ public class ChessClockManagerImpl implements ChessClockManager {
         }
     }
 
-    /**
-     * Resumes the global state of the chess clock.
-     */
+    @Override
     public void resumeClock() {
         mPlayerOneTimer.resume();
         mPlayerTwoTimer.resume();
         if (VERBOSE) Log.v(TAG, "#" + this.hashCode() + " resumed the clock timers.");
     }
 
-    /**
-     * Resets the timer and time control state of both players.
-     */
+    @Override
     public void resetClock() {
         mPlayerOneTimer.resetTimeControl();
         mPlayerTwoTimer.resetTimeControl();
@@ -172,9 +124,18 @@ public class ChessClockManagerImpl implements ChessClockManager {
         return time;
     }
 
-    /****************************************
-     * Callbacks Definition.
-     ***************************************/
+    @Override
+    public void setPlayerTime(ClockPlayer player, long timeMs) {
+        switch (player) {
+            case ONE:
+                mPlayerOneTimer.setTime(timeMs);
+                break;
+            case TWO:
+                mPlayerTwoTimer.setTime(timeMs);
+                break;
+        }
+    }
+
 
     /**
      * Notifies the Chess Clock Service that a player made a move.
@@ -209,11 +170,23 @@ public class ChessClockManagerImpl implements ChessClockManager {
         }
     }
 
-    /****************************************
-     * Private stuff..
-     ****************************************/
-
+    @Override
     public boolean isClockStarted() {
         return mPlayerOneTimer.isStarted() || mPlayerTwoTimer.isStarted();
+    }
+
+    @Override
+    public void setListeners(CountDownTimer.Callback playerOneCallback, CountDownTimer.Callback playerTwoCallback) {
+        if (playerOneCallback != null) {
+            if (VERBOSE)
+                Log.d(TAG, "#" + this.hashCode() + " (1) registered listener: #" + playerOneCallback.hashCode() + ".");
+        }
+        mPlayerOneTimer.setClockTimerListener(playerOneCallback);
+
+        if (playerTwoCallback != null) {
+            if (VERBOSE) Log.d(TAG, "#" + this.hashCode()
+                    + " (2) registered listener: #" + playerTwoCallback.hashCode() + ".");
+        }
+        mPlayerTwoTimer.setClockTimerListener(playerTwoCallback);
     }
 }

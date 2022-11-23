@@ -1,6 +1,7 @@
 package com.chess.clock.manager;
 
 import com.chess.clock.engine.ClockPlayer;
+import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.TimeControlWrapper;
 
 
@@ -24,11 +25,30 @@ public interface ChessClockManager {
     void pauseClock();
 
     /**
-     *
-     * @param player selected clock player
-     *
      * @return current time for selected player in milliseconds
      */
     long getTimeForPlayer(ClockPlayer player);
+
+    boolean isClockStarted();
+
+    /**
+     * Resumes the global state of the chess clock.
+     */
+    void resumeClock();
+
+    /**
+     * Registers a callbacks to be invoked on players statuses updates.
+     */
+    void setListeners(CountDownTimer.Callback playerOneCallback, CountDownTimer.Callback playerTwoCallback);
+
+    /**
+     * Resets the timer and time control state of both players.
+     */
+    void resetClock();
+
+    /**
+     * Set selected player time regardless of the current settings
+     */
+    void setPlayerTime(ClockPlayer ofBoolean, long timeMs);
 }
 

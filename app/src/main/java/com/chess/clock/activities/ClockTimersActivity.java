@@ -23,11 +23,13 @@ import com.chess.clock.dialog.AdjustTimeDialogFragment;
 import com.chess.clock.engine.ClockPlayer;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.Stage;
+import com.chess.clock.engine.TimeControlParser;
+import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.views.ClockButton;
 import com.chess.clock.views.ClockMenu;
 import com.chess.clock.views.ViewUtils;
 
-public class ClockTimersActivity extends TimerServiceActivity implements AdjustTimeDialogFragment.TimeAdjustmentsListener {
+public class ClockTimersActivity extends TimerManageActivity implements AdjustTimeDialogFragment.TimeAdjustmentsListener {
 
     private static final String TAG = ClockTimersActivity.class.getName();
     /**
@@ -187,6 +189,8 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
             mTimersState = TimersState.PAUSED;
             mTimersStatePreviousToPause = TimersState.PAUSED;
         }
+
+        initClock();
     }
 
     /**
@@ -294,29 +298,21 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
         super.onBackPressed();
     }
 
-    @Override
-    void bindUiOnServiceConnected() {
-        clockManager.setPlayerOneListener(playerOneCallback);
-        clockManager.setPlayerTwoListener(playerTwoCallback);
+    void initClock() {
+        getClockManager().setListeners(playerOneCallback, playerTwoCallback);
 
 			/*
-            Check if Service is already started. Started Service means that Time Controls were set in the clock.
-			If no time control were set, start a new Service with last used Time Controls.
+            Check if timer is already started. Started timer means that Time Controls were set in the clock.
+			If no time control were set, restore a new timer with last used Time Controls.
 			*/
-        if (!clockManager.isServiceStarted()) {
-            startLastTimeControlSafely();
+        if (!getClockManager().isClockStarted()) {
+            TimeControlWrapper selectedControl = TimeControlParser.getLastTimeControlOrDefault(this);
+            getClockManager().setupClock(selectedControl);
+            Log.d(TAG, "Last controls set.");
         } else {
-				/*
-				Service is already started. Every time this Activity goes to background, the
-				timers state are saved on shared preferences, before the clock is paused. And
-				here, they must be restored in order to resume state properly.
-				*/
+
             restoreTimersState();
 
-				/*
-				Only update UI if game was finished OR in the case of configuration change the
-				game was previously running.
-				*/
             if (mTimersState == TimersState.PLAYER_ONE_FINISHED || mTimersState == TimersState.PLAYER_TWO_FINISHED) {
                 updateUIState();
             } else {
@@ -329,7 +325,7 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
                     Log.v(TAG, "Configuration change lasted " + elapsedTime + " milliseconds.");
                     if (elapsedTime < 2000 && (mTimersState == TimersState.PLAYER_TWO_RUNNING ||
                             mTimersState == TimersState.PLAYER_ONE_RUNNING)) {
-                        resumeClockSafely();
+                        getClockManager().resumeClock();
                         updateUIState();
                     } else {
                         // If pause took too long, reset state to paused.
@@ -344,14 +340,12 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
      * Reset the clock.
      */
     public void resetClock() {
-        if (serviceBound) {
 
-            clockManager.resetClock();
+        getClockManager().resetClock();
 
-            // Both states at pause means it's the beginning of the game.
-            mTimersState = TimersState.PAUSED;
-            mTimersStatePreviousToPause = TimersState.PAUSED;
-        }
+        // Both states at pause means it's the beginning of the game.
+        mTimersState = TimersState.PAUSED;
+        mTimersStatePreviousToPause = TimersState.PAUSED;
         updateUIState();
         soundManager.playSound(ClockSound.RESET_CLOCK);
     }
@@ -501,8 +495,6 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
     private void onPlayerClockClicked(boolean firstPlayer) {
         TimersState playerTimerRunning = firstPlayer ? TimersState.PLAYER_ONE_RUNNING : TimersState.PLAYER_TWO_RUNNING;
         TimersState otherPlayerTimerRunning = firstPlayer ? TimersState.PLAYER_TWO_RUNNING : TimersState.PLAYER_ONE_RUNNING;
-        TimersState playerTimerFinished = firstPlayer ? TimersState.PLAYER_ONE_FINISHED : TimersState.PLAYER_TWO_FINISHED;
-        TimersState otherPlayerTimerFinished = firstPlayer ? TimersState.PLAYER_TWO_FINISHED : TimersState.PLAYER_ONE_FINISHED;
         String logPlayerNumber = firstPlayer ? "one" : "two";
 
         Log.i(TAG, "Player " + logPlayerNumber + " pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
@@ -511,27 +503,22 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
             clockMenu.showPause();
         }
         if (mTimersState == playerTimerRunning || mTimersState == TimersState.PAUSED) {
-            // If bound to clock service, press clock and update UI state.
-            if (serviceBound) {
-                // First or continuation move
-                if ((mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) ||
-                        (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == playerTimerRunning) ||
-                        mTimersState == playerTimerRunning) {
-                    if (firstPlayer) clockManager.pressPlayerOneClock();
-                    else clockManager.pressPlayerTwoClock();
-                    mTimersState = otherPlayerTimerRunning;
-                }
-                // Resuming clock
-                else {
-                    resumeClockSafely();
-                    mTimersState = mTimersStatePreviousToPause;
-                    mTimersStatePreviousToPause = TimersState.PAUSED;
-                }
-                soundManager.playSound(ClockSound.PLAYER_ONE_MOVE);
-                updateUIState();
+            if ((mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) ||
+                    (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == playerTimerRunning) ||
+                    mTimersState == playerTimerRunning) {
+
+                getClockManager().pressClock(ClockPlayer.ofBoolean(firstPlayer));
+                mTimersState = otherPlayerTimerRunning;
             }
-        } else if (mTimersState == playerTimerFinished ||
-                mTimersState == otherPlayerTimerFinished) {
+            // Resuming clock
+            else {
+                getClockManager().resumeClock();
+                mTimersState = mTimersStatePreviousToPause;
+                mTimersStatePreviousToPause = TimersState.PAUSED;
+            }
+            soundManager.playSound(ClockSound.PLAYER_ONE_MOVE);
+            updateUIState();
+        } else if (mTimersState == TimersState.PLAYER_ONE_FINISHED || mTimersState == TimersState.PLAYER_TWO_FINISHED) {
             showResetClockDialog();
         }
     }
@@ -572,11 +559,13 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
 
     @Override
     public void onTimeAdjustmentsConfirmed(long timeMs, boolean firstPlayer) {
+        getClockManager().setPlayerTime(
+                ClockPlayer.ofBoolean(firstPlayer),
+                timeMs
+        );
         if (firstPlayer) {
-            clockManager.setFirstPlayerTime(timeMs);
             playerOneButton.setTime(timeMs);
         } else {
-            clockManager.setSecondPlayerTime(timeMs);
             playerTwoButton.setTime(timeMs);
         }
     }

@@ -32,10 +32,6 @@ public class BaseActivity extends AppCompatActivity {
         selectedTheme = appData.getSelectedTheme();
     }
 
-    public ChessClockManager getClockManager() {
-        return ClockApplication.getClockManager();
-    }
-
     public void hideStatusBar() {
         WindowManager.LayoutParams attrs = getWindow().getAttributes();
         attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
