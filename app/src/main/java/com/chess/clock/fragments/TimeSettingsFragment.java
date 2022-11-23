@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -67,7 +69,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
         void removeTimeControl(Set<Long> ids);
 
-        void upDateOrderOnItemMove(int from, int to);
+        void updateOrderOnItemMove(int from, int to);
 
         void restoreDefaultTimeControls();
     }
@@ -281,7 +283,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
 
                     @Override
                     public void onItemsReordered(int from, int to) {
-                        mListener.upDateOrderOnItemMove(from, to);
+                        mListener.updateOrderOnItemMove(from, to);
                     }
 
                     @Override
@@ -306,7 +308,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     @SuppressLint("NotifyDataSetChanged")
     public void refreshTimeControlList() {
         if (adapter != null) {
-            adapter.notifyDataSetChanged();
+            adapter.updateControls(mListener.getCurrentTimeControls(), mListener.getCheckedTimeControlId());
         }
     }
 
@@ -363,27 +365,48 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
     private void deleteTimeControls(ActionMode mode) {
 
         Set<Long> idsToRemove = adapter.getIdsToRemove();
+        int timeControlsSize = adapter.getItemCount();
+
         Log.d(TAG, "Requested to delete " + idsToRemove.size() + " time controls.");
 
-        // If checked items found request their removal.
-        if (!idsToRemove.isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
-            builder
-                    .setMessage(R.string.delete_custom_time)
-                    .setPositiveButton(R.string.action_delete, (dialog, id) -> {
-                        mListener.removeTimeControl(idsToRemove);
-                        adapter.clearRemoveIds();
-                        mode.finish();
-                    })
-                    .setNegativeButton(R.string.action_keep, (dialog, id) -> {
-                        // Resume the clock
-                    });
-            Dialog dialog = builder.create();
-            ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
-            dialog.show();
+        if (timeControlsSize == idsToRemove.size()) {
+            showControlsRequirements();
+        } else if (!idsToRemove.isEmpty()) {
+            showDeleteConfirmation(mode, idsToRemove);
         } else {
             mode.finish();
         }
+    }
+
+    private void showControlsRequirements() {
+        Context context = requireContext();
+        TextView titleView = (TextView) View.inflate(context, R.layout.dialog_title_text_view, null);
+        titleView.setText(R.string.attention);
+        new AlertDialog.Builder(context, R.style.WhiteButtonsDialogTheme)
+                .setMessage(R.string.delete_all_time_controls_info)
+                .setCustomTitle(titleView)
+                .setPositiveButton(R.string.action_ok, (dialog, id) -> {
+                    // dismiss
+                })
+                .create()
+                .show();
+    }
+
+    private void showDeleteConfirmation(ActionMode mode, Set<Long> idsToRemove) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
+        builder
+                .setMessage(R.string.delete_custom_time)
+                .setPositiveButton(R.string.action_delete, (dialog, id) -> {
+                    mListener.removeTimeControl(idsToRemove);
+                    adapter.clearRemoveIds();
+                    mode.finish();
+                })
+                .setNegativeButton(R.string.action_keep, (dialog, id) -> {
+                    // Resume the clock
+                });
+        Dialog dialog = builder.create();
+        ViewUtils.setLargePopupMessageTextSize(dialog, getResources());
+        dialog.show();
     }
 
     public void startNewClock() {

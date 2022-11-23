@@ -58,9 +58,25 @@ public class TimeControlManager {
         }
 
         // Build default List if none was restored from shared preferences.
-        if (mTimeControls == null || mTimeControls.size() == 0) {
+        if (mTimeControls == null || mTimeControls.isEmpty()) {
             Log.i(TAG, "Time controls list empty. Building and saving default list.");
             mTimeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
+            selectedTimeControlId = TimeControlDefaults.DEFAULT_TIME_ID;
+        } else {
+            verifySelectedControlExists();
+        }
+    }
+
+    private void verifySelectedControlExists() {
+        boolean selectedControlExists = false;
+        for (TimeControlWrapper tc : mTimeControls) {
+            if (tc.getId() == selectedTimeControlId) {
+                selectedControlExists = true;
+                break;
+            }
+        }
+        if (!selectedControlExists) {
+            setSelectedTimeControlId(mTimeControls.get(0).getId());
         }
     }
 
@@ -146,14 +162,14 @@ public class TimeControlManager {
         mTimeControls.removeAll(objectBatchToDelete);
 
         if (mTimeControls.size() == 0) {
-
+            restoreDefaultTimeControls(context);
             // Notifies list became empty.
-            mCallback.onTimeControlListEmpty();
-            mTimeControls = TimeControlDefaults.buildDefaultTimeControlsList(context);
+            mCallback.onEmptyTimeControlsListRestored();
 
         } else {
             Log.v(TAG, "Requesting to save the remaining " + mTimeControls.size() + " time controls.");
             updateItemsOrderAndSave(context);
+            verifySelectedControlExists();
         }
     }
 
@@ -241,8 +257,8 @@ public class TimeControlManager {
      */
     public interface Callback {
         /**
-         * Called when Time Control list gets empty.
+         * Called when Time Control list gets empty and was restored.
          */
-        void onTimeControlListEmpty();
+        void onEmptyTimeControlsListRestored();
     }
 }
