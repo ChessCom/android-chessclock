@@ -2,6 +2,7 @@ package com.chess.clock.manager;
 
 import android.util.Log;
 
+import com.chess.clock.BuildConfig;
 import com.chess.clock.engine.ClockPlayer;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.TimeControlWrapper;
@@ -14,7 +15,6 @@ public class ChessClockManagerImpl implements ChessClockManager {
      * Logs stuff
      */
     private static final String TAG = ChessClockManager.class.getName();
-    private static final boolean VERBOSE = true;
 
     /**
      * True if the game is on-going. Note: pause state still counts as game running.
@@ -43,7 +43,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
                 mPlayerOneTimer.stop();
                 mPlayerTwoTimer.stop();
 
-                if (VERBOSE) Log.i(TAG, "#" + this.hashCode() + " Game finished.");
+                log("Game finished.");
             }
         };
         mPlayerOneTimer.setFinishListener(mFinishListener);
@@ -56,7 +56,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
 
         // Finish running game
         if (chessGameRunning) {
-            if (VERBOSE) Log.d(TAG, "Finishing current timers.");
+            log("Finishing current timers.");
             // Reset the clock to new time controls
             resetClock();
             chessGameRunning = false;
@@ -65,7 +65,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
         mPlayerOneTimer.setTimeControl(timeControlWrapper.getTimeControlPlayerOne());
         mPlayerTwoTimer.setTimeControl(timeControlWrapper.getTimeControlPlayerTwo());
 
-        if (VERBOSE) Log.d(TAG, "#" + this.hashCode() + " Time Control set.");
+        log("Time Control set.");
     }
 
 
@@ -73,11 +73,11 @@ public class ChessClockManagerImpl implements ChessClockManager {
     public void pressClock(ClockPlayer player) {
         switch (player) {
             case ONE:
-                if (VERBOSE) Log.v(TAG, "#" + this.hashCode() + " (1) pressed the clock.");
+                log("(1) pressed the clock.");
                 pressPlayerClock(mPlayerOneTimer, mPlayerTwoTimer);
                 break;
             case TWO:
-                if (VERBOSE) Log.v(TAG, "#" + this.hashCode() + " (2) pressed the clock.");
+                log("(2) pressed the clock.");
                 pressPlayerClock(mPlayerTwoTimer, mPlayerOneTimer);
                 break;
         }
@@ -92,7 +92,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
             mPlayerOneTimer.pause();
             mPlayerTwoTimer.pause();
 
-            if (VERBOSE) Log.v(TAG, "#" + this.hashCode() + " paused the clock timers.");
+            log("Paused the clock timers.");
         }
     }
 
@@ -100,7 +100,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
     public void resumeClock() {
         mPlayerOneTimer.resume();
         mPlayerTwoTimer.resume();
-        if (VERBOSE) Log.v(TAG, "#" + this.hashCode() + " resumed the clock timers.");
+        log("Resumed the clock timers.");
     }
 
     @Override
@@ -153,20 +153,17 @@ public class ChessClockManagerImpl implements ChessClockManager {
                 playerTimer.stop();
                 opponentTimer.start();
 
-                if (VERBOSE) {
-                    Log.d(TAG, "Move number: " + playerTimer.getTotalMoveCount() + ", time left: " + ClockTime.raw(playerTimer.getTime()).toReadableFormat());
-                }
+                log("Move number: " + playerTimer.getTotalMoveCount() + ", time left: " + ClockTime.raw(playerTimer.getTime()).toReadableFormat());
             }
             // First move: do not stop player clock to avoid invalid initial time increment.
             else {
                 opponentTimer.start();
                 chessGameRunning = true;
 
-                if (VERBOSE) Log.i(TAG, "#" + this.hashCode() + " Game started.");
+                log("Game started.");
             }
         } else {
-            if (VERBOSE) Log.w(TAG, "Discarded clock press due to Time Controls"
-                    + " not available or game finished already.");
+            log("Discarded clock press due to Time Controls not available or game finished already.");
         }
     }
 
@@ -178,15 +175,18 @@ public class ChessClockManagerImpl implements ChessClockManager {
     @Override
     public void setListeners(CountDownTimer.Callback playerOneCallback, CountDownTimer.Callback playerTwoCallback) {
         if (playerOneCallback != null) {
-            if (VERBOSE)
-                Log.d(TAG, "#" + this.hashCode() + " (1) registered listener: #" + playerOneCallback.hashCode() + ".");
+            log("(1)registered listener: #" + playerOneCallback.hashCode());
         }
         mPlayerOneTimer.setClockTimerListener(playerOneCallback);
 
         if (playerTwoCallback != null) {
-            if (VERBOSE) Log.d(TAG, "#" + this.hashCode()
-                    + " (2) registered listener: #" + playerTwoCallback.hashCode() + ".");
+            log("(2) registered listener: #" + playerTwoCallback.hashCode());
         }
         mPlayerTwoTimer.setClockTimerListener(playerTwoCallback);
+    }
+
+    private void log(String message) {
+        if (!BuildConfig.DEBUG) return;
+        Log.d(TAG, message);
     }
 }
