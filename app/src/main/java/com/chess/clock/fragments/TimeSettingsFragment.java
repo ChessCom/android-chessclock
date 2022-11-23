@@ -41,7 +41,7 @@ import com.chess.clock.adapters.TimesAdapter;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.entities.AppTheme;
-import com.chess.clock.service.ChessClockLocalService;
+import com.chess.clock.manager.ChessClockManager;
 import com.chess.clock.views.StyledButton;
 import com.chess.clock.views.ViewUtils;
 
@@ -416,7 +416,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
             TimeControl playerOne = wrapper.getTimeControlPlayerOne();
             TimeControl playerTwo = wrapper.getTimeControlPlayerTwo();
             FragmentActivity activity = requireActivity();
-            Intent startServiceIntent = ChessClockLocalService.getChessClockServiceIntent(activity.getApplicationContext(), playerOne, playerTwo);
+            Intent startServiceIntent = ChessClockManager.getChessClockServiceIntent(activity.getApplicationContext(), playerOne, playerTwo);
             activity.startService(startServiceIntent);
             activity.setResult(Activity.RESULT_OK);
             activity.finish();

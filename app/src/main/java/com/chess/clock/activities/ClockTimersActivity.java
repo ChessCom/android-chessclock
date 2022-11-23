@@ -20,6 +20,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.chess.clock.R;
 import com.chess.clock.dialog.AdjustTimeDialogFragment;
+import com.chess.clock.engine.ClockPlayer;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.views.ClockButton;
@@ -287,24 +288,22 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
 
     @Override
     public void onBackPressed() {
-
-        if (serviceBound && (mTimersState != TimersState.PAUSED)) {
+        if (mTimersState != TimersState.PAUSED) {
             pauseClock();
         }
-
         super.onBackPressed();
     }
 
     @Override
     void bindUiOnServiceConnected() {
-        clockService.setPlayerOneListener(playerOneCallback);
-        clockService.setPlayerTwoListener(playerTwoCallback);
+        clockManager.setPlayerOneListener(playerOneCallback);
+        clockManager.setPlayerTwoListener(playerTwoCallback);
 
 			/*
             Check if Service is already started. Started Service means that Time Controls were set in the clock.
 			If no time control were set, start a new Service with last used Time Controls.
 			*/
-        if (!clockService.isServiceStarted()) {
+        if (!clockManager.isServiceStarted()) {
             startLastTimeControlSafely();
         } else {
 				/*
@@ -347,7 +346,7 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
     public void resetClock() {
         if (serviceBound) {
 
-            clockService.resetClock();
+            clockManager.resetClock();
 
             // Both states at pause means it's the beginning of the game.
             mTimersState = TimersState.PAUSED;
@@ -357,22 +356,16 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
         soundManager.playSound(ClockSound.RESET_CLOCK);
     }
 
-    /**
-     * Pause button visibility.
-     */
     public void pauseClock() {
+        if (mTimersState == TimersState.PLAYER_ONE_RUNNING || mTimersState == TimersState.PLAYER_TWO_RUNNING) {
+            Log.i(TAG, "Clock paused.");
+            mTimersStatePreviousToPause = mTimersState;
+            mTimersState = TimersState.PAUSED;
+            Log.d(TAG, "Previous state: " + mTimersStatePreviousToPause +
+                    " , current state: " + mTimersState);
+            getClockManager().pauseClock();
 
-        if (serviceBound) {
-            if (mTimersState == TimersState.PLAYER_ONE_RUNNING || mTimersState == TimersState.PLAYER_TWO_RUNNING) {
-                Log.i(TAG, "Clock paused.");
-                mTimersStatePreviousToPause = mTimersState;
-                mTimersState = TimersState.PAUSED;
-                Log.d(TAG, "Previous state: " + mTimersStatePreviousToPause +
-                        " , current state: " + mTimersState);
-                clockService.pauseClock();
-
-                updateUIState();
-            }
+            updateUIState();
         }
     }
 
@@ -404,7 +397,8 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
 
         @Override
         public void onClickOptions() {
-            long time = firstPlayer ? clockService.firstPlayerTime() : clockService.secondPlayerTime();
+            ClockPlayer player = firstPlayer ? ClockPlayer.ONE : ClockPlayer.TWO;
+            long time = getClockManager().getTimeForPlayer(player);
             AdjustTimeDialogFragment
                     .newInstance(time, firstPlayer)
                     .show(getSupportFragmentManager(), AdjustTimeDialogFragment.TAG);
@@ -523,8 +517,8 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
                 if ((mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) ||
                         (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == playerTimerRunning) ||
                         mTimersState == playerTimerRunning) {
-                    if (firstPlayer) clockService.pressPlayerOneClock();
-                    else clockService.pressPlayerTwoClock();
+                    if (firstPlayer) clockManager.pressPlayerOneClock();
+                    else clockManager.pressPlayerTwoClock();
                     mTimersState = otherPlayerTimerRunning;
                 }
                 // Resuming clock
@@ -579,10 +573,10 @@ public class ClockTimersActivity extends TimerServiceActivity implements AdjustT
     @Override
     public void onTimeAdjustmentsConfirmed(long timeMs, boolean firstPlayer) {
         if (firstPlayer) {
-            clockService.setFirstPlayerTime(timeMs);
+            clockManager.setFirstPlayerTime(timeMs);
             playerOneButton.setTime(timeMs);
         } else {
-            clockService.setSecondPlayerTime(timeMs);
+            clockManager.setSecondPlayerTime(timeMs);
             playerTwoButton.setTime(timeMs);
         }
     }

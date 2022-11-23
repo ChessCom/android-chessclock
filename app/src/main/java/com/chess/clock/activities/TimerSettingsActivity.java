@@ -125,7 +125,7 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
      * @return True if clock was started before settings changes
      */
     public boolean showResetWarning() {
-        return serviceBound && clockService.isClockStarted();
+        return serviceBound && clockManager.isClockStarted();
     }
 
     /**
