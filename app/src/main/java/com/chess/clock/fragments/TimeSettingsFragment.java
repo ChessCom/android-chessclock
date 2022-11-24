@@ -413,6 +413,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         if (wrapper != null) {
             TimerSettingsActivity activity = (TimerSettingsActivity) requireActivity();
             activity.getClockManager().setupClock(wrapper);
+            activity.setResult(Activity.RESULT_OK);
             activity.finish();
             activity.overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
         } else {
