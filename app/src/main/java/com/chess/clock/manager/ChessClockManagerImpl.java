@@ -2,7 +2,6 @@ package com.chess.clock.manager;
 
 import android.util.Log;
 
-import com.chess.clock.BuildConfig;
 import com.chess.clock.engine.ClockPlayer;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.TimeControlWrapper;
@@ -186,7 +185,6 @@ public class ChessClockManagerImpl implements ChessClockManager {
     }
 
     private void log(String message) {
-        if (!BuildConfig.DEBUG) return;
         Log.d(TAG, message);
     }
 }

@@ -30,10 +30,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        AppTheme theme = appData.getSelectedTheme();
-        if (selectedTheme != theme) {
-            this.selectedTheme = theme;
-        }
+        this.selectedTheme = appData.getSelectedTheme();
     }
 
     public ChessClockManager getClockManager() {
