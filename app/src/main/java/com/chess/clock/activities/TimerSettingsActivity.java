@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * Activity that manages TimeControl list in the Settings and also TimeControl form.
  */
-public class TimerSettingsActivity extends TimerServiceActivity implements TimeSettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback {
+public class TimerSettingsActivity extends BaseActivity implements TimeSettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback {
     /**
      * Fragments TAG
      */
@@ -79,11 +79,6 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
         showPopupOrFinish(null);
     }
 
-    @Override
-    void bindUiOnServiceConnected() {
-        // no-op
-    }
-
     private void showPopupOrFinish(Integer resultToSet) {
         Fragment frag = getSupportFragmentManager().findFragmentByTag(TAG_TIME_CONTROL_FRAGMENT);
         if (frag != null && frag.isVisible()) {
@@ -125,7 +120,7 @@ public class TimerSettingsActivity extends TimerServiceActivity implements TimeS
      * @return True if clock was started before settings changes
      */
     public boolean showResetWarning() {
-        return serviceBound && clockService.isClockStarted();
+        return getClockManager().isClockStarted();
     }
 
     /**

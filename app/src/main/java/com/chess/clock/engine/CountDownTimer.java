@@ -214,8 +214,8 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
         if (mTimeControl != null) {
             Log.d(TAG, "#" + this.hashCode() + " started.");
 
-            // Only starts the clock if currently stopped (ignores state Finished)
-            if (mTimerState == CountDownTimer.TimerState.STOPPED) {
+            // Only starts the clock if currently stopped or paused(ignores state Finished)
+            if (mTimerState == TimerState.STOPPED || mTimerState == TimerState.PAUSED) {
                 TimeIncrement increment = currentTimeIncrement();
                 if (increment.getType() == TimeIncrement.Type.DELAY) {
                     forceStartDelayed(increment.getValue());
