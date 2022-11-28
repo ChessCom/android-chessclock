@@ -56,6 +56,9 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
     public void onBindViewHolder(@NonNull TimeItemViewHolder holder, int position) {
         TimeControlWrapper timeControlWrapper = data.get(position);
         holder.setUpView(timeControlWrapper, theme, editMode, selectedItemId, removeIds);
+
+        // on position changes item is not binded again therefore we can use provided `position` only for initial binding
+        // for single item updates we need to verify position on data list
         long id = timeControlWrapper.getId();
         holder.itemView.setOnClickListener(v -> {
             if (editMode) {
@@ -65,12 +68,12 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
                     removeIds.add(id);
                 }
                 itemsListener.onMarkItemToRemove(removeIds.size());
-                notifyItemChanged(position);
+                notifyItemChanged(getItemPosition(id));
             } else {
-                int oldSelectedItemPosition = getSelectedItemPosition();
+                int oldSelectedItemPosition = getItemPosition(selectedItemId);
                 selectedItemId = id;
                 itemsListener.onSelectedItemChange(selectedItemId);
-                notifyItemChanged(position);
+                notifyItemChanged(getItemPosition(id));
                 notifyItemChanged(oldSelectedItemPosition);
             }
         });
@@ -86,9 +89,9 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
 
     }
 
-    private int getSelectedItemPosition() {
+    private int getItemPosition(long itemId) {
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getId() == selectedItemId) {
+            if (data.get(i).getId() == itemId) {
                 return i;
             }
         }
@@ -190,7 +193,6 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
                 Set<Long> removeIds) {
             nameTv.setText(timeControlWrapper.getTimeControlPlayerOne().getName());
             if (editMode) {
-
                 boolean selectedToRemove = removeIds.contains(timeControlWrapper.getId());
                 if (selectedToRemove) {
                     checkBoxImg.setImageResource(R.drawable.ic_check_box);

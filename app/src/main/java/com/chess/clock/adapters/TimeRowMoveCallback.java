@@ -30,7 +30,7 @@ public class TimeRowMoveCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        this.touchCallback.onTimeItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        this.touchCallback.onTimeItemMoved(viewHolder.getAbsoluteAdapterPosition(), target.getAbsoluteAdapterPosition());
         return true;
     }
 
