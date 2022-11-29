@@ -378,23 +378,22 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     }
 
     class ClockClickListener implements ClockButton.ClockClickListener {
-        private final boolean firstPlayer;
+        private final ClockPlayer player;
 
-        ClockClickListener(boolean firstPlayer) {
-            this.firstPlayer = firstPlayer;
+        ClockClickListener(ClockPlayer player) {
+            this.player = player;
         }
 
         @Override
         public void onClickClock() {
-            onPlayerClockClicked(firstPlayer);
+            onPlayerClockClicked(player.isFirstPlayer());
         }
 
         @Override
         public void onClickOptions() {
-            ClockPlayer player = firstPlayer ? ClockPlayer.ONE : ClockPlayer.TWO;
             long time = getClockManager().getTimeForPlayer(player);
             AdjustTimeDialogFragment
-                    .newInstance(time, firstPlayer)
+                    .newInstance(time, player.isFirstPlayer())
                     .show(getSupportFragmentManager(), AdjustTimeDialogFragment.TAG);
         }
     }
@@ -411,8 +410,8 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         clocksDivider = findViewById(R.id.divider);
 
         // Set listeners
-        playerOneButton.setClockButtonClickListener(new ClockClickListener(true));
-        playerTwoButton.setClockButtonClickListener(new ClockClickListener(false));
+        playerOneButton.setClockButtonClickListener(new ClockClickListener(ClockPlayer.ONE));
+        playerTwoButton.setClockButtonClickListener(new ClockClickListener(ClockPlayer.TWO));
         clockMenu.setListener(new ClockMenu.MenuClickListener() {
             @Override
             public void timeSettingsClicked() {
