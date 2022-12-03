@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Non translatable-->
-    <string name="default_moves_value" translatable="false">0</string>
     <string name="colon" translatable="false">:</string>
     <string name="default_time_setup_hint" translatable="false">00</string>
 
 
     <!-- ChessClock Activity -->
     <string name="app_name">Chess Clock</string>
-    <string name="foreground_service_started">Chess clock running.</string>
     <string name="dialog_reset_clock">Reset the clock?</string>
     <string name="dialog_no">No</string>
     <string name="dialog_yes">Yes</string>
@@ -16,18 +14,12 @@
     <!-- Settings Activity -->
     <string name="settings">Settings</string>
     <string name="action_edit">Edit</string>
-    <string name="action_add_new">Add new</string>
     <string name="action_delete">Delete</string>
-    <string name="dialog_clock_running_reset">Reset the clock?</string>
     <string name="action_full_screen">Full Screen</string>
-
-    <!-- Settings Fragment -->
-    <string name="settings_cab_title_time_controls_selected">selected</string>
 
     <!-- Time Control Fragment -->
     <string name="action_add_new_stage">Add Stage</string>
     <string name="action_save_time_control">Save</string>
-    <string name="time_control">Time Control</string>
     <string name="toast_requesting_time_control_name">Please add a name to save.</string>
 
     <!-- Time Control Manager -->
@@ -39,19 +31,12 @@
 
     <!-- Stage Editor Dialog -->
     <string name="stage_editor_dialog_title">Edit Stage</string>
-    <string name="tstage_editor_dialog_set">Set</string>
     <string name="action_cancel">Cancel</string>
 
     <!-- Time Increment Editor Dialog -->
-    <string name="time_increment_editor_dialog_title">Edit Time Increment</string>
-    <string name="time_increment_editor_dialog_set">Set</string>
     <string name="radio_delay_title">Delay</string>
     <string name="radio_bronstein_title">Bronstein</string>
     <string name="radio_fischer_title">Fischer</string>
-
-    <!-- Time Picker Dialog -->
-    <string name="time_picker_dialog_title">Time</string>
-    <string name="time_picker_dialog_set">Set</string>
 
     <!-- Increment type spinner subtitles -->
     <string name="delay_option_subtitle">The player\'s clock starts after the delay period.</string>
@@ -63,8 +48,6 @@
     <!-- Strings for settings buttons -->
     <string name="time_control_player_one">Player One</string>
     <string name="time_control_player_two">Player Two</string>
-    <string name="channel_name">Chess Clock</string>
-    <string name="channel_description">Chess Clock Main Channel</string>
 
     <!-- New & not translated-->
     <string name="start">Start</string>
@@ -104,7 +87,7 @@
     <string name="restore_default_controls">Restore Default Time Controls</string>
     <string name="restore_default_controls_confirmation_message">Are you sure? This will delete any custom time controls you have.</string>
     <string name="action_confirm">Confirm</string>
-    <string name="action_ok">OK</string>
+    <string name="action_ok">Ok</string>
     <string name="attention">Attention</string>
     <string name="delete_all_time_controls_info">The clock requires at least one active time control. Please edit the existing time control or create a new one.</string>
 </resources>

@@ -436,7 +436,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WhiteButtonsDialogTheme);
-            builder.setMessage(R.string.dialog_clock_running_reset)
+            builder.setMessage(R.string.dialog_reset_clock)
                     .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
                         TimeSettingsFragment f = (TimeSettingsFragment) getParentFragment();
                         if (f != null) {
