@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ChessClock Activity -->
+    <string name="app_name">Horloge d\'échecs</string>
+    <string name="dialog_reset_clock">Remettre l\'horloge à zéro ?</string>
+    <string name="dialog_no">Non</string>
+    <string name="dialog_yes">Oui</string>
+
+    <!-- Settings Activity -->
+    <string name="settings">Paramètres</string>
+    <string name="action_edit">Modifier</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="action_full_screen">Plein écran</string>
+
+    <!-- Time Control Fragment -->
+    <string name="action_add_new_stage">Ajouter une étape</string>
+    <string name="action_save_time_control">Enregistrer</string>
+    <string name="toast_requesting_time_control_name">Veuillez ajouter un nom pour enregistrer.</string>
+
+    <!-- Time Control Manager -->
+    <string name="list_empty_toast_message">Liste vide. Liste par défaut chargée.</string>
+    <string name="same_as_player_one">Identique que pour Joueur 1</string>
+
+    <!-- Stage Delete Dialog -->
+    <string name="delete_stage_dialog_message">Supprimer une étape ?</string>
+
+    <!-- Stage Editor Dialog -->
+    <string name="stage_editor_dialog_title">Modifier l\'étape</string>
+    <string name="action_cancel">Annuler</string>
+
+    <!-- Time Increment Editor Dialog -->
+    <string name="radio_delay_title">Délai</string>
+    <string name="radio_bronstein_title">Bronstein</string>
+    <string name="radio_fischer_title">Fischer</string>
+
+    <!-- Increment type spinner subtitles -->
+    <string name="delay_option_subtitle">L\'horloge du joueur démarre après la période de retard.</string>
+    <string name="bronstein_option_subtitle">Les joueurs reçoivent la partie utilisée de l\'incrément à la fin de chaque tour.</string>
+    <string name="fischer_option_subtitle">Les joueurs reçoivent l\'incrément complet à la fin de chaque tour.</string>
+
+
+    <!-- Strings for settings buttons -->
+    <string name="time_control_player_one">Joueur 1</string>
+    <string name="time_control_player_two">Joueur 2</string>
+
+    <!-- New & not translated-->
+    <string name="start">Démarrer</string>
+    <string name="time_controls">Paramètres du temps</string>
+    <string name="presets">Préréglages</string>
+    <string name="new_time">Nouveau minuteur personnalisé</string>
+    <string name="app_settings">Paramètres de l\'application</string>
+    <string name="theme_color">Couleur du thème</string>
+    <string name="sound">Son</string>
+    <string name="custom_time">Temps personnalisé</string>
+    <string name="x_min">%d min</string>
+    <string name="x_sec">%d sec</string>
+    <string name="x_min_y_sec">%d min | %2d sec</string>
+    <string name="name">Nom</string>
+    <string name="time">Temps</string>
+    <string name="increment">Incrément</string>
+    <string name="advanced_mode">Mode avancé</string>
+    <string name="please_set_time">Veuillez ajouter un temps de sauvegarde.</string>
+    <string name="stages">Stages</string>
+    <string name="stage_one">Etape 1</string>
+    <string name="stage_two">Etape 2</string>
+    <string name="stage_three">Etape 3</string>
+    <string name="moves">Mouvement</string>
+    <string name="value">Valeur</string>
+    <string name="type">Type</string>
+    <string name="toast_requesting_time_control_stage">Veuillez ajouter au moins une étape pour chaque utilisateur.</string>
+    <string name="delete_custom_time">Delete custom time?</string>
+    <string name="action_keep">Garder</string>
+    <string name="game_in_x">Jeu dans %s</string>
+    <string name="hour">Heure</string>
+    <string name="minute">Minute</string>
+    <string name="second">Seconde</string>
+    <string name="save_time">Sauvegarder le temps</string>
+    <string name="adjust_time">Ajuster le temps</string>
+    <string name="moves_x">Mouvements: %d</string>
+    <string name="exit_dialog_message">Etes-vous sûr de vouloir abandonner le nouveau minuteur personnalisé ?</string>
+    <string name="restore_default_controls">Restaurer les paramètres de minuteur par défaut</string>
+    <string name="restore_default_controls_confirmation_message">Etes vous sûr ? Cela supprimera tous les minuteurs personnalisés que vous avez.</string>
+    <string name="action_confirm">Confirmer</string>
+    <string name="action_ok">OK</string>
+    <string name="attention">Attention</string>
+    <string name="delete_all_time_controls_info">L\'horloge nécessite au moins un minuteur actif. Veuillez modifier le minuteur existant ou en créer un nouveau.</string>
+</resources>
