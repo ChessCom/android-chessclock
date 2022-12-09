@@ -101,13 +101,17 @@ public class TimeIncrement implements Parcelable, Cloneable {
     }
 
     /**
-     * Get formated string ready to UI info display.
+     * Get formatted string ready to UI info display.
      *
      * @return String representing info content of TimeIncrement.
      */
     @NonNull
     public String toString() {
-        return mType.typeName + ", " + ClockTime.raw(mValue).toMinutesFormat();
+        if (mType == Type.NONE) {
+            return mType.typeName;
+        } else {
+            return mType.typeName + ", " + ClockTime.raw(mValue).toMinutesFormat();
+        }
     }
 
     /**
@@ -162,7 +166,12 @@ public class TimeIncrement implements Parcelable, Cloneable {
         /**
          * Players receive a full increment at the end of each turn.
          */
-        FISCHER(2, "Fischer");
+        FISCHER(2, "Fischer"),
+
+        /**
+         * No increment.
+         */
+        NONE(3, "None");
 
         private final int value;
         private final String typeName;
@@ -180,6 +189,8 @@ public class TimeIncrement implements Parcelable, Cloneable {
                     return BRONSTEIN;
                 case 2:
                     return FISCHER;
+                case 3:
+                    return NONE;
             }
             return null;
         }

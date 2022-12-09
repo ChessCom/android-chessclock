@@ -21,6 +21,7 @@ import com.chess.clock.engine.TimeIncrement;
 import com.chess.clock.entities.AppTheme;
 import com.chess.clock.entities.ClockTime;
 import com.chess.clock.util.ClockUtils;
+import com.chess.clock.views.ViewUtils;
 
 public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
 
@@ -31,11 +32,13 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
 
     EditText secondsEt;
     EditText minutesEt;
-
     AppCompatCheckedTextView delayTv;
     AppCompatCheckedTextView bronsteinTv;
     AppCompatCheckedTextView fischerTv;
+    AppCompatCheckedTextView noneTv;
     TextView typeDetailsTv;
+    View incrementLayout;
+    View divider;
 
     @Override
     int layoutRes() {
@@ -73,7 +76,10 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
         delayTv = view.findViewById(R.id.delayBtn);
         bronsteinTv = view.findViewById(R.id.bronsteinBtn);
         fischerTv = view.findViewById(R.id.fisherBtn);
+        noneTv = view.findViewById(R.id.noneBtn);
         typeDetailsTv = view.findViewById(R.id.typeDetailsTv);
+        incrementLayout = view.findViewById(R.id.incrementLay);
+        divider = view.findViewById(R.id.incrementDivider);
 
         return view;
     }
@@ -93,17 +99,19 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
             secondsEt.setText(ClockUtils.twoDecimalPlacesFormat(clockTime.seconds));
         }
 
-        delayTv.setOnClickListener(v -> setCheckedViews(TimeIncrement.Type.DELAY));
-        bronsteinTv.setOnClickListener(v -> setCheckedViews(TimeIncrement.Type.BRONSTEIN));
-        fischerTv.setOnClickListener(v -> setCheckedViews(TimeIncrement.Type.FISCHER));
+        delayTv.setOnClickListener(v -> setViews(TimeIncrement.Type.DELAY));
+        bronsteinTv.setOnClickListener(v -> setViews(TimeIncrement.Type.BRONSTEIN));
+        fischerTv.setOnClickListener(v -> setViews(TimeIncrement.Type.FISCHER));
+        noneTv.setOnClickListener(v -> setViews(TimeIncrement.Type.NONE));
 
-        setCheckedViews(timeIncrement.getType());
+        setViews(timeIncrement.getType());
     }
 
-    private void setCheckedViews(TimeIncrement.Type type) {
+    private void setViews(TimeIncrement.Type type) {
         delayTv.setChecked(type == TimeIncrement.Type.DELAY);
         bronsteinTv.setChecked(type == TimeIncrement.Type.BRONSTEIN);
         fischerTv.setChecked(type == TimeIncrement.Type.FISCHER);
+        noneTv.setChecked(type == TimeIncrement.Type.NONE);
 
         int subtitleRes;
         switch (type) {
@@ -113,13 +121,18 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
             case BRONSTEIN:
                 subtitleRes = R.string.bronstein_option_subtitle;
                 break;
-            default:
+            case FISCHER:
                 subtitleRes = R.string.fischer_option_subtitle;
+                break;
+            default:
+                subtitleRes = R.string.empty;
                 break;
         }
         typeDetailsTv.setText(subtitleRes);
-
         timeIncrement.setType(type);
+
+        ViewUtils.showView(incrementLayout, type != TimeIncrement.Type.NONE);
+        ViewUtils.showView(divider, type != TimeIncrement.Type.NONE);
     }
 
     @Override
@@ -135,6 +148,7 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
                 delayTv.setCheckMarkTintList(tintChecked);
                 bronsteinTv.setCheckMarkTintList(tintChecked);
                 fischerTv.setCheckMarkTintList(tintChecked);
+                noneTv.setCheckMarkTintList(tintChecked);
             }
         }
     }
