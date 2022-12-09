@@ -1,51 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    ​
-    <!-- ChessClock Activity -->
-    <string name="app_name">ساعة الشطرنج</string>
-    <string name="dialog_reset_clock">إعادة ضبط الساعة؟</string>
-    <string name="dialog_no">لا</string>
-    <string name="dialog_yes">نعم</string>
-    ​
-    <!-- Settings Activity -->
-    <string name="settings">الإعدادات</string>
-    <string name="action_edit">تعديل</string>
-    <string name="action_delete">حذف</string>
-    <string name="action_full_screen">شاشة كاملة</string>
-    ​
-    ​
-    <!-- Time Control Fragment -->
-    <string name="action_add_new_stage">إضافة مرحلة</string>
-    <string name="action_save_time_control">حفظ</string>
-    <string name="toast_requesting_time_control_name">.يرجى إضافة اسم للحفظ</string>
-    ​
-    ​
-    <!-- Time Control Manager -->
-    <string name="list_empty_toast_message">القائمة خالية. تم تحميل القائمة التلقائية.</string>
-    <string name="same_as_player_one">مثل اللاعب الأول</string>
-    ​
-    ​
-    <!-- Stage Delete Dialog -->
-    <string name="delete_stage_dialog_message">حذف المرحلة؟</string>
+    <!--  translations from older version(before 1.2.0)  -->
+    <!--  too few translated phrases to enable in new version  -->
 
-    <!-- Stage Editor Dialog -->
-    <string name="stage_editor_dialog_title">تعديل المرحلة</string>
-    <string name="action_cancel">إلغاء</string>
-    ​
-    <!-- Time Increment Editor Dialog -->
-    <string name="radio_delay_title">تأجيل</string>
-    <string name="radio_bronstein_title">برونشتاين</string>
-    <string name="radio_fischer_title">فيشر</string>
-    ​
-    ​
-    <!-- Increment type spinner subtitles -->
-    <string name="delay_option_subtitle">.يبدأ احتساب الوقت لكل لاعب بعد انتهاء فترة التأجيل</string>
-    <string name="bronstein_option_subtitle"> يحصل اللاعبان على المدة المضافة المستخدمة عند نهاية كل دور.
-	</string>
-    <string name="fischer_option_subtitle">يحصل اللاعبان على المدة المضافة الكاملة عند نهاية كل دور.</string>
-    ​
-    <!-- Strings for settings buttons -->
-    <string name="time_control_player_one">اللاعب الأول</string>
-    <string name="time_control_player_two">اللاعب الثاني</string>
-    ​
+    <!--    &lt;!&ndash; ChessClock Activity &ndash;&gt;-->
+    <!--    <string name="app_name">ساعة الشطرنج</string>-->
+    <!--    <string name="dialog_reset_clock">إعادة ضبط الساعة؟</string>-->
+    <!--    <string name="dialog_no">لا</string>-->
+    <!--    <string name="dialog_yes">نعم</string>-->
+    <!--    &lt;!&ndash; Settings Activity &ndash;&gt;-->
+    <!--    <string name="settings">الإعدادات</string>-->
+    <!--    <string name="action_edit">تعديل</string>-->
+    <!--    <string name="action_delete">حذف</string>-->
+    <!--    <string name="action_full_screen">شاشة كاملة</string>-->
+    <!--    &lt;!&ndash; Time Control Fragment &ndash;&gt;-->
+    <!--    <string name="action_add_new_stage">إضافة مرحلة</string>-->
+    <!--    <string name="action_save_time_control">حفظ</string>-->
+    <!--    <string name="toast_requesting_time_control_name">.يرجى إضافة اسم للحفظ</string>-->
+    <!--    &lt;!&ndash; Time Control Manager &ndash;&gt;-->
+    <!--    <string name="list_empty_toast_message">القائمة خالية. تم تحميل القائمة التلقائية.</string>-->
+    <!--    <string name="same_as_player_one">مثل اللاعب الأول</string>-->
+    <!--    &lt;!&ndash; Stage Delete Dialog &ndash;&gt;-->
+    <!--    <string name="delete_stage_dialog_message">حذف المرحلة؟</string>-->
+
+    <!--    &lt;!&ndash; Stage Editor Dialog &ndash;&gt;-->
+    <!--    <string name="stage_editor_dialog_title">تعديل المرحلة</string>-->
+    <!--    <string name="action_cancel">إلغاء</string>-->
+    <!--    &lt;!&ndash; Time Increment Editor Dialog &ndash;&gt;-->
+    <!--    <string name="radio_delay_title">تأجيل</string>-->
+    <!--    <string name="radio_bronstein_title">برونشتاين</string>-->
+    <!--    <string name="radio_fischer_title">فيشر</string>-->
+    <!--    &lt;!&ndash; Increment type spinner subtitles &ndash;&gt;-->
+    <!--    <string name="delay_option_subtitle">.يبدأ احتساب الوقت لكل لاعب بعد انتهاء فترة التأجيل</string>-->
+    <!--    <string name="bronstein_option_subtitle"> يحصل اللاعبان على المدة المضافة المستخدمة عند نهاية كل دور.-->
+    <!--	</string>-->
+    <!--    <string name="fischer_option_subtitle">يحصل اللاعبان على المدة المضافة الكاملة عند نهاية كل دور.</string>-->
+    <!--    &lt;!&ndash; Strings for settings buttons &ndash;&gt;-->
+    <!--    <string name="time_control_player_one">اللاعب الأول</string>-->
+    <!--    <string name="time_control_player_two">اللاعب الثاني</string>-->
 </resources>
