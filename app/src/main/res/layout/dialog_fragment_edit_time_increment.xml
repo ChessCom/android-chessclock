@@ -85,6 +85,20 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_large" />
 
+    <androidx.appcompat.widget.AppCompatCheckedTextView
+        android:id="@+id/noneBtn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/time_item_height"
+        android:background="?selectableItemBackground"
+        android:checkMark="@drawable/list_radio_button_selector"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/margin_standard"
+        android:singleLine="true"
+        android:text="@string/radio_none_title"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_large" />
+
     <TextView
         android:id="@+id/typeDetailsTv"
         android:layout_width="match_parent"
@@ -97,6 +111,7 @@
 
 
     <View
+        android:id="@+id/incrementDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/margin_standard"
@@ -105,7 +120,7 @@
         android:background="@color/gray" />
 
     <LinearLayout
-        android:id="@+id/movesLay"
+        android:id="@+id/incrementLay"
         android:layout_width="match_parent"
         android:layout_height="@dimen/time_item_height"
         android:layout_marginTop="@dimen/margin_small"

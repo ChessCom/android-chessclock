@@ -33,6 +33,7 @@
     <string name="radio_delay_title">Délai</string>
     <string name="radio_bronstein_title">Bronstein</string>
     <string name="radio_fischer_title">Fischer</string>
+    <string name="radio_none_title">Aucun</string>
 
     <!-- Increment type spinner subtitles -->
     <string name="delay_option_subtitle">L\'horloge du joueur démarre après la période de retard.</string>

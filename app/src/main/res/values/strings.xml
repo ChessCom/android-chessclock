@@ -3,6 +3,7 @@
     <!-- Non translatable-->
     <string name="colon" translatable="false">:</string>
     <string name="default_time_setup_hint" translatable="false">00</string>
+    <string name="empty" translatable="false" />
 
 
     <!-- ChessClock Activity -->
@@ -37,6 +38,7 @@
     <string name="radio_delay_title">Delay</string>
     <string name="radio_bronstein_title">Bronstein</string>
     <string name="radio_fischer_title">Fischer</string>
+    <string name="radio_none_title">None</string>
 
     <!-- Increment type spinner subtitles -->
     <string name="delay_option_subtitle">The player\'s clock starts after the delay period.</string>
