@@ -291,6 +291,12 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        soundManager.releaseSounds();
+    }
+
+    @Override
     public void onBackPressed() {
         if (mTimersState != TimersState.PAUSED) {
             pauseClock();
