@@ -5,12 +5,16 @@ import android.media.MediaPlayer;
 
 import com.chess.clock.R;
 
+import java.util.HashSet;
+
 enum ClockSound {
     PLAYER_ONE_MOVE, PLAYER_TWO_MOVE, GAME_FINISHED, RESET_CLOCK, MENU_ACTION
 }
 
 interface ClockSoundManager {
     void init(Context context);
+
+    void releaseSounds();
 
     void setSoundsEnabled(boolean enabled);
 
@@ -25,17 +29,33 @@ class ClockSoundManagerImpl implements ClockSoundManager {
     public boolean soundsEnabled = true;
     private MediaPlayer playerOneMoveSound;
     private MediaPlayer playerTwoMoveSound;
-    private MediaPlayer clockFinished;
+    private MediaPlayer gameFinished;
     private MediaPlayer clockReset;
     private MediaPlayer menuAction;
+
+    private final HashSet<String> preparedSounds = new HashSet();
 
     @Override
     public void init(Context context) {
         playerOneMoveSound = MediaPlayer.create(context, R.raw.chess_clock_switch1);
+        playerOneMoveSound.setOnPreparedListener(mediaPlayer -> preparedSounds.add(ClockSound.PLAYER_ONE_MOVE.name()));
         playerTwoMoveSound = MediaPlayer.create(context, R.raw.chess_clock_switch2);
-        clockFinished = MediaPlayer.create(context, R.raw.chess_clock_time_ended);
+        playerTwoMoveSound.setOnPreparedListener(mediaPlayer -> preparedSounds.add(ClockSound.PLAYER_TWO_MOVE.name()));
+        gameFinished = MediaPlayer.create(context, R.raw.chess_clock_time_ended);
+        gameFinished.setOnPreparedListener(mediaPlayer -> preparedSounds.add(ClockSound.GAME_FINISHED.name()));
         clockReset = MediaPlayer.create(context, R.raw.chess_clock_reset);
+        clockReset.setOnPreparedListener(mediaPlayer -> preparedSounds.add(ClockSound.RESET_CLOCK.name()));
         menuAction = MediaPlayer.create(context, R.raw.chess_clock_pause);
+        menuAction.setOnPreparedListener(mediaPlayer -> preparedSounds.add(ClockSound.MENU_ACTION.name()));
+    }
+
+    @Override
+    public void releaseSounds() {
+        playerOneMoveSound.release();
+        playerTwoMoveSound.release();
+        gameFinished.release();
+        clockReset.release();
+        menuAction.release();
     }
 
     @Override
@@ -51,6 +71,8 @@ class ClockSoundManagerImpl implements ClockSoundManager {
     @Override
     public void playSound(ClockSound sound) {
         if (!soundsEnabled) return;
+        if (!preparedSounds.contains(sound.name())) return;
+
         switch (sound) {
             case PLAYER_ONE_MOVE:
                 playerOneMoveSound.start();
@@ -59,7 +81,7 @@ class ClockSoundManagerImpl implements ClockSoundManager {
                 playerTwoMoveSound.start();
                 break;
             case GAME_FINISHED:
-                clockFinished.start();
+                gameFinished.start();
                 break;
             case RESET_CLOCK:
                 clockReset.start();
