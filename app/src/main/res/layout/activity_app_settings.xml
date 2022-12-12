@@ -50,7 +50,8 @@
             android:background="@color/gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/themesRecycler" />
+            app:layout_constraintTop_toBottomOf="@id/themesRecycler"
+            app:layout_constraintWidth_max="@dimen/max_content_width" />
 
         <LinearLayout
             android:id="@+id/soundLay"
@@ -163,7 +164,20 @@
                 android:text="@string/restore_default_controls"
                 android:textColor="@color/white_85"
                 android:textSize="@dimen/text_size_large" />
-
         </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/versionTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_standard"
+            android:text="Version: 1.0.0 (1)"
+            android:textColor="@color/white_50"
+            android:textSize="@dimen/text_size_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/restoreBtn"
+            app:layout_constraintVertical_bias="1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
