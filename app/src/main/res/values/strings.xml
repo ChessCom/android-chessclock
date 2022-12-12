@@ -5,6 +5,7 @@
     <string name="default_time_setup_hint" translatable="false">00</string>
     <string name="empty" translatable="false" />
 
+    <string name="version" translatable="false">v%s (%d)</string>
 
     <!-- ChessClock Activity -->
     <string name="app_name">Chess Clock</string>

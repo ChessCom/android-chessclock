@@ -15,6 +15,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chess.clock.BuildConfig;
 import com.chess.clock.R;
 import com.chess.clock.adapters.ThemesAdapter;
 import com.chess.clock.entities.AppTheme;
@@ -95,6 +96,13 @@ public class AppSettingsActivity extends BaseActivity {
         });
 
         updateUiState();
+        setVersionInfo();
+    }
+
+    private void setVersionInfo() {
+        TextView versionTv = (TextView) findViewById(R.id.versionTv);
+        String version = getString(R.string.version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
+        versionTv.setText(version);
     }
 
     private void updateUiState() {
