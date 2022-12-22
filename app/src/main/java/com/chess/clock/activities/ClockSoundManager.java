@@ -46,9 +46,7 @@ class ClockSoundManagerImpl implements ClockSoundManager {
     @Override
     public void init(Context context) {
         soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
-        soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
-            preparedSoundsIds.add(sampleId);
-        });
+        soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> preparedSoundsIds.add(sampleId));
         menuActionId = soundPool.load(context, R.raw.chess_clock_pause, 1);
         playerOneMoveId = soundPool.load(context, R.raw.chess_clock_switch1, 1);
         playerTwoMoveId = soundPool.load(context, R.raw.chess_clock_switch2, 1);
