@@ -1,7 +1,8 @@
 package com.chess.clock.activities;
 
 import android.content.Context;
-import android.media.MediaPlayer;
+import android.media.AudioManager;
+import android.media.SoundPool;
 
 import com.chess.clock.R;
 
@@ -20,42 +21,44 @@ interface ClockSoundManager {
 
     boolean areSoundsEnabled();
 
-    void playSound(ClockSound sound);
+    void playSound(ClockSound sound, AudioManager manager);
 
     void toggleSound();
 }
 
 class ClockSoundManagerImpl implements ClockSoundManager {
-    public boolean soundsEnabled = true;
-    private MediaPlayer playerOneMoveSound;
-    private MediaPlayer playerTwoMoveSound;
-    private MediaPlayer gameFinished;
-    private MediaPlayer clockReset;
-    private MediaPlayer menuAction;
+    private static final int NO_LOOP = 0;
+    private static final int NO_SOUND_ID = 0;
+    private static final float PLAYBACK_RATE = 1f;
+    private static final int SOUND_PRIORITY = 1;
 
-    private final HashSet<String> preparedSounds = new HashSet();
+    public boolean soundsEnabled = true;
+
+    private SoundPool soundPool;
+    private final HashSet<Integer> preparedSoundsIds = new HashSet();
+
+    private int menuActionId = NO_SOUND_ID;
+    private int playerOneMoveId = NO_SOUND_ID;
+    private int playerTwoMoveId = NO_SOUND_ID;
+    private int gameFinishedId = NO_SOUND_ID;
+    private int clockResetId = NO_SOUND_ID;
 
     @Override
     public void init(Context context) {
-        playerOneMoveSound = MediaPlayer.create(context, R.raw.chess_clock_switch1);
-        playerOneMoveSound.setOnPreparedListener(mediaPlayer -> preparedSounds.add(ClockSound.PLAYER_ONE_MOVE.name()));
-        playerTwoMoveSound = MediaPlayer.create(context, R.raw.chess_clock_switch2);
-        playerTwoMoveSound.setOnPreparedListener(mediaPlayer -> preparedSounds.add(ClockSound.PLAYER_TWO_MOVE.name()));
-        gameFinished = MediaPlayer.create(context, R.raw.chess_clock_time_ended);
-        gameFinished.setOnPreparedListener(mediaPlayer -> preparedSounds.add(ClockSound.GAME_FINISHED.name()));
-        clockReset = MediaPlayer.create(context, R.raw.chess_clock_reset);
-        clockReset.setOnPreparedListener(mediaPlayer -> preparedSounds.add(ClockSound.RESET_CLOCK.name()));
-        menuAction = MediaPlayer.create(context, R.raw.chess_clock_pause);
-        menuAction.setOnPreparedListener(mediaPlayer -> preparedSounds.add(ClockSound.MENU_ACTION.name()));
+        soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
+            preparedSoundsIds.add(sampleId);
+        });
+        menuActionId = soundPool.load(context, R.raw.chess_clock_pause, 1);
+        playerOneMoveId = soundPool.load(context, R.raw.chess_clock_switch1, 1);
+        playerTwoMoveId = soundPool.load(context, R.raw.chess_clock_switch2, 1);
+        gameFinishedId = soundPool.load(context, R.raw.chess_clock_time_ended, 1);
+        clockResetId = soundPool.load(context, R.raw.chess_clock_reset, 1);
     }
 
     @Override
     public void releaseSounds() {
-        playerOneMoveSound.release();
-        playerTwoMoveSound.release();
-        gameFinished.release();
-        clockReset.release();
-        menuAction.release();
+        soundPool.release();
     }
 
     @Override
@@ -69,31 +72,44 @@ class ClockSoundManagerImpl implements ClockSoundManager {
     }
 
     @Override
-    public void playSound(ClockSound sound) {
+    public void playSound(ClockSound sound, AudioManager manager) {
         if (!soundsEnabled) return;
-        if (!preparedSounds.contains(sound.name())) return;
+        int soundId = clockSoundId(sound);
 
-        switch (sound) {
-            case PLAYER_ONE_MOVE:
-                playerOneMoveSound.start();
-                break;
-            case PLAYER_TWO_MOVE:
-                playerTwoMoveSound.start();
-                break;
-            case GAME_FINISHED:
-                gameFinished.start();
-                break;
-            case RESET_CLOCK:
-                clockReset.start();
-                break;
-            case MENU_ACTION:
-                menuAction.start();
-                break;
-        }
+        if (soundId == NO_SOUND_ID) return; // sound failed to load
+        if (!preparedSoundsIds.contains(soundId)) return; // sound not prepared
+
+        float actualVolume = (float) manager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = (float) manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        float soundVolume = actualVolume / maxVolume;
+
+        soundPool.play(soundId, soundVolume, soundVolume, SOUND_PRIORITY, NO_LOOP, PLAYBACK_RATE);
     }
 
     @Override
     public void toggleSound() {
         soundsEnabled = !soundsEnabled;
+    }
+
+    private Integer clockSoundId(ClockSound sound) {
+        int soundId = NO_SOUND_ID;
+        switch (sound) {
+            case PLAYER_ONE_MOVE:
+                soundId = playerOneMoveId;
+                break;
+            case PLAYER_TWO_MOVE:
+                soundId = playerTwoMoveId;
+                break;
+            case GAME_FINISHED:
+                soundId = gameFinishedId;
+                break;
+            case RESET_CLOCK:
+                soundId = clockResetId;
+                break;
+            case MENU_ACTION:
+                soundId = menuActionId;
+                break;
+        }
+        return soundId;
     }
 }
