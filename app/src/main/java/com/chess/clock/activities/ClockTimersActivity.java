@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,6 +53,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
      */
     private final int SETTINGS_REQUEST_CODE = 1;
 
+    private AudioManager audioManager;
     private ClockSoundManager soundManager;
 
     /**
@@ -78,7 +80,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         public void onClockFinish() {
             Log.i(TAG, "Player one loses");
             mTimersState = TimersState.PLAYER_ONE_FINISHED;
-            soundManager.playSound(ClockSound.GAME_FINISHED);
+            soundManager.playSound(ClockSound.GAME_FINISHED, audioManager);
             updateUIState();
         }
 
@@ -107,7 +109,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         public void onClockFinish() {
             Log.i(TAG, "Player two loses");
             mTimersState = TimersState.PLAYER_TWO_FINISHED;
-            soundManager.playSound(ClockSound.GAME_FINISHED);
+            soundManager.playSound(ClockSound.GAME_FINISHED, audioManager);
             updateUIState();
         }
 
@@ -155,7 +157,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         // Full screen for pre-kitkat
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentApiVersion < Build.VERSION_CODES.KITKAT) {
@@ -353,7 +355,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         mTimersState = TimersState.PAUSED;
         mTimersStatePreviousToPause = TimersState.PAUSED;
         updateUIState();
-        soundManager.playSound(ClockSound.RESET_CLOCK);
+        soundManager.playSound(ClockSound.RESET_CLOCK, audioManager);
     }
 
     public void pauseClock() {
@@ -435,7 +437,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
                     onPlayerClockClicked(mTimersStatePreviousToPause != TimersState.PLAYER_ONE_RUNNING);
                 } else {
                     pauseClock();
-                    soundManager.playSound(ClockSound.MENU_ACTION);
+                    soundManager.playSound(ClockSound.MENU_ACTION, audioManager);
                 }
             }
 
@@ -453,7 +455,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
                 soundManager.toggleSound();
                 updateUIState();
                 if (soundManager.areSoundsEnabled()) {
-                    soundManager.playSound(ClockSound.MENU_ACTION);
+                    soundManager.playSound(ClockSound.MENU_ACTION, audioManager);
                 }
             }
         });
@@ -508,7 +510,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         if (mTimersState == playerTimerRunning || mTimersState == TimersState.PAUSED) {
             getClockManager().pressClock(player);
             mTimersState = firstPlayer ? TimersState.PLAYER_TWO_RUNNING : TimersState.PLAYER_ONE_RUNNING;
-            soundManager.playSound(ClockSound.PLAYER_ONE_MOVE);
+            soundManager.playSound(ClockSound.PLAYER_ONE_MOVE, audioManager);
             updateUIState();
         } else if (mTimersState == TimersState.PLAYER_ONE_FINISHED || mTimersState == TimersState.PLAYER_TWO_FINISHED) {
             showResetClockDialog();
