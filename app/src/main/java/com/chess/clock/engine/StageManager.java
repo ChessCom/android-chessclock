@@ -31,10 +31,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
      * The stages of the game.
      */
     private ArrayList<Stage> mStages;
-    /**
-     * Current stage number of the game.
-     */
-    private int mCurrentStage;
+    private int currentStageIndex;
     /**
      * Total number of moves played in the game.
      */
@@ -88,7 +85,8 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
      * @return The current stage being played.
      */
     public Stage getCurrentStage() {
-        return mStages.get(mCurrentStage);
+        if (mStages.isEmpty()) return null;
+        return mStages.get(currentStageIndex);
     }
 
     /**
@@ -228,10 +226,11 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
      * Performs a chess move in the current stage.
      */
     public void addMove() {
+        Stage currentStage = getCurrentStage();
+        if (currentStage == null) return;
 
         try {
-            // Add move to the current stage.
-            mStages.get(mCurrentStage).addMove();
+            currentStage.addMove();
 
         } catch (Stage.GameStageException e) {
             Log.e(TAG, e.getMessage());
@@ -251,7 +250,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
      * Reset current stages and total move count.
      */
     public void reset() {
-        mCurrentStage = 0;
+        currentStageIndex = 0;
 
         // Reset all stages.
         for (Stage stage : mStages) {
@@ -265,7 +264,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
     }
 
     private void readFromParcel(Parcel parcel) {
-        mCurrentStage = parcel.readInt();
+        currentStageIndex = parcel.readInt();
         mMoveCount = parcel.readInt();
         mStages = new ArrayList<>();
         parcel.readTypedList(mStages, Stage.CREATOR);
@@ -273,8 +272,8 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        Log.d(TAG, "writeToParcel: " + mCurrentStage + ", " + mMoveCount + ", " + mStages.size());
-        parcel.writeInt(mCurrentStage);
+        Log.d(TAG, "writeToParcel: " + currentStageIndex + ", " + mMoveCount + ", " + mStages.size());
+        parcel.writeInt(currentStageIndex);
         parcel.writeInt(mMoveCount);
         parcel.writeTypedList(mStages);
     }
@@ -293,18 +292,18 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
     @Override
     public void onStageFinished(int stageFinishedNumber) {
 
-        if (mCurrentStage != stageFinishedNumber) {
+        if (currentStageIndex != stageFinishedNumber) {
             throw new IllegalStateException("Stage finished is not the current stage.");
         }
 
-        mCurrentStage++;
+        currentStageIndex++;
 
         // Check if there is more stages
-        if (mCurrentStage < getTotalStages()) {
+        if (currentStageIndex < getTotalStages()) {
 
             // Notify listener with new stage entering.
             if (mStageManagerListener != null) {
-                mStageManagerListener.onNewStageUpdate(mStages.get(mCurrentStage));
+                mStageManagerListener.onNewStageUpdate(mStages.get(currentStageIndex));
             }
         }
     }
