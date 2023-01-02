@@ -55,18 +55,17 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
 			*/
             if (mLastTickTime > 0) {
                 long elapsedTime = System.currentTimeMillis() - mLastTickTime;
-                mTime -= elapsedTime;
+                setTime(mTime - elapsedTime);
             } else {
                 // When last tick time is not available, update using fixed count down interval.
-                mTime -= mCountDownInterval;
+                setTime(mTime - mCountDownInterval);
             }
 
             // Store current tick time
             mLastTickTime = System.currentTimeMillis();
 
-            // Finish timer if zero or negative already.
+            // Finish timer if time ends.
             if (mTime <= 0) {
-
                 // Notify UI of remaining time.
                 if (mCallback != null) {
                     mCallback.onClockTimeUpdate(mTime);
@@ -173,12 +172,12 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
     }
 
     /**
-     * Set count down time value.
+     * Set current time value.
+     * Enforce 0 if time value is negative.
      *
      * @param time Time position to be set in milliseconds.
      */
     public void setTime(long time) {
-        // Avoid setting negative times.
         mTime = Math.max(0, time);
     }
 
@@ -202,8 +201,8 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
     /**
      * @return True if timer is on TimerState.FINISHED state and was not yet reset.
      */
-    public boolean isFinished() {
-        return mTimerState == TimerState.FINISHED;
+    public boolean isNotFinished() {
+        return mTimerState != TimerState.FINISHED;
     }
 
     /**
@@ -415,11 +414,6 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
         if (isStarted()) {
             handler.removeCallbacks(downCounter);
 
-            // Force finish on zero if it went negative.
-            if (mTime <= 0) {
-                mTime = 0;
-            }
-
             // Save last forceStop position
             mStopTime = mTime;
 
@@ -480,7 +474,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
      */
     private void addIncrement(long increment) {
         Log.v(TAG, "#" + this.hashCode() + " adding increment of " + formatTime(increment));
-        mTime += increment;
+        setTime(mTime + increment);
     }
 
     /**
@@ -546,10 +540,6 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
          */
         FINISHED
     }
-
-    /****************************************
-     * Callbacks Definition.
-     ***************************************/
 
     /**
      * Interface definition for a callback to be invoked when the UI elements should be updated.
