@@ -3,6 +3,7 @@ package com.chess.clock.util;
 import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
@@ -13,8 +14,14 @@ public class ClockUtils {
     }
 
     public static int getIntOrZero(EditText et) {
+        int intValue = 0;
         String textValue = et.getText().toString();
-        return textValue.isEmpty() ? 0 : Integer.parseInt(textValue);
+        try {
+            intValue = textValue.isEmpty() ? 0 : Integer.parseInt(textValue);
+        } catch (NumberFormatException exception) {
+            Log.i("ClockUtils", "Cannot parse value:" + textValue + " to Integer.");
+        }
+        return intValue;
     }
 
     public static void setClockTextWatcher(EditText editText) {
