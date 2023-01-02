@@ -93,7 +93,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
      * @return All stages
      */
     public Stage[] getStages() {
-        return mStages.toArray(new Stage[mStages.size()]);
+        return mStages.toArray(new Stage[0]);
     }
 
     /**
@@ -164,6 +164,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
     public void removeStage(int removeStageIdx) {
 
         if (removeStageIdx == -1) return;
+        if (removeStageIdx >= mStages.size()) return;
 
         mStages.remove(removeStageIdx);
 
