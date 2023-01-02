@@ -184,7 +184,6 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
         Stage lastStage = mStages.get(totalStages - 1);
         lastStage.setMoves(Stage.GAME_STAGE_MOVES);
         lastStage.setStageType(Stage.StageType.GAME);
-
     }
 
     /**
