@@ -14,6 +14,8 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
@@ -40,11 +42,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
      */
     private static final String STATE_TIMERS_KEY = "STATE_TIMERS_KEY";
     private static final String STATE_TIMERS_PREVIOUS_PAUSE_KEY = "STATE_TIMERS_PREVIOUS_PAUSE_KEY";
-    private static final String STATE_LAST_TIME_PAUSED_ACTIVITY_KEY = "LAST_TIME_PAUSED_ACTIVITY_KEY";
-    /**
-     * Settings Activity request code
-     */
-    private final int SETTINGS_REQUEST_CODE = 1;
 
     private AudioManager audioManager;
     private ClockSoundManager soundManager;
@@ -60,7 +57,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     /**
      * Utils
      */
-    private long mTimeStampOnPauseActivity;
     private View mDecorView;
     private TimersState mTimersState;
     private final CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
@@ -123,20 +119,16 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     };
     private TimersState mTimersStatePreviousToPause;
 
-    /**
-     * Update UI according to Settings Activity return code.
-     */
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SETTINGS_REQUEST_CODE && resultCode == RESULT_OK) {
-
-            // Both states at pause means it's the beginning of the game.
-            mTimersState = TimersState.PAUSED;
-            mTimersStatePreviousToPause = TimersState.PAUSED;
-
-            updateUIState();
-        }
-    }
+    private final ActivityResultLauncher<Intent> settingsResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    // Both states at pause means it's the beginning of the game.
+                    mTimersState = TimersState.PAUSED;
+                    mTimersStatePreviousToPause = TimersState.PAUSED;
+                    updateUIState();
+                }
+            });
 
     /**
      * Called when Activity is created.
@@ -252,11 +244,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         if (mTimersState != TimersState.PAUSED) {
             clockMenu.showPause();
         }
-
-        // Restore time stamp when onPause() was called.
-        if (savedInstanceState.containsKey(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY)) {
-            mTimeStampOnPauseActivity = savedInstanceState.getLong(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY);
-        }
     }
 
     @Override
@@ -269,7 +256,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     @Override
     protected void onPause() {
         super.onPause();
-        mTimeStampOnPauseActivity = System.currentTimeMillis(); // todo
         appData.setSoundsEnabled(soundManager.areSoundsEnabled());
     }
 
@@ -337,7 +323,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         Log.v(TAG, "Saving UI State on instance Bundle ");
         saveInstanceState.putInt(STATE_TIMERS_KEY, mTimersState.getValue());
         saveInstanceState.putInt(STATE_TIMERS_PREVIOUS_PAUSE_KEY, mTimersStatePreviousToPause.getValue());
-        saveInstanceState.putLong(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY, mTimeStampOnPauseActivity);
         super.onSaveInstanceState(saveInstanceState);
     }
 
@@ -383,7 +368,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
                 pauseClock();
 
                 Intent settingsIntent = new Intent(ClockTimersActivity.this, TimerSettingsActivity.class);
-                startActivityForResult(settingsIntent, SETTINGS_REQUEST_CODE);
+                settingsResultLauncher.launch(settingsIntent);
                 overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
             }
 
