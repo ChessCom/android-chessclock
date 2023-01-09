@@ -100,7 +100,7 @@ public class AppSettingsActivity extends BaseActivity {
     }
 
     private void setVersionInfo() {
-        TextView versionTv = (TextView) findViewById(R.id.versionTv);
+        TextView versionTv = findViewById(R.id.versionTv);
         String version = getString(R.string.version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
         versionTv.setText(version);
     }
