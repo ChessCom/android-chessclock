@@ -35,11 +35,6 @@ public interface ChessClockManager {
     boolean isClockStarted();
 
     /**
-     * Resumes the global state of the chess clock.
-     */
-    void resumeClock();
-
-    /**
      * Registers a callbacks to be invoked on players statuses updates.
      */
     void setListeners(CountDownTimer.Callback playerOneCallback, CountDownTimer.Callback playerTwoCallback);
