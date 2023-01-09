@@ -414,8 +414,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
             TimerSettingsActivity activity = (TimerSettingsActivity) requireActivity();
             activity.getClockManager().setupClock(wrapper);
             activity.setResult(Activity.RESULT_OK);
-            activity.finish();
-            activity.overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
+            activity.finishWithAnimation();
         } else {
             Log.w(TAG, "time control not available, ignoring start new clock");
             Thread.dumpStack();
