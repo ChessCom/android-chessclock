@@ -226,12 +226,8 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
      * Performs a chess move in the current stage.
      */
     public void addMove() {
-        Stage currentStage = getCurrentStage();
-        if (currentStage == null) return;
-
         try {
-            currentStage.addMove();
-
+            getCurrentStage().addMove();
         } catch (Stage.GameStageException e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
