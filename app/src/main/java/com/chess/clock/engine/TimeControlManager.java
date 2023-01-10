@@ -3,6 +3,7 @@ package com.chess.clock.engine;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -199,7 +200,7 @@ public class TimeControlManager {
         Stage stage2 = new Stage(1, 60 * 60 * 1000L, TimeIncrement.defaultIncrement());
         TimeControl blank = new TimeControl(null, new Stage[]{stage1, stage2});
 
-        long id = System.currentTimeMillis(); // supported locally, unique enough
+        long id = SystemClock.elapsedRealtime(); // supported locally, unique enough
         int order = -1; // add item at start, order will be updated before saving
         try {
             // Set current editable time control with a new "blank" time control

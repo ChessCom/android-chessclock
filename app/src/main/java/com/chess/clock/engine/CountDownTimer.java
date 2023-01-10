@@ -2,6 +2,7 @@ package com.chess.clock.engine;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.chess.clock.entities.ClockTime;
@@ -54,7 +55,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
 			The last tick time is set to zero for each stop, pause and reset action.
 			*/
             if (mLastTickTime > 0) {
-                long elapsedTime = System.currentTimeMillis() - mLastTickTime;
+                long elapsedTime = currentTimeMs() - mLastTickTime;
                 setTime(mTime - elapsedTime);
             } else {
                 // When last tick time is not available, update using fixed count down interval.
@@ -62,7 +63,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
             }
 
             // Store current tick time
-            mLastTickTime = System.currentTimeMillis();
+            mLastTickTime = currentTimeMs();
 
             // Finish timer if time ends.
             if (mTime <= 0) {
@@ -84,6 +85,11 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
             }
         }
     };
+
+    private long currentTimeMs() {
+        return SystemClock.elapsedRealtime();
+    }
+
     /**
      * Last forceStop time position in milliseconds.
      */
@@ -281,7 +287,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
             if (increment.getType() == TimeIncrement.Type.DELAY) {
 
                 // Pausing in the middle of a delay?
-                long elapsedTime = System.currentTimeMillis() - lastStartDelayTime;
+                long elapsedTime = currentTimeMs() - lastStartDelayTime;
                 if (elapsedTime < increment.getValue()) {
 
                     mPendingDelayOnResume = increment.getValue() - elapsedTime;
@@ -373,7 +379,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
             handler.postDelayed(downCounter, delay);
             mTimerState = TimerState.RUNNING;
 
-            lastStartDelayTime = System.currentTimeMillis();
+            lastStartDelayTime = currentTimeMs();
         }
     }
 
