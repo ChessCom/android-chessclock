@@ -275,7 +275,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
     }
 
     /**
-     * Timer pauses. Can only be restarted if {@link #resume()} is called.
+     * Timer pauses.
      */
     public void pause() {
         // Do not pause if timer was already stopped.
@@ -305,24 +305,6 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
 
         } else {
             Log.d(TAG, "Pause request ignored. Timer is not running.");
-        }
-    }
-
-    /**
-     * Timer restarts if it was previously paused by {@link #pause()}.
-     */
-    public void resume() {
-        if (mTimerState == TimerState.PAUSED) {
-
-            Log.v(TAG, "Pending delay on resume: " + mPendingDelayOnResume);
-
-            if (mPendingDelayOnResume > 0) {
-                forceStartDelayed(mPendingDelayOnResume);
-            } else {
-                forceStart();
-            }
-        } else {
-            Log.d(TAG, "Resume request ignored. Timer was not paused.");
         }
     }
 
@@ -536,7 +518,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
         RUNNING,
 
         /**
-         * The count down timer is paused. Meaning it will respond to {@link #resume()}.
+         * The count down timer is paused.
          */
         PAUSED,
 

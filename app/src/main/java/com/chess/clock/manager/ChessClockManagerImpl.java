@@ -93,13 +93,6 @@ public class ChessClockManagerImpl implements ChessClockManager {
     }
 
     @Override
-    public void resumeClock() {
-        mPlayerOneTimer.resume();
-        mPlayerTwoTimer.resume();
-        log("Resumed the clock timers.");
-    }
-
-    @Override
     public void resetClock() {
         mPlayerOneTimer.resetTimeControl();
         mPlayerTwoTimer.resetTimeControl();

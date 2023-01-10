@@ -1,11 +1,9 @@
 package com.chess.clock.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Build;
@@ -16,6 +14,8 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
@@ -42,16 +42,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
      */
     private static final String STATE_TIMERS_KEY = "STATE_TIMERS_KEY";
     private static final String STATE_TIMERS_PREVIOUS_PAUSE_KEY = "STATE_TIMERS_PREVIOUS_PAUSE_KEY";
-    private static final String STATE_LAST_TIME_PAUSED_ACTIVITY_KEY = "LAST_TIME_PAUSED_ACTIVITY_KEY";
-    /**
-     * Shared Preferences Keys.
-     */
-    private static final String SP_KEY_TIMERS_STATE = "timersState";
-    private static final String SP_KEY_TIMERS_STATE_PREVIOUS_TO_PAUSE = "timersStatePreviousToPause";
-    /**
-     * Settings Activity request code
-     */
-    private final int SETTINGS_REQUEST_CODE = 1;
 
     private AudioManager audioManager;
     private ClockSoundManager soundManager;
@@ -67,7 +57,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     /**
      * Utils
      */
-    private long mTimeStampOnPauseActivity;
     private View mDecorView;
     private TimersState mTimersState;
     private final CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
@@ -130,24 +119,16 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     };
     private TimersState mTimersStatePreviousToPause;
 
-    /**
-     * Update UI according to Settings Activity return code.
-     */
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SETTINGS_REQUEST_CODE && resultCode == RESULT_OK) {
-
-            // Both states at pause means it's the beginning of the game.
-            mTimersState = TimersState.PAUSED;
-            mTimersStatePreviousToPause = TimersState.PAUSED;
-
-            // Resetting timer state on shared preferences is mandatory here. Otherwise, the user
-            // would press back now and when returning it would resume the previous deprecated state.
-            saveTimersState();
-
-            updateUIState();
-        }
-    }
+    private final ActivityResultLauncher<Intent> settingsResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    // Both states at pause means it's the beginning of the game.
+                    mTimersState = TimersState.PAUSED;
+                    mTimersStatePreviousToPause = TimersState.PAUSED;
+                    updateUIState();
+                }
+            });
 
     /**
      * Called when Activity is created.
@@ -183,7 +164,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         // Save reference of UI widgets.
         initWidgetReferences();
 
-        // Check for configuration change to resume timers state.
+        // Check for configuration change to restore timers state.
         if (savedInstanceState != null) {
             restoreState(savedInstanceState);
         } else {
@@ -263,11 +244,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         if (mTimersState != TimersState.PAUSED) {
             clockMenu.showPause();
         }
-
-        // Restore time stamp when onPause() was called.
-        if (savedInstanceState.containsKey(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY)) {
-            mTimeStampOnPauseActivity = savedInstanceState.getLong(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY);
-        }
     }
 
     @Override
@@ -280,15 +256,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     @Override
     protected void onPause() {
         super.onPause();
-
-        mTimeStampOnPauseActivity = System.currentTimeMillis();
-
-        // Store current timer state and state previous to pause in case we want to
-        // resume the clock if this Activity is bound to a already started Service.
-        saveTimersState();
-
-        pauseClock();
-
         appData.setSoundsEnabled(soundManager.areSoundsEnabled());
     }
 
@@ -308,7 +275,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
 
     void initClock() {
         getClockManager().setListeners(playerOneCallback, playerTwoCallback);
-
 			/*
             Check if timer is already started. Started timer means that Time Controls were set in the clock.
 			If no time control were set, restore a new timer with last used Time Controls.
@@ -317,30 +283,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
             TimeControlWrapper selectedControl = TimeControlParser.getLastTimeControlOrDefault(this);
             getClockManager().setupClock(selectedControl);
             Log.d(TAG, "Last controls set.");
-        } else {
-
-            restoreTimersState();
-
-            if (mTimersState == TimersState.PLAYER_ONE_FINISHED || mTimersState == TimersState.PLAYER_TWO_FINISHED) {
-                updateUIState();
-            } else {
-					/*
-					Only resume clock if elapsed time was less than 2 seconds since last pause.
-					This will serve to filter orientation changes only.
-					*/
-                if (mTimeStampOnPauseActivity > 0) {
-                    long elapsedTime = System.currentTimeMillis() - mTimeStampOnPauseActivity;
-                    Log.v(TAG, "Configuration change lasted " + elapsedTime + " milliseconds.");
-                    if (elapsedTime < 2000 && (mTimersState == TimersState.PLAYER_TWO_RUNNING ||
-                            mTimersState == TimersState.PLAYER_ONE_RUNNING)) {
-                        getClockManager().resumeClock();
-                        updateUIState();
-                    } else {
-                        // If pause took too long, reset state to paused.
-                        pauseClock();
-                    }
-                }
-            }
         }
     }
 
@@ -381,7 +323,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         Log.v(TAG, "Saving UI State on instance Bundle ");
         saveInstanceState.putInt(STATE_TIMERS_KEY, mTimersState.getValue());
         saveInstanceState.putInt(STATE_TIMERS_PREVIOUS_PAUSE_KEY, mTimersStatePreviousToPause.getValue());
-        saveInstanceState.putLong(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY, mTimeStampOnPauseActivity);
         super.onSaveInstanceState(saveInstanceState);
     }
 
@@ -427,7 +368,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
                 pauseClock();
 
                 Intent settingsIntent = new Intent(ClockTimersActivity.this, TimerSettingsActivity.class);
-                startActivityForResult(settingsIntent, SETTINGS_REQUEST_CODE);
+                settingsResultLauncher.launch(settingsIntent);
                 overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
             }
 
@@ -520,35 +461,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     private void showResetClockDialog() {
         ResetClockDialogFragment resetClockDialog = new ResetClockDialogFragment();
         resetClockDialog.show(getSupportFragmentManager(), TAG_RESET_DIALOG_FRAGMENT);
-    }
-
-    /**
-     * Save Timers State on Shared Preferences
-     */
-    public void saveTimersState() {
-
-        Log.v(TAG, "Saving timer state: " + mTimersState + ", previous: " + mTimersStatePreviousToPause);
-
-        SharedPreferences mySharedPreferences = getPreferences(Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = mySharedPreferences.edit();
-
-        editor.putInt(SP_KEY_TIMERS_STATE, mTimersState.getValue());
-        editor.putInt(SP_KEY_TIMERS_STATE_PREVIOUS_TO_PAUSE, mTimersStatePreviousToPause.getValue());
-
-        editor.apply();
-    }
-
-    /**
-     * Restore Timers State.
-     */
-    public void restoreTimersState() {
-
-        SharedPreferences sp = getPreferences(Activity.MODE_PRIVATE);
-
-        mTimersState = TimersState.fromInteger(sp.getInt(SP_KEY_TIMERS_STATE, 0));
-        mTimersStatePreviousToPause = TimersState.fromInteger(sp.getInt(SP_KEY_TIMERS_STATE_PREVIOUS_TO_PAUSE, 0));
-
-        Log.v(TAG, "Retrieving timer state: " + mTimersState + ", previous: " + mTimersStatePreviousToPause);
     }
 
     @Override
