@@ -34,16 +34,13 @@ public class ChessClockManagerImpl implements ChessClockManager {
         mPlayerOneTimer = new CountDownTimer(DEFAULT_COUNT_DOWN_INTERVAL_MS);
         mPlayerTwoTimer = new CountDownTimer(DEFAULT_COUNT_DOWN_INTERVAL_MS);
 
-        CountDownTimer.FinishCallback mFinishListener = new CountDownTimer.FinishCallback() {
-            @Override
-            public void onClockFinish() {
+        CountDownTimer.FinishCallback mFinishListener = () -> {
 
-                chessGameRunning = false;
-                mPlayerOneTimer.stop();
-                mPlayerTwoTimer.stop();
+            chessGameRunning = false;
+            mPlayerOneTimer.stop();
+            mPlayerTwoTimer.stop();
 
-                log("Game finished.");
-            }
+            log("Game finished.");
         };
         mPlayerOneTimer.setFinishListener(mFinishListener);
         mPlayerTwoTimer.setFinishListener(mFinishListener);
@@ -145,7 +142,7 @@ public class ChessClockManagerImpl implements ChessClockManager {
     private void pressPlayerClock(CountDownTimer playerTimer, CountDownTimer opponentTimer) {
 
         // Ignore clock press if timers are not initiated or opponent timer already finished.
-        if (!opponentTimer.isFinished() && !playerTimer.isFinished()) {
+        if (opponentTimer.isNotFinished() && playerTimer.isNotFinished()) {
 
             // Game already running? stop player timer and start the opponent timer.
             if (chessGameRunning) {
