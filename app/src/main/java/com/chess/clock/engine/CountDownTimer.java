@@ -166,7 +166,11 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
             StageManager stageManager = mTimeControl.getStageManager();
             mCallback.onMoveCountUpdate(stageManager.getTotalMoveCount());
             mCallback.onTotalStageNumber(stageManager.getTotalStages());
-            mCallback.onStageUpdate(stageManager.getCurrentStage(), getTimeControlTitle());
+
+            Stage currentStage = stageManager.getCurrentStage();
+            if (currentStage != null) {
+                mCallback.onStageUpdate(currentStage, getTimeControlTitle());
+            }
         }
     }
 
