@@ -53,7 +53,11 @@ public class ClockButton extends FrameLayout {
 
     public void setTime(long timeMillis) {
         ClockTime clockTime = ClockTime.calibrated(timeMillis);
-        timeTv.setText(clockTime.toReadableFormat());
+        String readableFormat = clockTime.toReadableFormat();
+
+        if (timeTv.getText().equals(readableFormat)) return;
+
+        timeTv.setText(readableFormat);
         if (clockTime.atLeaseOneHourLeft()) {
             timeTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.clock_timer_textSize_small));
         } else {
