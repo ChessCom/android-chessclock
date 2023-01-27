@@ -57,8 +57,9 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     /**
      * Utils
      */
-    private View mDecorView;
-    private TimersState mTimersState;
+    private View windowDecorView;
+    private TimersState timerState;
+    private TimersState timersStatePreviousToPause;
     private final CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
         @Override
         public void onClockTimeUpdate(long millisUntilFinished) {
@@ -68,7 +69,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         @Override
         public void onClockFinish() {
             Log.i(TAG, "Player one loses");
-            mTimersState = TimersState.PLAYER_ONE_FINISHED;
+            timerState = TimersState.PLAYER_ONE_FINISHED;
             soundManager.playSound(ClockSound.GAME_FINISHED, audioManager);
             updateUIState();
         }
@@ -97,7 +98,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         @Override
         public void onClockFinish() {
             Log.i(TAG, "Player two loses");
-            mTimersState = TimersState.PLAYER_TWO_FINISHED;
+            timerState = TimersState.PLAYER_TWO_FINISHED;
             soundManager.playSound(ClockSound.GAME_FINISHED, audioManager);
             updateUIState();
         }
@@ -117,15 +118,15 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
             playerTwoButton.setStages(stagesNumber);
         }
     };
-    private TimersState mTimersStatePreviousToPause;
+
 
     private final ActivityResultLauncher<Intent> settingsResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
                     // Both states at pause means it's the beginning of the game.
-                    mTimersState = TimersState.PAUSED;
-                    mTimersStatePreviousToPause = TimersState.PAUSED;
+                    timerState = TimersState.PAUSED;
+                    timersStatePreviousToPause = TimersState.PAUSED;
                     updateUIState();
                 }
             });
@@ -154,7 +155,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
                 getProperLandscapeLayout() : R.layout.activity_clock_timers;
         setContentView(layout);
 
-        mDecorView = getWindow().getDecorView();
+        windowDecorView = getWindow().getDecorView();
         soundManager = new ClockSoundManagerImpl();
         soundManager.init(getApplicationContext());
 
@@ -169,8 +170,8 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
             restoreState(savedInstanceState);
         } else {
             // Reset timers state to PAUSED
-            mTimersState = TimersState.PAUSED;
-            mTimersStatePreviousToPause = TimersState.PAUSED;
+            timerState = TimersState.PAUSED;
+            timersStatePreviousToPause = TimersState.PAUSED;
         }
 
         initClock();
@@ -186,14 +187,14 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         boolean isFullScreen = appData.getClockFullScreen();
         if (hasFocus && currentApiVersion >= Build.VERSION_CODES.KITKAT) {
             if (isFullScreen) {
-                mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                windowDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
             } else {
-                mDecorView.setSystemUiVisibility(0);
+                windowDecorView.setSystemUiVisibility(0);
             }
         } else if (hasFocus) {
             if (isFullScreen) {
@@ -233,15 +234,15 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     private void restoreState(Bundle savedInstanceState) {
         if (savedInstanceState.containsKey(STATE_TIMERS_KEY)) {
             int state = savedInstanceState.getInt(STATE_TIMERS_KEY);
-            mTimersState = TimersState.fromInteger(state);
+            timerState = TimersState.fromInteger(state);
         }
         if (savedInstanceState.containsKey(STATE_TIMERS_PREVIOUS_PAUSE_KEY)) {
             int state = savedInstanceState.getInt(STATE_TIMERS_PREVIOUS_PAUSE_KEY);
-            mTimersStatePreviousToPause = TimersState.fromInteger(state);
+            timersStatePreviousToPause = TimersState.fromInteger(state);
         }
 
         // Set play/pause toggle btn
-        if (mTimersState != TimersState.PAUSED) {
+        if (timerState != TimersState.PAUSED) {
             clockMenu.showPause();
         }
     }
@@ -267,7 +268,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
 
     @Override
     public void onBackPressed() {
-        if (mTimersState != TimersState.PAUSED) {
+        if (timerState != TimersState.PAUSED) {
             pauseClock();
         }
         super.onBackPressed();
@@ -294,19 +295,19 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         getClockManager().resetClock();
 
         // Both states at pause means it's the beginning of the game.
-        mTimersState = TimersState.PAUSED;
-        mTimersStatePreviousToPause = TimersState.PAUSED;
+        timerState = TimersState.PAUSED;
+        timersStatePreviousToPause = TimersState.PAUSED;
         updateUIState();
         soundManager.playSound(ClockSound.RESET_CLOCK, audioManager);
     }
 
     public void pauseClock() {
-        if (mTimersState == TimersState.PLAYER_ONE_RUNNING || mTimersState == TimersState.PLAYER_TWO_RUNNING) {
+        if (timerState == TimersState.PLAYER_ONE_RUNNING || timerState == TimersState.PLAYER_TWO_RUNNING) {
             Log.i(TAG, "Clock paused.");
-            mTimersStatePreviousToPause = mTimersState;
-            mTimersState = TimersState.PAUSED;
-            Log.d(TAG, "Previous state: " + mTimersStatePreviousToPause +
-                    " , current state: " + mTimersState);
+            timersStatePreviousToPause = timerState;
+            timerState = TimersState.PAUSED;
+            Log.d(TAG, "Previous state: " + timersStatePreviousToPause +
+                    " , current state: " + timerState);
             getClockManager().pauseClock();
 
             updateUIState();
@@ -321,8 +322,8 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     @Override
     public void onSaveInstanceState(Bundle saveInstanceState) {
         Log.v(TAG, "Saving UI State on instance Bundle ");
-        saveInstanceState.putInt(STATE_TIMERS_KEY, mTimersState.getValue());
-        saveInstanceState.putInt(STATE_TIMERS_PREVIOUS_PAUSE_KEY, mTimersStatePreviousToPause.getValue());
+        saveInstanceState.putInt(STATE_TIMERS_KEY, timerState.getValue());
+        saveInstanceState.putInt(STATE_TIMERS_PREVIOUS_PAUSE_KEY, timersStatePreviousToPause.getValue());
         super.onSaveInstanceState(saveInstanceState);
     }
 
@@ -374,8 +375,8 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
 
             @Override
             public void playPauseClicked() {
-                if (mTimersState == TimersState.PAUSED) {
-                    onPlayerClockClicked(mTimersStatePreviousToPause != TimersState.PLAYER_ONE_RUNNING);
+                if (timerState == TimersState.PAUSED) {
+                    onPlayerClockClicked(timersStatePreviousToPause != TimersState.PLAYER_ONE_RUNNING);
                 } else {
                     pauseClock();
                     soundManager.playSound(ClockSound.MENU_ACTION, audioManager);
@@ -384,8 +385,8 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
 
             @Override
             public void resetClicked() {
-                if (mTimersState == TimersState.PLAYER_ONE_RUNNING
-                        || mTimersState == TimersState.PLAYER_TWO_RUNNING) {
+                if (timerState == TimersState.PLAYER_ONE_RUNNING
+                        || timerState == TimersState.PLAYER_TWO_RUNNING) {
                     pauseClock();
                 }
                 showResetClockDialog();
@@ -406,8 +407,8 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
      * Change buttons and timers UI according to TimerState.
      */
     private void updateUIState() {
-        Log.d(TAG, "Updating UI state to: " + mTimersState);
-        switch (mTimersState) {
+        Log.d(TAG, "Updating UI state to: " + timerState);
+        switch (timerState) {
             case PAUSED:
                 playerOneButton.updateUi(selectedTheme, ClockButton.State.IDLE);
                 playerTwoButton.updateUi(selectedTheme, ClockButton.State.IDLE);
@@ -436,7 +437,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         }
         clockMenu.updateSoundIcon(soundManager.areSoundsEnabled());
         if (clocksDivider != null) {
-            ViewUtils.showView(clocksDivider, mTimersState == TimersState.PAUSED);
+            ViewUtils.showView(clocksDivider, timerState == TimersState.PAUSED);
         }
     }
 
@@ -444,16 +445,16 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         ClockPlayer player = ClockPlayer.ofBoolean(firstPlayer);
         TimersState playerTimerRunning = firstPlayer ? TimersState.PLAYER_ONE_RUNNING : TimersState.PLAYER_TWO_RUNNING;
 
-        Log.i(TAG, "Player " + player.name() + " pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
-        if (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) {
+        Log.i(TAG, "Player " + player.name() + " pressed the clock with state: " + timerState + " (previous: " + timersStatePreviousToPause + ")");
+        if (timerState == TimersState.PAUSED && timersStatePreviousToPause == TimersState.PAUSED) {
             clockMenu.showPause();
         }
-        if (mTimersState == playerTimerRunning || mTimersState == TimersState.PAUSED) {
+        if (timerState == playerTimerRunning || timerState == TimersState.PAUSED) {
             getClockManager().pressClock(player);
-            mTimersState = firstPlayer ? TimersState.PLAYER_TWO_RUNNING : TimersState.PLAYER_ONE_RUNNING;
+            timerState = firstPlayer ? TimersState.PLAYER_TWO_RUNNING : TimersState.PLAYER_ONE_RUNNING;
             soundManager.playSound(ClockSound.PLAYER_ONE_MOVE, audioManager);
             updateUIState();
-        } else if (mTimersState == TimersState.PLAYER_ONE_FINISHED || mTimersState == TimersState.PLAYER_TWO_FINISHED) {
+        } else if (timerState == TimersState.PLAYER_ONE_FINISHED || timerState == TimersState.PLAYER_TWO_FINISHED) {
             showResetClockDialog();
         }
     }
