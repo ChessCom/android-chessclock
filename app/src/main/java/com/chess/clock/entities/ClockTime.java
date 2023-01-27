@@ -21,7 +21,7 @@ public final class ClockTime {
 
     @SuppressLint("DefaultLocale")
     public String toReadableFormat() {
-        if (atLeaseOneHourLeft()) {
+        if (atLeastOneHourLeft()) {
             return String.format(CLOCK_FORMAT_HOURS, hours, minutes, seconds);
         } else {
             return String.format(CLOCK_FORMAT_MINUTES, minutes, seconds);
@@ -36,7 +36,7 @@ public final class ClockTime {
         return String.format(CLOCK_FORMAT_MINUTES, totalMinutes(), seconds);
     }
 
-    public boolean atLeaseOneHourLeft() {
+    public boolean atLeastOneHourLeft() {
         return atLeastHourLeft(remainingTimeMs);
     }
 
