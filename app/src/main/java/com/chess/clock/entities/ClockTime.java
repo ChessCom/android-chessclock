@@ -37,17 +37,43 @@ public final class ClockTime {
     }
 
     public boolean atLeaseOneHourLeft() {
-        return remainingTimeMs >= HOUR_MILLIS;
+        return atLeastHourLeft(remainingTimeMs);
+    }
+
+    public static boolean atLeastHourLeft(long timeMs) {
+        return timeMs >= HOUR_MILLIS;
+    }
+
+    public static String calibratedReadableFormat(long timeMs) {
+        long calibratedTime = calibrateTime(timeMs);
+        if (atLeastHourLeft(calibratedTime)) {
+            return String.format(
+                    CLOCK_FORMAT_HOURS,
+                    (int) ((calibratedTime / (1000 * 60 * 60))),
+                    (int) ((calibratedTime / (1000 * 60)) % 60),
+                    (int) (calibratedTime / 1000) % 60
+            );
+        } else {
+            return String.format(
+                    CLOCK_FORMAT_MINUTES,
+                    (int) ((calibratedTime / (1000 * 60)) % 60),
+                    (int) (calibratedTime / 1000) % 60
+            );
+        }
     }
 
     public static ClockTime calibrated(long timeMs) {
         // calibration
-        long remainingTime = timeMs;
+        long remainingTime = calibrateTime(timeMs);
+        return new ClockTime(remainingTime);
+    }
+
+    private static long calibrateTime(long timeMs) {
         int rest = (int) (timeMs % 1000);
         if (rest > 0 && timeMs > 0) {
-            remainingTime = timeMs + 1000;
+            return timeMs + 1000;
         }
-        return new ClockTime(remainingTime);
+        return timeMs;
     }
 
     public static ClockTime raw(long timeMs) {

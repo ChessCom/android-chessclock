@@ -51,14 +51,14 @@ public class ClockButton extends FrameLayout {
         runningTextColor = getResources().getColor(R.color.white);
     }
 
+
     public void setTime(long timeMillis) {
-        ClockTime clockTime = ClockTime.calibrated(timeMillis);
-        String readableFormat = clockTime.toReadableFormat();
+        String readableTime = ClockTime.calibratedReadableFormat(timeMillis);
 
-        if (timeTv.getText().equals(readableFormat)) return;
+        if (timeTv.getText().equals(readableTime)) return;
 
-        timeTv.setText(readableFormat);
-        if (clockTime.atLeaseOneHourLeft()) {
+        timeTv.setText(readableTime);
+        if (ClockTime.atLeastHourLeft(timeMillis)) {
             timeTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.clock_timer_textSize_small));
         } else {
             timeTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.clock_timer_textSize_normal));
