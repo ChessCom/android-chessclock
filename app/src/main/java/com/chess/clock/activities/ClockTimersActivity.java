@@ -30,6 +30,7 @@ import com.chess.clock.views.ClockButton;
 import com.chess.clock.views.ClockMenu;
 import com.chess.clock.views.ViewUtils;
 
+
 public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialogFragment.TimeAdjustmentsListener {
 
     private static final String TAG = ClockTimersActivity.class.getName();
@@ -174,7 +175,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
             timersStatePreviousToPause = TimersState.PAUSED;
         }
 
-        initClock();
+        initClock(savedInstanceState == null);
     }
 
     /**
@@ -274,13 +275,9 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         super.onBackPressed();
     }
 
-    void initClock() {
+    void initClock(boolean initializeClockSettings) {
         getClockManager().setListeners(playerOneCallback, playerTwoCallback);
-			/*
-            Check if timer is already started. Started timer means that Time Controls were set in the clock.
-			If no time control were set, restore a new timer with last used Time Controls.
-			*/
-        if (!getClockManager().isClockStarted()) {
+        if (initializeClockSettings) {
             TimeControlWrapper selectedControl = TimeControlParser.getLastTimeControlOrDefault(this);
             getClockManager().setupClock(selectedControl);
             Log.d(TAG, "Last controls set.");
