@@ -23,8 +23,6 @@ public class ClockButton extends FrameLayout {
 
     private final int idleTextColor;
     private final int runningTextColor;
-    int idleBgColor = ContextCompat.getColor(getContext(), R.color.gray_light);
-
     private final TextView timeTv;
     private final TextView movesTv;
     private final TextView controlNameTv;
@@ -32,6 +30,7 @@ public class ClockButton extends FrameLayout {
     private final View stageOne;
     private final View stageTwo;
     private final View stageThree;
+    int idleBgColor = ContextCompat.getColor(getContext(), R.color.gray_light);
 
     public ClockButton(Context context, AttributeSet attrs) {
         super(context, attrs);
