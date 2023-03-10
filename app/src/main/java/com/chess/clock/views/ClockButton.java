@@ -23,8 +23,6 @@ public class ClockButton extends FrameLayout {
 
     private final int idleTextColor;
     private final int runningTextColor;
-    int idleBgColor = ContextCompat.getColor(getContext(), R.color.gray_light);
-
     private final TextView timeTv;
     private final TextView movesTv;
     private final TextView controlNameTv;
@@ -32,6 +30,7 @@ public class ClockButton extends FrameLayout {
     private final View stageOne;
     private final View stageTwo;
     private final View stageThree;
+    int idleBgColor = ContextCompat.getColor(getContext(), R.color.gray_light);
 
     public ClockButton(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -51,10 +50,14 @@ public class ClockButton extends FrameLayout {
         runningTextColor = getResources().getColor(R.color.white);
     }
 
+
     public void setTime(long timeMillis) {
-        ClockTime clockTime = ClockTime.calibrated(timeMillis);
-        timeTv.setText(clockTime.toReadableFormat());
-        if (clockTime.atLeaseOneHourLeft()) {
+        String readableTime = ClockTime.calibratedReadableFormat(timeMillis);
+
+        if (timeTv.getText().equals(readableTime)) return;
+
+        timeTv.setText(readableTime);
+        if (ClockTime.atLeastHourLeft(timeMillis)) {
             timeTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.clock_timer_textSize_small));
         } else {
             timeTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.clock_timer_textSize_normal));
