@@ -449,7 +449,7 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         if (timerState == playerTimerRunning || timerState == TimersState.PAUSED) {
             getClockManager().pressClock(player);
             timerState = firstPlayer ? TimersState.PLAYER_TWO_RUNNING : TimersState.PLAYER_ONE_RUNNING;
-            soundManager.playSound(ClockSound.PLAYER_ONE_MOVE, audioManager);
+            soundManager.playSound(firstPlayer ? ClockSound.PLAYER_ONE_MOVE : ClockSound.PLAYER_TWO_MOVE, audioManager);
             updateUIState();
         } else if (timerState == TimersState.PLAYER_ONE_FINISHED || timerState == TimersState.PLAYER_TWO_FINISHED) {
             showResetClockDialog();
