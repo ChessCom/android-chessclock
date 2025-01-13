@@ -43,7 +43,7 @@ public class ViewUtils {
     }
 
     public static Drawable getSelectableItemBgDrawable(Context context) {
-        TypedArray a = context.getTheme().obtainStyledAttributes(R.style.AppTheme, new int[]{R.attr.selectableItemBackground});
+        TypedArray a = context.getTheme().obtainStyledAttributes(R.style.AppTheme, new int[]{android.R.attr.selectableItemBackground});
         int attributeResourceId = a.getResourceId(0, 0);
         return ContextCompat.getDrawable(context, attributeResourceId);
     }
