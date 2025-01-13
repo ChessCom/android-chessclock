@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 33
+    compileSdk 35
     namespace 'com.chess.clock'
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 33
+        targetSdkVersion 35
         versionCode 26
         versionName "1.2.0"
     }
@@ -22,6 +22,11 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+        resValues = true
+    }
+
     lint {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -35,9 +40,9 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.11.0'
 
     testImplementation "junit:junit:4.13.2"
 }
