@@ -22,6 +22,7 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getTheme().applyStyle(R.style.OptOutEdgeToEdgeEnforcement, false);
         super.onCreate(savedInstanceState);
         appData = new AppData(getApplicationContext());
         selectedTheme = appData.getSelectedTheme();
