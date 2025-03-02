@@ -5,16 +5,20 @@ android {
     namespace 'com.chess.clock'
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 35
+        applicationId "com.chess.clock"  // Added to ensure a unique app ID
+        minSdk 21                        // Updated from 16 to 21 for better support and security
+        targetSdk 35
         versionCode 28
         versionName "1.2.2"
+
+        vectorDrawables.useSupportLibrary = true  // Enable vector drawables for older devices
     }
 
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true  // Added to remove unused resources, reducing APK size
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             minifyEnabled false
@@ -23,19 +27,18 @@ android {
     }
 
     buildFeatures {
-        buildConfig = true
-        resValues = true
+        buildConfig true
+        resValues true
     }
 
     lint {
         checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
         abortOnError false
     }
+
     compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -44,5 +47,5 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.google.android.material:material:1.11.0'
 
-    testImplementation "junit:junit:4.13.2"
+    testImplementation 'junit:junit:4.13.2'
 }
