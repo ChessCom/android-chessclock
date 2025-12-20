@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Non translatable-->
+    <string name="colon" translatable="false">:</string>
+    <string name="default_time_setup_hint" translatable="false">00</string>
+    <string name="empty" translatable="false" />
+
+    <string name="version" translatable="false">v%s (%d)</string>
+
+    <!-- ChessClock Activity -->
+    <string name="app_name">Schachuhr</string>
+    <string name="dialog_reset_clock">Uhr zurücksetzen?</string>
+    <string name="dialog_no">Nein</string>
+    <string name="dialog_yes">Ja</string>
+
+    <!-- Settings Activity -->
+    <string name="settings">Einstellungen</string>
+    <string name="action_edit">Bearbeiten</string>
+    <string name="action_delete">Löschen</string>
+    <string name="action_full_screen">Vollbild</string>
+
+    <!-- Time Control Fragment -->
+    <string name="action_add_new_stage">Phase hinzufügen</string>
+    <string name="action_save_time_control">Speichern</string>
+    <string name="toast_requesting_time_control_name">Geben Sie einen Namen zum Speichern an.</string>
+
+    <!-- Time Control Manager -->
+    <string name="list_empty_toast_message">Liste ist leer. Standardliste wurde geladen.</string>
+    <string name="same_as_player_one">Gleich wie Spieler 1</string>
+
+    <!-- Stage Delete Dialog -->
+    <string name="delete_stage_dialog_message">Phase löschen?</string>
+
+    <!-- Stage Editor Dialog -->
+    <string name="stage_editor_dialog_title">Phase bearbeiten</string>
+    <string name="action_cancel">Abbruch</string>
+
+    <!-- Time Increment Editor Dialog -->
+    <string name="radio_delay_title">Verzögerung</string>
+    <string name="radio_bronstein_title">Bronstein</string>
+    <string name="radio_fischer_title">Fischer</string>
+    <string name="radio_none_title">Kein</string>
+
+    <!-- Increment type spinner subtitles -->
+    <string name="delay_option_subtitle">Die Uhr des Spielers startet nach der Verzögerungszeit.</string>
+    <string name="bronstein_option_subtitle">Die Spieler erhalten den verbrauchten Teil des Inkrements am Ende jedes Zuges.</string>
+    <string name="fischer_option_subtitle">Die Spieler erhalten das volle Inkrement am Ende jedes Zuges.</string>
+
+    <!-- Strings for settings buttons -->
+    <string name="time_control_player_one">Spieler 1</string>
+    <string name="time_control_player_two">Spieler 2</string>
+
+    <!-- New & not translated-->
+    <string name="start">Start</string>
+    <string name="time_controls">Zeiteinstellungen</string>
+    <string name="presets">Voreinstellungen</string>
+    <string name="new_time">Neue benutzerdefinierte Zeit</string>
+    <string name="app_settings">App Einstellungen</string>
+    <string name="theme_color">Farbschema</string>
+    <string name="sound">Ton</string>
+    <string name="custom_time">Benutzerdefinierte Zeit</string>
+    <string name="x_min">%d min</string>
+    <string name="x_sec">%d sec</string>
+    <string name="x_min_y_sec">%d min | %2d sec</string>
+    <string name="name">Name</string>
+    <string name="time">Zeit</string>
+    <string name="increment">Inkrement</string>
+    <string name="advanced_mode">Erweiterter Modus</string>
+    <string name="please_set_time">Geben Sie eine Zeit zum Speichern an.</string>
+    <string name="stages">Phasen</string>
+    <string name="stage_one">Phase 1</string>
+    <string name="stage_two">Phase 2</string>
+    <string name="stage_three">Phase 3</string>
+    <string name="moves">Züge</string>
+    <string name="value">Wert</string>
+    <string name="type">Typ</string>
+    <string name="toast_requesting_time_control_stage">Geben Sie zumindest eine Phase für jeden Spieler an.</string>
+    <string name="delete_custom_time">Benutzerdefinierte Zeit löschen?</string>
+    <string name="action_keep">Behalten</string>
+    <string name="game_in_x">Spiel in %s</string>
+    <string name="hour">Stunde</string>
+    <string name="minute">Minute</string>
+    <string name="second">Sekunde</string>
+    <string name="save_time">Zeit speichern</string>
+    <string name="adjust_time">Zeit einstellen</string>
+    <string name="moves_x">Züge: %d</string>
+    <string name="exit_dialog_message">Neue benutzerdefinierte Zeit wirklich löschen?</string>
+    <string name="restore_default_controls">Auf Standard Zeiteinstellungen zurücksetzen</string>
+    <string name="restore_default_controls_confirmation_message">Wirklich zurücksetzen? Das wird alle benutzerdefinierten Zeiteinstellungen löschen.</string>
+    <string name="action_confirm">Bestätigen</string>
+    <string name="action_ok">Ok</string>
+    <string name="attention">Achtung</string>
+    <string name="delete_all_time_controls_info">Die Uhr benötigt zumindest eine aktive Zeiteinstellung. Bitte editieren Sie die bestehende Zeiteinstellung or erstellen Sie eine neue.</string>
+</resources>
