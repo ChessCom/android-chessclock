@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="x_moves_in">
+        <item quantity="one">%d Zug in %s</item>
+        <item quantity="other">%d Züge in %s</item>
+    </plurals>
+
+    <plurals name="x_selected">
+        <item quantity="zero">%d ausgewählt</item>
+        <item quantity="one">%d ausgewählt</item>
+        <item quantity="other">%d ausgewählt</item>
+    </plurals>
+</resources>
