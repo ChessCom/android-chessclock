@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -18,6 +17,9 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.chess.clock.R;
@@ -59,7 +61,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     /**
      * Utils
      */
-    private View windowDecorView;
     private TimersState timerState;
     private TimersState timersStatePreviousToPause;
     private final CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
@@ -142,22 +143,10 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-        // Full screen for pre-kitkat
-        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentApiVersion < Build.VERSION_CODES.KITKAT) {
-            boolean isFullScreen = appData.getClockFullScreen();
-            if (isFullScreen) {
-                hideStatusBar();
-            } else {
-                showStatusBar();
-            }
-        }
-
         int layout = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
                 getProperLandscapeLayout() : R.layout.activity_clock_timers;
         setContentView(layout);
 
-        windowDecorView = getWindow().getDecorView();
         soundManager = new ClockSoundManagerImpl();
         soundManager.init(getApplicationContext());
 
@@ -193,30 +182,18 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         });
     }
 
-    /**
-     * Set to immersive mode since Build.VERSION_CODES.KITKAT
-     */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-        boolean isFullScreen = appData.getClockFullScreen();
-        if (hasFocus && currentApiVersion >= Build.VERSION_CODES.KITKAT) {
-            if (isFullScreen) {
-                windowDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        if (hasFocus) {
+            WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(
+                    getWindow(), getWindow().getDecorView());
+            if (appData.getClockFullScreen()) {
+                controller.setSystemBarsBehavior(
+                        WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+                controller.hide(WindowInsetsCompat.Type.systemBars());
             } else {
-                windowDecorView.setSystemUiVisibility(0);
-            }
-        } else if (hasFocus) {
-            if (isFullScreen) {
-                hideStatusBar();
-            } else {
-                showStatusBar();
+                controller.show(WindowInsetsCompat.Type.systemBars());
             }
         }
     }

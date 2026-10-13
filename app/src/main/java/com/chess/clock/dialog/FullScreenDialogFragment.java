@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.chess.clock.R;
+import com.chess.clock.views.ViewUtils;
 
 abstract class FullScreenDialogFragment extends DialogFragment {
     abstract int layoutRes();
@@ -43,6 +44,7 @@ abstract class FullScreenDialogFragment extends DialogFragment {
                 new ColorDrawable(ContextCompat.getColor(requireContext(), bgColorRes()))
         );
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        ViewUtils.applyWindowInsets(dialog.getWindow());
         return dialog;
     }
 }

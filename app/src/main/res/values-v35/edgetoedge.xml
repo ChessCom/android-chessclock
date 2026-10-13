@@ -1,6 +1,0 @@
-<resources>
-
-    <style name="OptOutEdgeToEdgeEnforcement">
-        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
-    </style>
-</resources>
