@@ -8,7 +8,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
@@ -162,9 +161,7 @@ public class TimeSettingsFragment extends BaseFragment implements ActionMode.Cal
         if (adapter != null) {
             adapter.updateTheme(theme);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            plusImg.setImageTintList(theme.primaryColorAsStateList(getContext()));
-        }
+        plusImg.setImageTintList(theme.primaryColorAsStateList(getContext()));
     }
 
     @Override

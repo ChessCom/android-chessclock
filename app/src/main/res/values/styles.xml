@@ -14,11 +14,21 @@
         <item name="actionModeStyle">@style/ActionModeStyle</item>
     </style>
 
-    <!-- No Action bar Theme -->
-    <style name="TimersTheme" parent="@style/Theme.AppCompat">
+    <style name="TimersTheme" parent="ImmersiveStickyTheme">
         <item name="colorPrimary">@color/gray_controls</item>
         <item name="colorPrimaryDark">@color/gray_controls</item>
         <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="ImmersiveTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/gray_background</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="ImmersiveStickyTheme" parent="ImmersiveTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
     </style>
 
     <style name="WhiteButtonsDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
