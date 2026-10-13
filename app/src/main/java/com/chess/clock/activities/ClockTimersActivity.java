@@ -14,6 +14,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -176,6 +177,20 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
         }
 
         initClock(savedInstanceState == null);
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (timerState != TimersState.PAUSED) {
+                    pauseClock();
+                }
+                setEnabled(false);
+                try {
+                    getOnBackPressedDispatcher().onBackPressed();
+                } finally {
+                    setEnabled(true);
+                }
+            }
+        });
     }
 
     /**
@@ -265,14 +280,6 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     protected void onDestroy() {
         super.onDestroy();
         soundManager.releaseSounds();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (timerState != TimersState.PAUSED) {
-            pauseClock();
-        }
-        super.onBackPressed();
     }
 
     void initClock(boolean initializeClockSettings) {

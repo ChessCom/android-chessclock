@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
@@ -48,6 +49,12 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_timer_settings);
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                showPopupOrFinish(null);
+            }
+        });
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -72,11 +79,6 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
         super.onDestroy();
         // store last settings time control list check position on shared preferences.
         timeControlManager.saveSelectedTimeControlId(getApplicationContext());
-    }
-
-    @Override
-    public void onBackPressed() {
-        showPopupOrFinish(null);
     }
 
     private void showPopupOrFinish(Integer resultToSet) {
