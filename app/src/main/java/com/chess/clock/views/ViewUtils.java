@@ -7,13 +7,39 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.chess.clock.R;
 
 public class ViewUtils {
+    public static void applyWindowInsets(Window window) {
+        WindowCompat.setDecorFitsSystemWindows(window, false);
+        window.setSoftInputMode((window.getAttributes().softInputMode
+                & ~WindowManager.LayoutParams.SOFT_INPUT_MASK_ADJUST)
+                | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        View content = window.findViewById(android.R.id.content);
+        int left = content.getPaddingLeft();
+        int top = content.getPaddingTop();
+        int right = content.getPaddingRight();
+        int bottom = content.getPaddingBottom();
+        ViewCompat.setOnApplyWindowInsetsListener(content, (view, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()
+                    | WindowInsetsCompat.Type.displayCutout() | WindowInsetsCompat.Type.ime());
+            view.setPadding(left + insets.left, top + insets.top,
+                    right + insets.right, bottom + insets.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+        ViewCompat.requestApplyInsets(content);
+    }
+
     public static void showView(View v, Boolean show) {
         if (show) {
             v.setVisibility(View.VISIBLE);
