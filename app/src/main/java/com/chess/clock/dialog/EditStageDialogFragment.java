@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,13 +120,11 @@ public class EditStageDialogFragment extends FullScreenDialogFragment
         super.onResume();
         AppTheme theme = ((BaseActivity) requireActivity()).selectedTheme;
         if (theme != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ColorStateList tintList = theme.colorStateListFocused(requireContext());
-                hoursEt.setBackgroundTintList(tintList);
-                minutesEt.setBackgroundTintList(tintList);
-                secondsEt.setBackgroundTintList(tintList);
-                movesEt.setBackgroundTintList(tintList);
-            }
+            ColorStateList tintList = theme.colorStateListFocused(requireContext());
+            hoursEt.setBackgroundTintList(tintList);
+            minutesEt.setBackgroundTintList(tintList);
+            secondsEt.setBackgroundTintList(tintList);
+            movesEt.setBackgroundTintList(tintList);
         }
     }
 

@@ -10,7 +10,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -146,12 +145,10 @@ public class TimeControlFragment extends BaseFragment implements EditStageDialog
         ColorStateList stateListFocused = theme.colorStateListFocused(requireContext());
         ColorStateList stateListChecked = theme.switchColorStateList(requireContext());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            minutesEt.setBackgroundTintList(stateListFocused);
-            secondsEt.setBackgroundTintList(stateListFocused);
-            incrementMinutesEt.setBackgroundTintList(stateListFocused);
-            incrementSecondsEt.setBackgroundTintList(stateListFocused);
-        }
+        minutesEt.setBackgroundTintList(stateListFocused);
+        secondsEt.setBackgroundTintList(stateListFocused);
+        incrementMinutesEt.setBackgroundTintList(stateListFocused);
+        incrementSecondsEt.setBackgroundTintList(stateListFocused);
 
         DrawableCompat.setTintList(advancedModeSwitch.getThumbDrawable(), stateListChecked);
         DrawableCompat.setTintList(copyPlayerOneSwitch.getThumbDrawable(), stateListChecked);

@@ -1,7 +1,6 @@
 package com.chess.clock.adapters;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -196,20 +195,18 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.TimeItemView
                 boolean selectedToRemove = removeIds.contains(timeControlWrapper.getId());
                 if (selectedToRemove) {
                     checkBoxImg.setImageResource(R.drawable.ic_check_box);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && theme != null) {
+                    if (theme != null) {
                         checkBoxImg.setImageTintList(theme.primaryColorAsStateList(checkBoxImg.getContext()));
                     }
                 } else {
                     checkBoxImg.setImageResource(R.drawable.ic_check_box_frame);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        checkBoxImg.setImageTintList(null);
-                    }
+                    checkBoxImg.setImageTintList(null);
                 }
                 nameTv.setCheckMarkDrawable(null);
             } else {
                 nameTv.setCheckMarkDrawable(R.drawable.list_radio_button_selector);
                 nameTv.setChecked(selectedItemId == timeControlWrapper.getId());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && theme != null) {
+                if (theme != null) {
                     nameTv.setCheckMarkTintList(theme.radioButtonStateList(nameTv.getContext()));
                 }
             }

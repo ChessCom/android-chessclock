@@ -2,7 +2,6 @@ package com.chess.clock.dialog;
 
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,16 +139,14 @@ public class EditTimeIncrementDialogFragment extends FullScreenDialogFragment {
         super.onResume();
         AppTheme theme = ((BaseActivity) requireActivity()).selectedTheme;
         if (theme != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ColorStateList tintFocused = theme.colorStateListFocused(requireContext());
-                ColorStateList tintChecked = theme.radioButtonStateList(requireContext());
-                minutesEt.setBackgroundTintList(tintFocused);
-                secondsEt.setBackgroundTintList(tintFocused);
-                delayTv.setCheckMarkTintList(tintChecked);
-                bronsteinTv.setCheckMarkTintList(tintChecked);
-                fischerTv.setCheckMarkTintList(tintChecked);
-                noneTv.setCheckMarkTintList(tintChecked);
-            }
+            ColorStateList tintFocused = theme.colorStateListFocused(requireContext());
+            ColorStateList tintChecked = theme.radioButtonStateList(requireContext());
+            minutesEt.setBackgroundTintList(tintFocused);
+            secondsEt.setBackgroundTintList(tintFocused);
+            delayTv.setCheckMarkTintList(tintChecked);
+            bronsteinTv.setCheckMarkTintList(tintChecked);
+            fischerTv.setCheckMarkTintList(tintChecked);
+            noneTv.setCheckMarkTintList(tintChecked);
         }
     }
 

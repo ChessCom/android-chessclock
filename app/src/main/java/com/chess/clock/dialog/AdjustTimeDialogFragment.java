@@ -2,7 +2,6 @@ package com.chess.clock.dialog;
 
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -78,12 +77,10 @@ public class AdjustTimeDialogFragment extends FullScreenDialogFragment {
 
         AppTheme theme = ((BaseActivity) requireActivity()).selectedTheme;
         if (theme != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ColorStateList tintList = theme.colorStateListFocused(requireContext());
-                hoursEt.setBackgroundTintList(tintList);
-                minutesEt.setBackgroundTintList(tintList);
-                secondsEt.setBackgroundTintList(tintList);
-            }
+            ColorStateList tintList = theme.colorStateListFocused(requireContext());
+            hoursEt.setBackgroundTintList(tintList);
+            minutesEt.setBackgroundTintList(tintList);
+            secondsEt.setBackgroundTintList(tintList);
         }
     }
 
