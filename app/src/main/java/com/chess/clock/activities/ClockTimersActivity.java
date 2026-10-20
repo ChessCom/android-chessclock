@@ -183,6 +183,11 @@ public class ClockTimersActivity extends BaseActivity implements AdjustTimeDialo
     }
 
     @Override
+    protected boolean reserveNavigationSpace() {
+        return true;
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
