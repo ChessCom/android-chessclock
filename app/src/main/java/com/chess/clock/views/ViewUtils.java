@@ -21,6 +21,10 @@ import com.chess.clock.R;
 
 public class ViewUtils {
     public static void applyWindowInsets(Window window) {
+        applyWindowInsets(window, false);
+    }
+
+    public static void applyWindowInsets(Window window, boolean reserveNavigationSpace) {
         WindowCompat.setDecorFitsSystemWindows(window, false);
         window.setSoftInputMode((window.getAttributes().softInputMode
                 & ~WindowManager.LayoutParams.SOFT_INPUT_MASK_ADJUST)
@@ -33,8 +37,14 @@ public class ViewUtils {
         ViewCompat.setOnApplyWindowInsetsListener(content, (view, windowInsets) -> {
             Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()
                     | WindowInsetsCompat.Type.displayCutout() | WindowInsetsCompat.Type.ime());
+            int bottomInset = insets.bottom;
+            if (reserveNavigationSpace) {
+                bottomInset = Math.max(bottomInset, Math.max(
+                        windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.navigationBars()).bottom,
+                        windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.mandatorySystemGestures()).bottom));
+            }
             view.setPadding(left + insets.left, top + insets.top,
-                    right + insets.right, bottom + insets.bottom);
+                    right + insets.right, bottom + bottomInset);
             return WindowInsetsCompat.CONSUMED;
         });
         ViewCompat.requestApplyInsets(content);

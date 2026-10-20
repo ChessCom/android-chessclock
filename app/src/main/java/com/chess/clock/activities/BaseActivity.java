@@ -30,7 +30,11 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(int layoutResId) {
         super.setContentView(layoutResId);
-        ViewUtils.applyWindowInsets(getWindow());
+        ViewUtils.applyWindowInsets(getWindow(), reserveNavigationSpace());
+    }
+
+    protected boolean reserveNavigationSpace() {
+        return false;
     }
 
     @Override

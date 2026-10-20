@@ -18,6 +18,7 @@
         <item name="colorPrimary">@color/gray_controls</item>
         <item name="colorPrimaryDark">@color/gray_controls</item>
         <item name="colorAccent">@color/white</item>
+        <item name="android:windowBackground">@color/clock_timers_activity_background</item>
     </style>
 
     <style name="ImmersiveTheme" parent="Theme.AppCompat.NoActionBar">
