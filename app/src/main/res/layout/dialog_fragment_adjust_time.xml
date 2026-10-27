@@ -130,6 +130,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_x_small"
+                android:labelFor="@id/hoursEt"
                 android:text="@string/hour"
                 android:textColor="@color/white_50"
                 android:textSize="@dimen/text_size_small"
@@ -138,9 +139,11 @@
                 app:layout_constraintTop_toBottomOf="@id/hoursCard" />
 
             <TextView
+                android:id="@+id/minuteLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_x_small"
+                android:labelFor="@id/minutesEt"
                 android:text="@string/minute"
                 android:textColor="@color/white_50"
                 android:textSize="@dimen/text_size_small"
@@ -149,9 +152,11 @@
                 app:layout_constraintTop_toBottomOf="@id/minutesCard" />
 
             <TextView
+                android:id="@+id/secondLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_x_small"
+                android:labelFor="@id/secondsEt"
                 android:text="@string/second"
                 android:textColor="@color/white_50"
                 android:textSize="@dimen/text_size_small"
